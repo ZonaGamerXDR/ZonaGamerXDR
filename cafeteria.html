@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CAFETERIA PEDIDOS ONLINE</title>
+    <title>CAFETERÍA | XDR PEDIDOS</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -23,7 +23,7 @@
             color: #fff;
             font-family: 'Rajdhani', sans-serif;
             margin: 0;
-            padding-bottom: 80px; /* Espacio para la barra móvil */
+            padding-bottom: 80px; 
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
         }
@@ -53,6 +53,35 @@
             width: 100%;
         }
 
+        /* --- BOTÓN VOLVER --- */
+        .nav-header {
+            width: 100%;
+            padding: 10px 0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+        }
+
+        .btn-back {
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 8px 20px;
+            font-family: 'Orbitron';
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-back:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
         /* --- SIDEBAR (CARRITO) --- */
         .order-sidebar {
             flex: 1 1 30%;
@@ -72,52 +101,29 @@
             z-index: 100;
         }
 
-        .close-sidebar-btn { display: none; } /* Solo visible en móvil */
+        .close-sidebar-btn { display: none; }
 
-        /* --- RESPONSIVE MOBILE (La magia ocurre aquí) --- */
         @media (max-width: 850px) {
             .main-layout { flex-direction: column; padding: 10px; }
-            
             .order-sidebar {
-                position: fixed;
-                top: 0; left: 0;
-                width: 100%;
-                height: 100%;
-                min-width: 0;
-                margin: 0;
-                border: none;
-                z-index: 999;
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                margin: 0; border: none; z-index: 999;
                 background: rgba(5, 5, 5, 0.95);
-                transform: translateY(110%); /* Oculto abajo */
-                padding-bottom: 80px; /* Espacio para scroll */
+                transform: translateY(110%); padding-bottom: 80px;
             }
-
-            .order-sidebar.active {
-                transform: translateY(0); /* Visible */
-            }
-
+            .order-sidebar.active { transform: translateY(0); }
             .close-sidebar-btn {
-                display: block;
-                background: none; border: none;
-                color: var(--neon-red);
-                font-family: 'Orbitron';
-                font-size: 1.2rem;
-                text-align: right;
-                margin-bottom: 10px;
-                cursor: pointer;
+                display: block; background: none; border: none;
+                color: var(--neon-red); font-family: 'Orbitron'; font-size: 1.2rem;
+                text-align: right; margin-bottom: 10px; cursor: pointer;
             }
         }
 
-        /* --- MOBILE BOTTOM BAR (Barra Flotante) --- */
+        /* --- MOBILE BOTTOM BAR --- */
         .mobile-bottom-bar {
-            display: none; /* Oculto en PC */
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: #000;
-            border-top: 2px solid var(--neon-green);
-            padding: 15px;
-            z-index: 500;
-            justify-content: space-between;
-            align-items: center;
+            display: none; position: fixed; bottom: 0; left: 0; width: 100%;
+            background: #000; border-top: 2px solid var(--neon-green);
+            padding: 15px; z-index: 500; justify-content: space-between; align-items: center;
             box-shadow: 0 -5px 20px rgba(57, 255, 20, 0.2);
         }
         @media (max-width: 850px) {
@@ -130,14 +136,9 @@
             margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;
         }
         h1 {
-            font-family: 'Orbitron', sans-serif;
-            color: #fff;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 0px var(--neon-purple);
-            margin: 0;
-            font-size: 1.5rem;
+            font-family: 'Orbitron', sans-serif; color: #fff; text-transform: uppercase;
+            text-shadow: 2px 2px 0px var(--neon-purple); margin: 0; font-size: 1.5rem;
         }
-        /* Ajuste de fuente en titulo para moviles muy pequeños */
         @media (max-width: 400px) { h1 { font-size: 1.2rem; } }
 
         .status-badge {
@@ -148,12 +149,8 @@
 
         /* --- MENU GRID --- */
         .menu-grid {
-            display: grid; 
-            /* Grid ajustado para móviles pequeños */
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 15px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px;
         }
-
         .card {
             background: var(--card-bg); border: 1px solid #333;
             overflow: hidden; position: relative; cursor: pointer; transition: 0.2s;
@@ -174,8 +171,7 @@
 
         .badge-qty {
             position: absolute; top: 0; right: 0; background: var(--neon-blue); color: #000;
-            font-weight: bold; padding: 2px 8px; font-size: 0.8rem; z-index: 10;
-            display: none;
+            font-weight: bold; padding: 2px 8px; font-size: 0.8rem; z-index: 10; display: none;
         }
 
         /* --- SIDEBAR COMPONENTS --- */
@@ -183,12 +179,10 @@
             font-family: 'Orbitron'; color: var(--neon-blue); text-align: center;
             margin-bottom: 15px; font-size: 1.2rem; letter-spacing: 2px;
         }
-
         .cart-items-container {
             flex-grow: 1; overflow-y: auto; margin-bottom: 15px;
             padding-right: 5px; min-height: 150px;
         }
-        
         .order-row {
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid #222; padding: 12px 0; animation: fadeIn 0.3s ease;
@@ -202,19 +196,14 @@
         .item-controls { display: flex; align-items: center; gap: 8px; }
         .btn-qty {
             background: #222; border: 1px solid #444; color: #fff;
-            width: 30px; height: 30px; cursor: pointer; border-radius: 4px; /* Más grandes para dedos */
-            display: flex; align-items: center; justify-content: center; transition: 0.2s;
-            font-size: 1.2rem;
+            width: 30px; height: 30px; cursor: pointer; border-radius: 4px;
+            display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 1.2rem;
         }
         .btn-qty:hover { border-color: var(--neon-blue); color: var(--neon-blue); }
         .qty-val { width: 25px; text-align: center; font-weight: bold; font-size: 1rem; }
         .btn-del { color: var(--neon-red); background: none; border: none; cursor: pointer; font-size: 1.5rem; margin-left: 5px; padding: 5px;}
 
-        .sidebar-footer {
-            border-top: 1px solid var(--neon-blue);
-            padding-top: 15px;
-        }
-
+        .sidebar-footer { border-top: 1px solid var(--neon-blue); padding-top: 15px; }
         .totals-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5px; }
         .total-label { color: #888; font-size: 0.9rem; }
         .total-val-usd { color: var(--neon-green); font-family: 'Orbitron'; font-size: 1.4rem; font-weight: bold; }
@@ -230,20 +219,11 @@
         .btn-main:hover { background: #fff; box-shadow: 0 0 15px var(--neon-blue); }
         .btn-main:disabled { background: #333; color: #555; cursor: not-allowed; box-shadow: none; }
 
-        /* --- INPUTS & SELECTS --- */
-        select, input, textarea {
-            width: 100%; background: #0f0f0f; border: 1px solid #333;
-            color: white; padding: 12px; font-family: 'Rajdhani'; font-size: 1rem;
-            box-sizing: border-box; margin-bottom: 12px; border-radius: 4px;
-        }
-        select:focus, input:focus, textarea:focus { border-color: var(--neon-purple); outline: none; }
-
-        /* --- MODAL DE DATOS --- */
+        /* --- MODAL --- */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); z-index: 2000;
-            justify-content: center; align-items: center;
-            backdrop-filter: blur(8px);
+            justify-content: center; align-items: center; backdrop-filter: blur(8px);
             padding: 20px; box-sizing: border-box;
         }
         .modal-content {
@@ -272,12 +252,15 @@
 
     <div class="main-layout">
         
+        <div class="nav-header">
+            <a href="index.html" class="btn-back">◄ VOLVER AL MENÚ PRINCIPAL</a>
+        </div>
+        
         <div class="menu-section">
             <div class="header-mini">
                 <div>
                     <h1>PEDIDOS ONLINE</h1>
                     <div style="font-size: 0.8rem; color: #888; margin-top:5px;">
-                        <svg width="10" height="10" fill="currentColor" viewBox="0 0 16 16" style="margin-right:5px"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326z"/></svg>
                         0412-3914757
                     </div>
                 </div>
@@ -294,9 +277,7 @@
 
         <aside class="order-sidebar" id="sidebar">
             <button class="close-sidebar-btn" onclick="toggleMobileCart()">✕ CERRAR</button>
-            
             <div class="sidebar-title">TU ORDEN</div>
-            
             <div id="cart-items-container" class="cart-items-container">
                 <div style="color:#444; text-align:center; margin-top:20px; font-style:italic;">Tu carrito está vacío</div>
             </div>
@@ -426,11 +407,9 @@
                 `;
                 container.appendChild(card);
             }
-            // Restaurar visuales del carrito si recarga
             for(let id in carrito) updateCardVisuals(id);
         });
 
-        // --- LÓGICA CARRITO ---
         window.sumarItem = (id) => {
             if (!tiendaAbierta) return alert("La tienda está cerrada.");
             if (!carrito[id]) carrito[id] = 0;
@@ -470,29 +449,23 @@
             }
         }
 
-        // --- SIDEBAR UPDATE (LISTA + TOTALES) ---
         function actualizarSidebar() {
             const container = document.getElementById('cart-items-container');
             const mobileBar = document.getElementById('mobile-bottom-bar');
             let totalUSD = 0;
-            
-            // Generar HTML de la lista
             let htmlList = "";
-            
             const numItems = Object.keys(carrito).length;
 
             if (numItems === 0) {
                 container.innerHTML = `<div style="color:#444; text-align:center; margin-top:20px; font-style:italic;">Selecciona productos del menú</div>`;
                 document.getElementById('btn-procesar').disabled = true;
-                mobileBar.classList.remove('visible'); // Ocultar barra movil si vacio
+                mobileBar.classList.remove('visible');
             } else {
-                mobileBar.classList.add('visible'); // Mostrar barra movil
-                
+                mobileBar.classList.add('visible');
                 for (let [id, qty] of Object.entries(carrito)) {
                     const item = menuData[id];
                     if (!item) continue;
                     totalUSD += item.precio * qty;
-
                     htmlList += `
                         <div class="order-row">
                             <div class="item-details">
@@ -505,57 +478,42 @@
                                 <button class="btn-qty" onclick="sumarItem('${id}')">+</button>
                                 <button class="btn-del" onclick="eliminarItem('${id}')">×</button>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
                 }
                 container.innerHTML = htmlList;
                 if(tiendaAbierta) document.getElementById('btn-procesar').disabled = false;
             }
 
-            // Totales
             const totalBS = totalUSD * tasaCambio;
             document.getElementById('sidebar-total-usd').innerText = `$${totalUSD.toFixed(2)}`;
             document.getElementById('sidebar-total-bs').innerText = `Bs ${totalBS.toFixed(2)}`;
-            
-            // Actualizar barra movil
             document.getElementById('mobile-total-usd').innerText = `$${totalUSD.toFixed(2)}`;
-
             return { usd: totalUSD, bs: totalBS };
         }
 
-        // --- FUNCIONES VISUALES MOVILES ---
         window.toggleMobileCart = () => {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
         }
 
-        // --- DELIVERY TOGGLE ---
-        window.toggleDeliveryInputs = () => {
-            // Esta funcion solo sirve para ver si necesitamos mostrar campos extra en el modal luego
-        };
+        window.toggleDeliveryInputs = () => {};
 
-        // --- MODAL ---
         window.abrirModalDatos = () => {
             const entrega = document.getElementById('sidebar_entrega').value;
             const fields = document.getElementById('delivery-fields');
-            
             if (entrega === 'Delivery') fields.classList.remove('hidden');
             else fields.classList.add('hidden');
-
             document.getElementById('modal-datos').style.display = 'flex';
         };
 
         window.cerrarModal = () => document.getElementById('modal-datos').style.display = 'none';
 
-        // --- PROCESAR PEDIDO FINAL ---
         window.confirmarYEnviar = async () => {
             const nombre = document.getElementById('cli_nombre').value;
             const cedula = document.getElementById('cli_cedula').value;
             const tlf = document.getElementById('cli_telefono').value;
             const entrega = document.getElementById('sidebar_entrega').value; 
-            
             if (!nombre || !cedula || !tlf) return alert("Completa tus datos personales.");
-            
             let direccion = "Tienda";
             if (entrega === 'Delivery') {
                 direccion = document.getElementById('cli_direccion').value;
@@ -563,21 +521,14 @@
                 if (!direccion || !zona) return alert("Completa la dirección de envío.");
                 direccion = `${zona} - ${direccion}`;
             }
-
-            // UI Feedback
             document.getElementById('modal-datos').style.display = 'none';
             document.getElementById('success-overlay').style.display = 'flex';
-            // Ocultar sidebar movil si estaba abierto
             document.getElementById('sidebar').classList.remove('active');
-
             const totals = actualizarSidebar(); 
             const itemsStr = [];
-            
-            // PDF GENERATION
             const doc = new jsPDF({ orientation: "p", unit: "mm", format: [80, 200] });
-            doc.setFont("courier", "bold");
-            doc.setFontSize(12); doc.text("CAFETERIA ONLINE", 40, 10, { align: "center" });
-            
+            doc.setFont("courier", "bold"); doc.setFontSize(12);
+            doc.text("CAFETERIA ONLINE", 40, 10, { align: "center" });
             doc.setFontSize(9); doc.setFont("courier", "normal");
             doc.text("--------------------------------", 40, 15, { align: "center" });
             doc.text(`FECHA: ${new Date().toLocaleTimeString()}`, 5, 20);
@@ -588,10 +539,8 @@
                  const splitDir = doc.splitTextToSize(`DIR: ${direccion}`, 70);
                  doc.text(splitDir, 5, 40);
             }
-
             let y = 55;
             doc.text("--------------------------------", 40, y, { align: "center" }); y+=5;
-            
             for (let [id, qty] of Object.entries(carrito)) {
                 const it = menuData[id];
                 itemsStr.push(`${qty}x ${it.nombre}`);
@@ -599,15 +548,11 @@
                 doc.text(`$${(it.precio*qty).toFixed(2)}`, 75, y, {align:"right"});
                 y+=5;
             }
-            
             y+=5;
             doc.setFontSize(11); doc.setFont("courier", "bold");
             doc.text(`TOTAL: $${totals.usd.toFixed(2)}`, 75, y, {align:"right"}); y+=5;
             doc.text(`BS: ${totals.bs.toFixed(2)}`, 75, y, {align:"right"});
-            
             doc.save(`Pedido_${nombre}.pdf`);
-
-            // FIREBASE PUSH
             await push(ref(db, 'pedidos'), {
                 cliente: nombre, cedula, telefono: tlf, tipo_entrega: entrega, direccion,
                 items: itemsStr, monto: totals.usd, monto_bs: totals.bs,
