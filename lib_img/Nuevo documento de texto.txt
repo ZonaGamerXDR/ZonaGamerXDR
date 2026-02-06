@@ -1,0 +1,21 @@
+1. Requisitos de las Imágenes
+Guarda estas imágenes en tu carpeta lib_img:
+
+barra_bg.png: Una imagen alargada y oscura (puedes usar un degradado de negro a azul neón).
+
+arena_bg.png: Una imagen con textura de fibra de carbono o un circuito digital oscuro.
+
+2. Modificación en main.py (Barra de Herramientas)
+
+icono_arena.png, icono_socios.png, icono_cafe.png.
+
+ara que tu sistema XDR Arena reconozca los fondos y el estilo Cyberpunk automáticamente, debes seguir estas reglas de nombres y carpetas.?? Manual de Recursos Visuales: XDR Arena
+
+1. Ubicación de los ArchivosTodas las imágenes deben estar dentro de la carpeta lib_img, la cual debe estar en la misma carpeta donde tienes tus códigos .py.*E:\XDR_Arena*+-- ?? lib_img (aquí van todas las fotos)
+
+2. Tabla de Nombres ObligatoriosEl sistema busca estos nombres exactos. Si el nombre o la extensión (.png) son diferentes, el programa usará colores sólidos por defecto.Nombre del ArchivoUso en el SistemaTamaño Sugeridobarra_bg.pngFondo de la barra de herramientas superior (Main).1350 x 70 pxlateral_bg.pngFondo del panel izquierdo (Donde están los botones de tiempo).220 x 1000 pxarena_bg.pngFondo principal donde se ven las estaciones (PC, PS5, etc).1400 x 900 px
+
+3. Recomendaciones de DiseñoPara que el efecto Glassmorphism (cristal) se vea profesional:Opacidad: Usa imágenes oscuras o con poco contraste. Si la imagen es muy brillante, no leerás bien los relojes de las estaciones.Formato: Usa siempre .png. Evita .jpg ya que no soporta transparencias y suele tener menor calidad para interfaces neón.Estética: Busca fondos de "Brushed Metal" (Metal Cepillado), "Dark Circuit" (Circuitos oscuros) o "Cyberpunk City Dark" para que los colores neón (Cian, Magenta, Verde) resalten.
+
+4. ¿Qué pasa si no pongo las imágenes?No te preocupes. El código que escribimos tiene una función de "Validación":El programa pregunta: "¿Existe arena_bg.png?".Si existe: La pone de fondo con transparencia.Si NO existe: Pinta el fondo de color negro puro (#000000) para que puedas seguir trabajando sin errores.¿Te gustaría que te ayude a crear un pequeño script que genere imágenes de prueba con colores neón por si aún no tienes las fotos listas?
+
