@@ -353,12 +353,15 @@
 
     <!-- SCRIPT PRINCIPAL -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        // Importamos versión 10.7.1 para asegurar compatibilidad con cafeteria.html y estabilidad
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         // --- SISTEMA DE NAVEGACIÓN (SEGURO) ---
-        // Definimos la función globalmente para que el HTML pueda usarla siempre
+        // Definimos logActivity como función vacía inicialmente para prevenir errores si se hace click muy rápido
+        window.logActivity = () => {};
+
         window.showSection = (sectionId) => {
             // Ocultar todas las secciones
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
@@ -370,7 +373,7 @@
             window.scrollTo(0,0);
             
             // Intentar notificar a Sophia (sin romper si falla)
-            try { logActivity(`Navegó a: ${sectionId}`); } catch(e) {}
+            try { window.logActivity(`Navegó a: ${sectionId}`); } catch(e) {}
         };
 
         // --- LÓGICA DE FIREBASE Y SOPHIA ---
@@ -380,14 +383,12 @@
 
             try {
                 // INTENTO DE OBTENER CONFIGURACIÓN
-                // Nota: __firebase_config solo existe en el entorno de desarrollo.
-                // En producción, esto fallará y entrará al catch.
                 let configStr;
                 if (typeof __firebase_config !== 'undefined') {
                     configStr = __firebase_config;
                     if(typeof __app_id !== 'undefined') appId = __app_id;
                 } else {
-                    // SI NO HAY CONFIG, LANZAMOS ERROR PARA IR AL MODO OFFLINE
+                    // SI NO HAY CONFIG (GITHUB PAGES SIN ENV), LANZAMOS ERROR PARA IR AL MODO OFFLINE
                     throw new Error("Configuración no encontrada");
                 }
 
@@ -411,7 +412,7 @@
                     }
                 });
 
-                // Función auxiliar para log de actividad (Solo funciona si hay conexión)
+                // Función real para log de actividad (Sobrescribe la vacía)
                 window.logActivity = async (msg) => {
                     if (!user || !db) return;
                     await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'actividad_tiempo_real'), {
@@ -426,8 +427,7 @@
                 document.getElementById('sophia-status').innerText = "MODO_OFFLINE";
                 document.getElementById('sophia-status').style.color = "#ff003c"; // Rojo alerta
                 
-                // Definir logActivity vacío para que no rompa la navegación
-                window.logActivity = () => {}; 
+                // Mantenemos logActivity como vacía para que la navegación siga funcionando
             }
         };
 
