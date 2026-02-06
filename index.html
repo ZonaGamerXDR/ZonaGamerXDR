@@ -347,40 +347,56 @@
     </section>
 
     <div class="sophia-bar">
-        <div>SOPHIA_OS: <span id="sophia-status">ANALIZANDO_TRÁFICO</span></div>
+        <div>SOPHIA_OS: <span id="sophia-status">INICIANDO...</span></div>
         <div id="live-time">00:00:00</div>
     </div>
 
+    <!-- SCRIPT PRINCIPAL -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        // Importamos signInWithCustomToken para arreglar el error de permisos
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // CONFIGURACIÓN PROPORCIONADA POR EL ENTORNO
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        let user = null;
-
-        // --- SISTEMA DE NAVEGACIÓN ---
+        // --- SISTEMA DE NAVEGACIÓN (SEGURO) ---
+        // Definimos la función globalmente para que el HTML pueda usarla siempre
         window.showSection = (sectionId) => {
+            // Ocultar todas las secciones
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
+            
+            // Mostrar la seleccionada
+            const target = document.getElementById(sectionId);
+            if(target) target.classList.add('active');
+            
             window.scrollTo(0,0);
             
-            // Notificar a Sophia el cambio de sección
-            logActivity(`Navegó a: ${sectionId}`);
+            // Intentar notificar a Sophia (sin romper si falla)
+            try { logActivity(`Navegó a: ${sectionId}`); } catch(e) {}
         };
 
-        // --- AUTH & TRACKING ---
+        // --- LÓGICA DE FIREBASE Y SOPHIA ---
         const initSophiaMonitoring = async () => {
+            let app, auth, db, user;
+            let appId = 'default-app-id';
+
             try {
-                // CORRECCIÓN: Usar el token personalizado si existe, para tener permisos correctos
+                // INTENTO DE OBTENER CONFIGURACIÓN
+                // Nota: __firebase_config solo existe en el entorno de desarrollo.
+                // En producción, esto fallará y entrará al catch.
+                let configStr;
+                if (typeof __firebase_config !== 'undefined') {
+                    configStr = __firebase_config;
+                    if(typeof __app_id !== 'undefined') appId = __app_id;
+                } else {
+                    // SI NO HAY CONFIG, LANZAMOS ERROR PARA IR AL MODO OFFLINE
+                    throw new Error("Configuración no encontrada");
+                }
+
+                const firebaseConfig = JSON.parse(configStr);
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                // Autenticación
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(auth, __initial_auth_token);
                 } else {
@@ -391,18 +407,32 @@
                     if (u) {
                         user = u;
                         console.log("Sophia OS: Conectado como", user.uid);
-                        registrarVisita();
+                        registrarVisita(db, appId, user);
                     }
                 });
+
+                // Función auxiliar para log de actividad (Solo funciona si hay conexión)
+                window.logActivity = async (msg) => {
+                    if (!user || !db) return;
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'actividad_tiempo_real'), {
+                        uid: user.uid,
+                        mensaje: msg,
+                        timestamp: serverTimestamp()
+                    });
+                };
+
             } catch (error) {
-                console.error("Error Sophia:", error);
-                document.getElementById('sophia-status').innerText = "ERROR_CONEXION";
+                console.warn("Sophia OS Offline: No se detectó configuración de Firebase.", error);
+                document.getElementById('sophia-status').innerText = "MODO_OFFLINE";
+                document.getElementById('sophia-status').style.color = "#ff003c"; // Rojo alerta
+                
+                // Definir logActivity vacío para que no rompa la navegación
+                window.logActivity = () => {}; 
             }
         };
 
-        const registrarVisita = async () => {
+        const registrarVisita = async (db, appId, user) => {
             if (!user) return;
-            // Escribir en la ruta correcta para datos públicos
             await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'visitas'), {
                 uid: user.uid,
                 hora: new Date().getHours(),
@@ -410,28 +440,16 @@
                 plataforma: 'WEB',
                 accion: 'ENTRADA_PAGINA_PRINCIPAL'
             });
-            
-            document.getElementById('sophia-status').innerText = "VISITA_REGISTRADA";
-            setTimeout(() => {
-                document.getElementById('sophia-status').innerText = "MONITOREANDO_VIVO";
-            }, 3000);
+            document.getElementById('sophia-status').innerText = "MONITOREANDO_VIVO";
         };
 
-        const logActivity = async (msg) => {
-            if (!user) return;
-            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'actividad_tiempo_real'), {
-                uid: user.uid,
-                mensaje: msg,
-                timestamp: serverTimestamp()
-            });
-        };
-
-        // Reloj en tiempo real
+        // Reloj siempre funciona
         setInterval(() => {
             const now = new Date();
             document.getElementById('live-time').innerText = now.toLocaleTimeString();
         }, 1000);
 
+        // Iniciar
         window.onload = initSophiaMonitoring;
 
     </script>
