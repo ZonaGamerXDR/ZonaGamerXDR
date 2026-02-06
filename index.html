@@ -108,7 +108,7 @@
             to { text-shadow: 0 0 40px var(--neon-magenta), 0 0 80px var(--neon-purple); }
         }
 
-        /* --- GRID DE ESTACIONES --- */
+        /* --- HARDWARE GRID --- */
         .hardware-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px; margin-top: 30px;
@@ -128,7 +128,6 @@
             box-shadow: 0 10px 30px rgba(255, 0, 255, 0.2);
         }
 
-        /* CONTENEDOR PARA TUS ICONOS */
         .card-icon-box {
             width: 100%;
             height: 150px;
@@ -139,7 +138,6 @@
             justify-content: center;
             border-radius: 8px;
             border: 1px dashed rgba(255,255,255,0.1);
-            position: relative;
         }
 
         .card-icon-box img {
@@ -152,12 +150,49 @@
 
         .card:hover .card-icon-box img {
             transform: scale(1.15) rotate(2deg);
-            filter: drop-shadow(0 0 20px var(--neon-magenta));
         }
 
         .card h3 { font-family: 'Orbitron'; margin-bottom: 15px; color: #fff; font-size: 1.2rem; }
         .card ul { list-style: none; color: #aaa; font-size: 0.9rem; }
         .card ul li { margin-bottom: 8px; border-left: 2px solid var(--neon-magenta); padding-left: 10px; }
+
+        /* --- GALERÍA GRID --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            border: 1px solid var(--neon-cyan);
+            background: #000;
+            border-radius: 4px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            opacity: 0.8;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        .gallery-item::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.2);
+            pointer-events: none;
+        }
 
         /* --- STATUS BAR --- */
         .sophia-bar {
@@ -185,6 +220,7 @@
             <button class="glitch-btn" onclick="showSection('gamer')">Zona Gamer</button>
             <button class="glitch-btn" onclick="window.location.href='cafeteria.html'">Cafetería</button>
             <button class="glitch-btn" onclick="showSection('papeleria')">Papelería</button>
+            <button class="glitch-btn" onclick="showSection('galeria')">Galería</button>
             <button class="glitch-btn" onclick="showSection('anime')">Anime & Manga</button>
             <button class="glitch-btn" onclick="showSection('eventos')">Eventos</button>
             <button class="glitch-btn" onclick="showSection('info')">Ubicación</button>
@@ -208,7 +244,6 @@
         <div class="container">
             <h2 class="hero-title">ESTACIONES DISPONIBLES</h2>
             <div class="hardware-grid">
-                <!-- PC -->
                 <div class="card">
                     <div class="card-icon-box">
                         <img src="lib_img/icon_pc.png" onerror="this.src='https://via.placeholder.com/150/000/00f0ff?text=PC'">
@@ -222,7 +257,6 @@
                     </ul>
                 </div>
 
-                <!-- PS5 -->
                 <div class="card" style="border-color: #0043ff;">
                     <div class="card-icon-box">
                         <img src="lib_img/icon_ps5.png" onerror="this.src='https://via.placeholder.com/150/000/0043ff?text=PS5'">
@@ -236,10 +270,8 @@
                     </ul>
                 </div>
 
-                <!-- PS4 -->
                 <div class="card" style="border-color: #0030b0;">
                     <div class="card-icon-box">
-                        <!-- Usamos el mismo icono de PS o uno genérico si no existe uno específico de PS4 -->
                         <img src="lib_img/icon_ps5.png" onerror="this.src='https://via.placeholder.com/150/000/0030b0?text=PS4'">
                     </div>
                     <h3>PLAYSTATION 4</h3>
@@ -251,7 +283,6 @@
                     </ul>
                 </div>
 
-                <!-- XBOX -->
                 <div class="card" style="border-color: #107c10;">
                     <div class="card-icon-box">
                         <img src="lib_img/icon_xbox.png" onerror="this.src='https://via.placeholder.com/150/000/107c10?text=XBOX'">
@@ -265,7 +296,6 @@
                     </ul>
                 </div>
 
-                <!-- SWITCH -->
                 <div class="card" style="border-color: #e60012;">
                     <div class="card-icon-box">
                         <img src="lib_img/icon_nintendo.png" onerror="this.src='https://via.placeholder.com/150/000/e60012?text=SWITCH'">
@@ -278,6 +308,18 @@
                         <li>Diversión en Grupo</li>
                     </ul>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERÍA DINÁMICA -->
+    <section id="galeria">
+        <div class="container">
+            <h2 class="hero-title">VIDA EN XDR</h2>
+            <p style="text-align: center; color: var(--neon-cyan); letter-spacing: 2px;">EVENTOS, MOMENTOS Y COMUNIDAD</p>
+            <div id="gallery-container" class="gallery-grid">
+                <!-- Las fotos se cargan aquí vía JavaScript -->
+                <div class="gallery-item"><img src="https://via.placeholder.com/400x300/111/00f0ff?text=CARGANDO+MOMENTOS..."></div>
             </div>
         </div>
     </section>
@@ -360,7 +402,38 @@
             const target = document.getElementById(sectionId);
             if(target) target.classList.add('active');
             window.scrollTo(0,0);
+            
+            // Si entra a la galería, cargar las fotos
+            if(sectionId === 'galeria') loadGallery();
         };
+
+        // --- LÓGICA DE GALERÍA ---
+        // Para que esto funcione con Google Drive "real", necesitarías un API Key.
+        // Como alternativa dinámica y gratuita, puedes usar una lista de nombres de archivos
+        // que subas a tu carpeta 'lib_img/galeria/' en GitHub.
+        function loadGallery() {
+            const container = document.getElementById('gallery-container');
+            container.innerHTML = ""; // Limpiar
+
+            // EJEMPLO: Lista de fotos que tienes en tu carpeta de GitHub
+            // Si las subes a GitHub es mucho más rápido y confiable que Drive.
+            const fotos = [
+                "evento_ps5_1.png",
+                "cumpleanos_xdr.png",
+                "torneo_nintendo.png",
+                "local_vibras.png",
+                "estacion_pc_pro.png",
+                "clientes_felices.png"
+            ];
+
+            fotos.forEach(foto => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                // Ruta hacia tu carpeta en GitHub
+                item.innerHTML = `<img src="lib_img/galeria/${foto}" onerror="this.src='https://via.placeholder.com/400x300/111/ff00ff?text=FOTO+XDR'">`;
+                container.appendChild(item);
+            });
+        }
 
         window.solicitarReserva = async () => {
             const nombre = document.getElementById('evt_nombre').value;
