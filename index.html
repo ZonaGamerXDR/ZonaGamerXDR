@@ -14,7 +14,7 @@
             --neon-green: #39ff14;
             --neon-red: #ff003c;
             --neon-purple: #bc13fe;
-            --neon-white: #e0ffff; /* Para papelería */
+            --neon-white: #e0ffff;
             --bg-black: #050505;
             --panel-bg: rgba(10, 10, 10, 0.9);
         }
@@ -29,7 +29,7 @@
             line-height: 1.6;
         }
 
-        /* --- BACKGROUND EFFECTS --- */
+        /* --- EFECTOS DE FONDO --- */
         .scanlines {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
@@ -37,7 +37,7 @@
             z-index: 1000; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
-        /* --- NAVIGATION --- */
+        /* --- NAVEGACIÓN --- */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 2000;
             background: rgba(0,0,0,0.8); border-bottom: 2px solid var(--neon-cyan);
@@ -74,7 +74,7 @@
             100% { transform: translate(0); }
         }
 
-        /* --- SECTIONS --- */
+        /* --- SECCIONES --- */
         section {
             min-height: 100vh; padding: 100px 20px 40px;
             display: none; flex-direction: column; align-items: center;
@@ -108,16 +108,18 @@
             to { text-shadow: 0 0 40px var(--neon-magenta), 0 0 80px var(--neon-purple); }
         }
 
-        /* --- GRID CARDS --- */
+        /* --- GRID DE ESTACIONES --- */
         .hardware-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px; margin-top: 30px;
         }
 
         .card {
-            background: #111; border: 1px solid #333; padding: 25px;
+            background: #111; border: 1px solid #333; padding: 20px;
             position: relative; overflow: hidden; transition: 0.3s;
             border-bottom: 4px solid var(--neon-cyan);
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
@@ -126,12 +128,38 @@
             box-shadow: 0 10px 30px rgba(255, 0, 255, 0.2);
         }
 
-        .card i { font-size: 3rem; margin-bottom: 20px; color: var(--neon-cyan); }
-        .card h3 { font-family: 'Orbitron'; margin-bottom: 15px; color: #fff; }
+        /* CONTENEDOR PARA TUS ICONOS */
+        .card-icon-box {
+            width: 100%;
+            height: 150px;
+            background: rgba(0,0,0,0.4);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px dashed rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        .card-icon-box img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.5));
+            transition: 0.5s;
+        }
+
+        .card:hover .card-icon-box img {
+            transform: scale(1.15) rotate(2deg);
+            filter: drop-shadow(0 0 20px var(--neon-magenta));
+        }
+
+        .card h3 { font-family: 'Orbitron'; margin-bottom: 15px; color: #fff; font-size: 1.2rem; }
         .card ul { list-style: none; color: #aaa; font-size: 0.9rem; }
         .card ul li { margin-bottom: 8px; border-left: 2px solid var(--neon-magenta); padding-left: 10px; }
 
-        /* --- STATUS BAR (SOPHIA) --- */
+        /* --- STATUS BAR --- */
         .sophia-bar {
             position: fixed; bottom: 0; width: 100%; padding: 10px 20px;
             background: #000; border-top: 1px solid var(--neon-green);
@@ -139,16 +167,9 @@
             color: var(--neon-green); font-family: 'Orbitron'; z-index: 2000;
         }
 
-        /* --- ANIME SHOP --- */
-        .anime-banner {
-            width: 100%; height: 300px; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1578632292335-df3abbb0d586?q=80&w=1200') center/cover;
-            display: flex; align-items: center; justify-content: center;
-            border: 2px solid var(--neon-purple); margin-bottom: 40px;
-        }
-
         /* --- RESPONSIVE --- */
         @media (max-width: 850px) {
-            .nav-links { display: none; } /* En una app real usaríamos un menú hamburguesa */
+            .nav-links { display: none; }
             .hero-title { font-size: 2rem; }
             .brand-huge { font-size: 4rem; }
         }
@@ -170,7 +191,7 @@
         </div>
     </nav>
 
-    <!-- HOME SECTION -->
+    <!-- BIENVENIDA -->
     <section id="home" class="active">
         <div class="container" style="text-align: center; justify-content: center; display: flex; flex-direction: column; min-height: 80vh;">
             <h1 class="hero-title">BIENVENIDO A LA ZONA GAMER</h1>
@@ -185,11 +206,13 @@
     <!-- ZONA GAMER -->
     <section id="gamer">
         <div class="container">
-            <h2 class="hero-title">ESTACIONES DISPONIBLES EN NUESTRA ZONA</h2>
+            <h2 class="hero-title">ESTACIONES DISPONIBLES</h2>
             <div class="hardware-grid">
                 <!-- PC -->
                 <div class="card">
-                    <i class="fa-solid fa-desktop"></i>
+                    <div class="card-icon-box">
+                        <img src="lib_img/icon_pc.png" onerror="this.src='https://via.placeholder.com/150/000/00f0ff?text=PC'">
+                    </div>
                     <h3>PC GAMER</h3>
                     <ul>
                         <li>Monitor MSI Pro 27" Curvo</li>
@@ -201,53 +224,58 @@
 
                 <!-- PS5 -->
                 <div class="card" style="border-color: #0043ff;">
-                    <i class="fa-brands fa-playstation" style="color:#0043ff"></i>
+                    <div class="card-icon-box">
+                        <img src="lib_img/icon_ps5.png" onerror="this.src='https://via.placeholder.com/150/000/0043ff?text=PS5'">
+                    </div>
                     <h3>PLAYSTATION 5</h3>
                     <ul>
                         <li>Gráficos 4K HDR</li>
                         <li>Controles DualSense</li>
                         <li>Juegos de Última Generación</li>
                         <li>Pantallas de Alta Definición</li>
-                        <li>Sillas Gamer Ergonómicas</li>
                     </ul>
                 </div>
 
                 <!-- PS4 -->
                 <div class="card" style="border-color: #0030b0;">
-                    <i class="fa-brands fa-playstation" style="color:#0030b0"></i>
+                    <div class="card-icon-box">
+                        <!-- Usamos el mismo icono de PS o uno genérico si no existe uno específico de PS4 -->
+                        <img src="lib_img/icon_ps5.png" onerror="this.src='https://via.placeholder.com/150/000/0030b0?text=PS4'">
+                    </div>
                     <h3>PLAYSTATION 4</h3>
                     <ul>
                         <li>Gran Catálogo de Juegos</li>
                         <li>Controles DualShock 4</li>
                         <li>FIFA / Call of Duty</li>
                         <li>Ideal para Partidas Casuales</li>
-                        <li>Sillas Gamer Ergonómicas</li>
                     </ul>
                 </div>
 
                 <!-- XBOX -->
                 <div class="card" style="border-color: #107c10;">
-                    <i class="fa-brands fa-xbox" style="color:#107c10"></i>
+                    <div class="card-icon-box">
+                        <img src="lib_img/icon_xbox.png" onerror="this.src='https://via.placeholder.com/150/000/107c10?text=XBOX'">
+                    </div>
                     <h3>XBOX</h3>
                     <ul>
                         <li>Amplia Variedad de Títulos</li>
                         <li>Controles Ergonómicos</li>
                         <li>Multijugador Fluido</li>
                         <li>Pantallas de Alta Calidad</li>
-                        <li>Sillas Gamer Ergonómicas</li>
                     </ul>
                 </div>
 
                 <!-- SWITCH -->
                 <div class="card" style="border-color: #e60012;">
-                    <i class="fa-solid fa-gamepad" style="color:#e60012"></i>
+                    <div class="card-icon-box">
+                        <img src="lib_img/icon_nintendo.png" onerror="this.src='https://via.placeholder.com/150/000/e60012?text=SWITCH'">
+                    </div>
                     <h3>NINTENDO SWITCH</h3>
                     <ul>
                         <li>Torneos Smash Bros</li>
                         <li>Mario Kart 8 Deluxe</li>
                         <li>Hasta 4 Jugadores</li>
                         <li>Diversión en Grupo</li>
-                        <li>Sillas Gamer Ergonómicas</li>
                     </ul>
                 </div>
             </div>
@@ -257,73 +285,26 @@
     <!-- PAPELERÍA -->
     <section id="papeleria">
         <div class="container">
-            <h2 class="hero-title" style="color: var(--neon-white); text-shadow: 0 0 20px var(--neon-cyan);">CENTRO DE PAPELERÍA</h2>
+            <h2 class="hero-title" style="color: var(--neon-white);">CENTRO DE PAPELERÍA</h2>
             <div class="hardware-grid">
                 <div class="card" style="border-color: var(--neon-white);">
-                    <i class="fa-solid fa-print" style="color: var(--neon-white);"></i>
+                    <i class="fa-solid fa-print"></i>
                     <h3>IMPRESIONES & COPIAS</h3>
                     <ul>
                         <li>Impresión Láser B/N y Color</li>
                         <li>Papel Fotográfico Brillo/Mate</li>
                         <li>Fotocopias de Cédula y Docs</li>
-                        <li>Escaneo Digital a Correo</li>
                     </ul>
                 </div>
                 <div class="card" style="border-color: var(--neon-white);">
-                    <i class="fa-solid fa-pen-ruler" style="color: var(--neon-white);"></i>
-                    <h3>ÚTILES & MATERIALES</h3>
-                    <ul>
-                        <li>Cuadernos, Lápices, Bolígrafos</li>
-                        <li>Carpetas y Sobres</li>
-                        <li>Material Escolar y de Oficina</li>
-                        <li>Artículos de Manualidades</li>
-                    </ul>
-                </div>
-                <div class="card" style="border-color: var(--neon-white);">
-                    <i class="fa-solid fa-file-invoice" style="color: var(--neon-white);"></i>
-                    <h3>TRÁMITES ONLINE</h3>
-                    <ul>
-                        <li>Gestión de Citas</li>
-                        <li>Redacción de Documentos</li>
-                        <li>Pago de Servicios</li>
-                        <li>Investigaciones Escolares</li>
-                    </ul>
-                </div>
-                <!-- NUEVO CUADRO: TRABAJOS ESCOLARES -->
-                <div class="card" style="border-color: var(--neon-white);">
-                    <i class="fa-solid fa-graduation-cap" style="color: var(--neon-white);"></i>
+                    <i class="fa-solid fa-graduation-cap"></i>
                     <h3>TRABAJOS ESCOLARES</h3>
                     <ul>
                         <li>Lapbooks Creativos</li>
                         <li>Combos Cierre de Proyecto</li>
                         <li>Láminas de Exposición</li>
-                        <li>Mapas Conceptuales</li>
                         <li>Maquetas a Medida</li>
-                        <li>Cuentos Creativos</li>
                     </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ANIME & MANGA -->
-    <section id="anime">
-        <div class="container">
-            <div class="anime-banner">
-                <h2 style="font-family:'Orbitron'; font-size: 3rem; text-shadow: 0 0 20px #000;">XDR ANIME STORE</h2>
-            </div>
-            <div class="hardware-grid">
-                <div class="card" style="border-color: var(--neon-purple);">
-                    <h3>FIGURAS COLECCIONABLES</h3>
-                    <p>Banpresto, Good Smile, y más. Las mejores estatuas de tus personajes favoritos.</p>
-                </div>
-                <div class="card" style="border-color: var(--neon-purple);">
-                    <h3>MANGA & NOVELAS</h3>
-                    <p>Últimos tomos de Panini e Ivrea. Shonen, Seinen y clásicos.</p>
-                </div>
-                <div class="card" style="border-color: var(--neon-purple);">
-                    <h3>APPAREL & ACCESORIOS</h3>
-                    <p>Franelas, hoodies y llaveros con diseños exclusivos de XDR.</p>
                 </div>
             </div>
         </div>
@@ -331,39 +312,31 @@
 
     <!-- EVENTOS -->
     <section id="eventos">
-        <div class="container" style="max-width: 600px; text-align: center;">
-            <h2 class="hero-title">CELEBRA TU EVENTO</h2>
-            <div class="card" style="border-color: var(--neon-green); text-align: left;">
-                <p style="margin-bottom: 20px;">Reserva el área VIP para cumpleaños, torneos privados o reuniones. Sophia gestionará tu disponibilidad.</p>
-                <input type="text" placeholder="NOMBRE DEL EVENTO" style="width:100%; padding:12px; background:#000; border:1px solid #333; color:white; margin-bottom:10px;">
-                <input type="date" style="width:100%; padding:12px; background:#000; border:1px solid #333; color:white; margin-bottom:10px;">
-                <button class="glitch-btn" style="width: 100%; background: var(--neon-green); color: #000; font-weight: bold;">SOLICITAR RESERVA</button>
+        <div class="container" style="max-width: 600px;">
+            <h2 class="hero-title">RESERVA TU EVENTO</h2>
+            <div class="card" style="border-color: var(--neon-green);">
+                <input type="text" id="evt_nombre" placeholder="NOMBRE DEL EVENTO">
+                <input type="date" id="evt_fecha">
+                <input type="tel" id="evt_contacto" placeholder="WHATSAPP">
+                <button onclick="solicitarReserva()" class="glitch-btn" style="width: 100%; background: var(--neon-green); color: #000; font-weight: bold; border:none; padding:15px; margin-top:10px;">ENVIAR SOLICITUD</button>
             </div>
         </div>
     </section>
 
-    <!-- INFO & UBICACIÓN -->
+    <!-- INFO -->
     <section id="info">
         <div class="container">
-            <h2 class="hero-title">VISÍTANOS</h2>
+            <h2 class="hero-title">UBICACIÓN</h2>
             <div class="hardware-grid">
                 <div class="card">
-                    <h3>UBICACIÓN</h3>
-                    <p>Urbanización 10 de Marzo, Calle Sucre, a 20 metros de la entrada principal.</p>
+                    <h3>CENTRO XDR</h3>
+                    <p>Urb. 10 de Marzo, Calle Sucre.<br>Valencia, Venezuela.</p>
                 </div>
                 <div class="card">
-                    <h3>REDES SOCIALES</h3>
-                    <div style="display:flex; gap:20px; font-size: 2rem; margin-top: 15px;">
-                        <i class="fa-brands fa-instagram"></i>
-                        <i class="fa-brands fa-tiktok"></i>
-                        <i class="fa-brands fa-facebook"></i>
-                    </div>
-                </div>
-                <div class="card">
-                    <h3>CONTACTO DIRECTO</h3>
-                    <div style="display:flex; align-items:center; gap:15px; margin-top: 15px;">
-                        <i class="fa-brands fa-whatsapp" style="font-size: 2.5rem; color: #25D366;"></i>
-                        <span style="font-size: 1.5rem; font-family: 'Rajdhani'; font-weight: bold;">0412-3914757</span>
+                    <h3>CONTACTO</h3>
+                    <div style="display:flex; align-items:center; gap:15px; margin-top:10px;">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 2rem; color: #25D366;"></i>
+                        <span style="font-size: 1.2rem;">0412-3914757</span>
                     </div>
                 </div>
             </div>
@@ -371,93 +344,56 @@
     </section>
 
     <div class="sophia-bar">
-        <div>SOPHIA_OS: <span id="sophia-status">INICIANDO...</span></div>
+        <div>SOPHIA_OS: <span id="sophia-status">ANALIZANDO...</span></div>
         <div id="live-time">00:00:00</div>
     </div>
 
-    <!-- SCRIPT PRINCIPAL -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        window.logActivity = () => {};
+        let db, user, appId;
 
         window.showSection = (sectionId) => {
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
             const target = document.getElementById(sectionId);
             if(target) target.classList.add('active');
             window.scrollTo(0,0);
-            try { window.logActivity(`Navegó a: ${sectionId}`); } catch(e) {}
         };
 
-        const initSophiaMonitoring = async () => {
-            let app, auth, db, user;
-            let appId = 'default-app-id';
-
+        window.solicitarReserva = async () => {
+            const nombre = document.getElementById('evt_nombre').value;
+            const fecha = document.getElementById('evt_fecha').value;
+            const contacto = document.getElementById('evt_contacto').value;
+            if(!nombre || !fecha || !contacto) return alert("Completa los datos.");
+            
             try {
-                let configStr;
-                if (typeof __firebase_config !== 'undefined') {
-                    configStr = __firebase_config;
-                    if(typeof __app_id !== 'undefined') appId = __app_id;
-                } else {
-                    throw new Error("Configuración no encontrada");
-                }
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'reservas'), {
+                    nombre_evento: nombre, fecha_reserva: fecha, contacto, estado: "pendiente_confirmacion", leido: false, timestamp: serverTimestamp()
+                });
+                alert("✅ Solicitud Recibida. Te contactaremos en las próximas 2 horas.");
+            } catch (e) { alert("Error al enviar."); }
+        };
 
-                const firebaseConfig = JSON.parse(configStr);
-                app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
+        const initSophia = async () => {
+            appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+            try {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
                 db = getFirestore(app);
 
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
+                } else { await signInAnonymously(auth); }
                 
-                onAuthStateChanged(auth, (u) => {
-                    if (u) {
-                        user = u;
-                        console.log("Sophia OS: Conectado como", user.uid);
-                        registrarVisita(db, appId, user);
-                    }
-                });
-
-                window.logActivity = async (msg) => {
-                    if (!user || !db) return;
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'actividad_tiempo_real'), {
-                        uid: user.uid,
-                        mensaje: msg,
-                        timestamp: serverTimestamp()
-                    });
-                };
-
-            } catch (error) {
-                console.warn("Sophia OS Offline:", error);
-                document.getElementById('sophia-status').innerText = "MODO_OFFLINE";
-                document.getElementById('sophia-status').style.color = "#ff003c";
-            }
+                onAuthStateChanged(auth, (u) => { if (u) { user = u; document.getElementById('sophia-status').innerText = "MONITOREANDO_VIVO"; } });
+            } catch (error) { document.getElementById('sophia-status').innerText = "OFFLINE"; }
         };
 
-        const registrarVisita = async (db, appId, user) => {
-            if (!user) return;
-            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'visitas'), {
-                uid: user.uid,
-                hora: new Date().getHours(),
-                timestamp: serverTimestamp(),
-                plataforma: 'WEB',
-                accion: 'ENTRADA_PAGINA_PRINCIPAL'
-            });
-            document.getElementById('sophia-status').innerText = "MONITOREANDO_VIVO";
-        };
-
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('live-time').innerText = now.toLocaleTimeString();
-        }, 1000);
-
-        window.onload = initSophiaMonitoring;
-
+        setInterval(() => { document.getElementById('live-time').innerText = new Date().toLocaleTimeString(); }, 1000);
+        window.onload = initSophia;
     </script>
 </body>
 </html>
