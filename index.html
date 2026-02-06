@@ -14,9 +14,8 @@
             --neon-green: #39ff14;
             --neon-red: #ff003c;
             --neon-purple: #bc13fe;
-            --neon-white: #e0ffff; /* Para papelería */
+            --neon-white: #e0ffff;
             --bg-black: #050505;
-            --panel-bg: rgba(10, 10, 10, 0.9);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -131,6 +130,13 @@
         .card ul { list-style: none; color: #aaa; font-size: 0.9rem; }
         .card ul li { margin-bottom: 8px; border-left: 2px solid var(--neon-magenta); padding-left: 10px; }
 
+        /* --- FORMULARIOS --- */
+        input, select {
+            width: 100%; padding: 12px; background: #000; border: 1px solid #333; 
+            color: white; margin-bottom: 10px; font-family: 'Rajdhani';
+        }
+        input:focus { border-color: var(--neon-green); outline: none; }
+
         /* --- STATUS BAR (SOPHIA) --- */
         .sophia-bar {
             position: fixed; bottom: 0; width: 100%; padding: 10px 20px;
@@ -208,7 +214,6 @@
                         <li>Controles DualSense</li>
                         <li>Juegos de Última Generación</li>
                         <li>Pantallas de Alta Definición</li>
-                        <li>Sillas Gamer Ergonómicas</li>
                     </ul>
                 </div>
 
@@ -221,7 +226,6 @@
                         <li>Controles DualShock 4</li>
                         <li>FIFA / Call of Duty</li>
                         <li>Ideal para Partidas Casuales</li>
-                        <li>Sillas Gamer Ergonómicas</li>
                     </ul>
                 </div>
 
@@ -234,7 +238,6 @@
                         <li>Controles Ergonómicos</li>
                         <li>Multijugador Fluido</li>
                         <li>Pantallas de Alta Calidad</li>
-                        <li>Sillas Gamer Ergonómicas</li>
                     </ul>
                 </div>
 
@@ -247,14 +250,13 @@
                         <li>Mario Kart 8 Deluxe</li>
                         <li>Hasta 4 Jugadores</li>
                         <li>Diversión en Grupo</li>
-                        <li>Sillas Gamer Ergonómicas</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PAPELERÍA (NUEVA SECCIÓN) -->
+    <!-- PAPELERÍA -->
     <section id="papeleria">
         <div class="container">
             <h2 class="hero-title" style="color: var(--neon-white); text-shadow: 0 0 20px var(--neon-cyan);">CENTRO DE PAPELERÍA</h2>
@@ -322,9 +324,17 @@
             <h2 class="hero-title">CELEBRA TU EVENTO</h2>
             <div class="card" style="border-color: var(--neon-green); text-align: left;">
                 <p style="margin-bottom: 20px;">Reserva el área VIP para cumpleaños, torneos privados o reuniones. Sophia gestionará tu disponibilidad.</p>
-                <input type="text" placeholder="NOMBRE DEL EVENTO" style="width:100%; padding:12px; background:#000; border:1px solid #333; color:white; margin-bottom:10px;">
-                <input type="date" style="width:100%; padding:12px; background:#000; border:1px solid #333; color:white; margin-bottom:10px;">
-                <button class="glitch-btn" style="width: 100%; background: var(--neon-green); color: #000; font-weight: bold;">SOLICITAR RESERVA</button>
+                
+                <label style="color:var(--neon-green); font-size:0.8rem;">NOMBRE DEL EVENTO / CUMPLEAÑERO</label>
+                <input type="text" id="evt_nombre" placeholder="Ej: Cumpleaños de Alex" style="margin-bottom:15px;">
+                
+                <label style="color:var(--neon-green); font-size:0.8rem;">FECHA DESEADA</label>
+                <input type="date" id="evt_fecha" style="margin-bottom:15px;">
+
+                <label style="color:var(--neon-green); font-size:0.8rem;">CONTACTO (WHATSAPP)</label>
+                <input type="tel" id="evt_contacto" placeholder="0412-..." style="margin-bottom:20px;">
+                
+                <button onclick="solicitarReserva()" class="glitch-btn" style="width: 100%; background: var(--neon-green); color: #000; font-weight: bold; border:none; padding:15px;">ENVIAR SOLICITUD DE RESERVA</button>
             </div>
         </div>
     </section>
@@ -344,12 +354,14 @@
                         <i class="fa-brands fa-instagram"></i>
                         <i class="fa-brands fa-tiktok"></i>
                         <i class="fa-brands fa-facebook"></i>
+                    </div>
                 </div>
+                <!-- NUEVA TARJETA DE CONTACTO -->
                 <div class="card">
-                    <h3>CONTACTO</h3>
-                    <div style="display:flex; gap:20px; font-size: 2rem; margin-top: 15px;">
-                        <i class="fa-brands fa-whatsapp"></i>
-                        <i class="Numero 04123914757"></i>
+                    <h3>CONTACTO DIRECTO</h3>
+                    <div style="display:flex; align-items:center; gap:15px; margin-top: 15px;">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 2.5rem; color: #25D366;"></i>
+                        <span style="font-size: 1.5rem; font-family: 'Rajdhani'; font-weight: bold;">0412-3914757</span>
                     </div>
                 </div>
             </div>
@@ -363,51 +375,77 @@
 
     <!-- SCRIPT PRINCIPAL -->
     <script type="module">
-        // Importamos versión 10.7.1 para asegurar compatibilidad con cafeteria.html y estabilidad
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // --- SISTEMA DE NAVEGACIÓN (SEGURO) ---
-        // Definimos logActivity como función vacía inicialmente para prevenir errores si se hace click muy rápido
+        let db, user, appId;
+
+        // --- SISTEMA DE NAVEGACIÓN ---
         window.logActivity = () => {};
 
         window.showSection = (sectionId) => {
-            // Ocultar todas las secciones
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-            
-            // Mostrar la seleccionada
             const target = document.getElementById(sectionId);
             if(target) target.classList.add('active');
-            
             window.scrollTo(0,0);
-            
-            // Intentar notificar a Sophia (sin romper si falla)
             try { window.logActivity(`Navegó a: ${sectionId}`); } catch(e) {}
+        };
+
+        // --- LÓGICA DE RESERVAS (CON AVISO DE 2 HORAS) ---
+        window.solicitarReserva = async () => {
+            const nombre = document.getElementById('evt_nombre').value;
+            const fecha = document.getElementById('evt_fecha').value;
+            const contacto = document.getElementById('evt_contacto').value;
+
+            if(!nombre || !fecha || !contacto) return alert("Por favor completa todos los campos para la reserva.");
+            if(!db || !user) return alert("Error de conexión. Intenta nuevamente.");
+
+            try {
+                // Guardar en colección 'reservas'
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'reservas'), {
+                    uid: user.uid,
+                    nombre_evento: nombre,
+                    fecha_reserva: fecha,
+                    contacto: contacto,
+                    estado: "pendiente_confirmacion",
+                    leido: false, // Importante para la notificación
+                    timestamp: serverTimestamp()
+                });
+
+                // Alerta a Sophia
+                await window.logActivity(`SOLICITUD RESERVA: ${nombre} para el ${fecha}`);
+
+                // MENSAJE SOLICITADO
+                alert("✅ Solicitud Recibida\n\nEstaremos contactándote dentro de las próximas 2 horas para confirmar tu reserva.");
+                
+                document.getElementById('evt_nombre').value = "";
+                document.getElementById('evt_fecha').value = "";
+                document.getElementById('evt_contacto').value = "";
+            } catch (e) {
+                console.error("Error reserva:", e);
+                alert("Hubo un error al enviar la solicitud.");
+            }
         };
 
         // --- LÓGICA DE FIREBASE Y SOPHIA ---
         const initSophiaMonitoring = async () => {
-            let app, auth, db, user;
-            let appId = 'default-app-id';
+            appId = 'default-app-id';
 
             try {
-                // INTENTO DE OBTENER CONFIGURACIÓN
                 let configStr;
                 if (typeof __firebase_config !== 'undefined') {
                     configStr = __firebase_config;
                     if(typeof __app_id !== 'undefined') appId = __app_id;
                 } else {
-                    // SI NO HAY CONFIG (GITHUB PAGES SIN ENV), LANZAMOS ERROR PARA IR AL MODO OFFLINE
                     throw new Error("Configuración no encontrada");
                 }
 
                 const firebaseConfig = JSON.parse(configStr);
-                app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
                 db = getFirestore(app);
 
-                // Autenticación
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(auth, __initial_auth_token);
                 } else {
@@ -418,11 +456,10 @@
                     if (u) {
                         user = u;
                         console.log("Sophia OS: Conectado como", user.uid);
-                        registrarVisita(db, appId, user);
+                        registrarVisita();
                     }
                 });
 
-                // Función real para log de actividad (Sobrescribe la vacía)
                 window.logActivity = async (msg) => {
                     if (!user || !db) return;
                     await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'actividad_tiempo_real'), {
@@ -433,15 +470,13 @@
                 };
 
             } catch (error) {
-                console.warn("Sophia OS Offline: No se detectó configuración de Firebase.", error);
+                console.warn("Sophia OS Offline:", error);
                 document.getElementById('sophia-status').innerText = "MODO_OFFLINE";
-                document.getElementById('sophia-status').style.color = "#ff003c"; // Rojo alerta
-                
-                // Mantenemos logActivity como vacía para que la navegación siga funcionando
+                document.getElementById('sophia-status').style.color = "#ff003c";
             }
         };
 
-        const registrarVisita = async (db, appId, user) => {
+        const registrarVisita = async () => {
             if (!user) return;
             await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'visitas'), {
                 uid: user.uid,
@@ -453,18 +488,13 @@
             document.getElementById('sophia-status').innerText = "MONITOREANDO_VIVO";
         };
 
-        // Reloj siempre funciona
         setInterval(() => {
             const now = new Date();
             document.getElementById('live-time').innerText = now.toLocaleTimeString();
         }, 1000);
 
-        // Iniciar
         window.onload = initSophiaMonitoring;
 
     </script>
 </body>
 </html>
-
-
-
