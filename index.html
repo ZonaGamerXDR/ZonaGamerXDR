@@ -515,6 +515,8 @@
             const container = document.getElementById('gallery-container');
             container.innerHTML = ""; 
 
+            // Lista de archivos que están dentro de lib_img/galeria/
+            // Asegúrate de que los nombres coincidan exactamente
             const fotos = [
                 "arena_bg.png",
                 "logo_splash.png",
@@ -524,7 +526,8 @@
             fotos.forEach(foto => {
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
-                item.innerHTML = `<img src="lib_img/${foto}" onerror="handleImgError(this, 'GALERÍA')">`;
+                // Ruta corregida apuntando a la subcarpeta galeria
+                item.innerHTML = `<img src="lib_img/galeria/${foto}" onerror="handleImgError(this, 'GALERÍA')">`;
                 container.appendChild(item);
             });
         }
