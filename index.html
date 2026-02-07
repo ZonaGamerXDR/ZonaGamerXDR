@@ -484,10 +484,10 @@
     </div>
 
     <script type="module">
+        // USAMOS REALTIME DATABASE (rtdb) NO FIRESTORE
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // CONFIGURACIÓN REAL XDR
         const firebaseConfig = {
             apiKey: "AIzaSyCtraghFl9rZ0TvtvIZEljto1OYwH5SLo0",
             authDomain: "xdr-zone-server.firebaseapp.com",
@@ -499,7 +499,7 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        const db = getDatabase(app);
 
         // --- MANEJO DE IMÁGENES ---
         window.handleImgError = (img, label) => {
@@ -529,7 +529,7 @@
             });
         }
 
-        // --- FUNCIÓN DE RESERVA CORREGIDA ---
+        // --- FUNCIÓN DE RESERVA (REALTIME DATABASE) ---
         window.solicitarReserva = async () => {
             const nombre = document.getElementById('evt_nombre').value;
             const fecha = document.getElementById('evt_fecha').value;
@@ -542,14 +542,16 @@
                 btn.innerHTML = "ENVIANDO... (ESPERE)";
                 btn.disabled = true;
 
-                // Enviar a la colección 'solicitudes_eventos'
-                await addDoc(collection(db, 'solicitudes_eventos'), {
+                // Referencia a Realtime Database (solicitudes_eventos)
+                const solicitudesRef = ref(db, 'solicitudes_eventos');
+                
+                await push(solicitudesRef, {
                     nombre_evento: nombre,
                     fecha_deseada: fecha,
                     whatsapp: contacto,
                     estado: "pendiente",
                     leido: false,
-                    fecha_solicitud: serverTimestamp()
+                    fecha_solicitud: Date.now() // Usamos Date.now() para RTDB
                 });
 
                 // MENSAJE DE ÉXITO EXACTO
