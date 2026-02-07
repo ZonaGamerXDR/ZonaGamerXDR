@@ -337,13 +337,14 @@
 
     <div id="success-overlay">
         <div class="success-text">¡PEDIDO ENVIADO!</div>
+        <div id="order-id-display" style="color:var(--neon-blue); font-family:'Orbitron'; font-size:1.5rem; margin-bottom:10px;"></div>
         <div style="color:#fff; font-family:'Rajdhani'; font-size:1.2rem;">Tu ticket se está descargando.</div>
         <button onclick="location.reload()" style="margin-top:30px; background:#333; color:#fff; border:1px solid #555; padding:10px 20px; cursor:pointer;">NUEVO PEDIDO</button>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, onValue, push, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         // FIREBASE CONFIG
         const firebaseConfig = { databaseURL: "https://xdr-zone-server-default-rtdb.firebaseio.com/" };
@@ -513,7 +514,9 @@
             const cedula = document.getElementById('cli_cedula').value;
             const tlf = document.getElementById('cli_telefono').value;
             const entrega = document.getElementById('sidebar_entrega').value; 
+            
             if (!nombre || !cedula || !tlf) return alert("Completa tus datos personales.");
+            
             let direccion = "Tienda";
             if (entrega === 'Delivery') {
                 direccion = document.getElementById('cli_direccion').value;
@@ -521,29 +524,66 @@
                 if (!direccion || !zona) return alert("Completa la dirección de envío.");
                 direccion = `${zona} - ${direccion}`;
             }
-            document.getElementById('modal-datos').style.display = 'none';
-            document.getElementById('success-overlay').style.display = 'flex';
-            document.getElementById('sidebar').classList.remove('active');
-            const totals = actualizarSidebar(); 
-            const itemsStr = [];
-            const doc = new jsPDF({ orientation: "p", unit: "mm", format: [80, 200] });
-            doc.setFont("courier", "bold"); doc.setFontSize(12);
-            doc.text("CAFETERIA ONLINE", 40, 10, { align: "center" });
-            doc.setFontSize(9); doc.setFont("courier", "normal");
-            doc.text("--------------------------------", 40, 15, { align: "center" });
-            doc.text(`FECHA: ${new Date().toLocaleTimeString()}`, 5, 20);
-            doc.text(`CLIENTE: ${nombre}`, 5, 25);
-            doc.text(`CI: ${cedula}`, 5, 30);
-            doc.text(`TIPO: ${entrega.toUpperCase()}`, 5, 35);
-            if(entrega === 'Delivery') {
-                 const splitDir = doc.splitTextToSize(`DIR: ${direccion}`, 70);
-                 doc.text(splitDir, 5, 40);
+            
+            const btnSend = document.querySelector("#modal-datos .btn-main");
+            btnSend.disabled = true;
+            btnSend.innerText = "GENERANDO PEDIDO...";
+
+            // 1. GENERAR FECHA Y CONTADOR PARA ID
+            const dateObj = new Date();
+            const d = String(dateObj.getDate()).padStart(2, '0');
+            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const y = String(dateObj.getFullYear()).slice(-2);
+            const dateStr = `${d}${m}${y}`; // Ejemplo: 070226
+
+            // 2. TRANSACCIÓN PARA OBTENER NUMERO DE PEDIDO DIARIO
+            const counterRef = ref(db, `counters/${dateStr}`);
+            let orderSequence = 0;
+            
+            try {
+                const result = await runTransaction(counterRef, (currentValue) => {
+                    return (currentValue || 0) + 1;
+                });
+                orderSequence = result.snapshot.val();
+            } catch (e) {
+                console.error("Error contador", e);
+                orderSequence = Math.floor(Math.random() * 999) + 1; // Fallback
             }
-            let y = 55;
-            doc.text("--------------------------------", 40, y, { align: "center" }); y+=5;
+
+            const orderId = `${dateStr}${String(orderSequence).padStart(3, '0')}`; // EJ: 070226001
+
+            // 3. CALCULAR TOTALES FINALES
+            const totals = actualizarSidebar(); // Recalcular por seguridad
+            
+            // 4. GENERAR ITEMS PARA BD Y PDF
+            const itemsStr = [];
             for (let [id, qty] of Object.entries(carrito)) {
                 const it = menuData[id];
                 itemsStr.push(`${qty}x ${it.nombre}`);
+            }
+
+            // 5. GENERAR PDF
+            const doc = new jsPDF({ orientation: "p", unit: "mm", format: [80, 200] });
+            doc.setFont("courier", "bold"); doc.setFontSize(12);
+            doc.text("CAFETERIA XDR", 40, 10, { align: "center" });
+            doc.setFontSize(9); doc.setFont("courier", "normal");
+            doc.text("--------------------------------", 40, 15, { align: "center" });
+            doc.text(`TICKET: ${orderId}`, 5, 20);
+            doc.text(`FECHA: ${new Date().toLocaleTimeString()}`, 5, 25);
+            doc.text(`CLIENTE: ${nombre}`, 5, 30);
+            doc.text(`CI: ${cedula}`, 5, 35);
+            doc.text(`TIPO: ${entrega.toUpperCase()}`, 5, 40);
+            
+            if(entrega === 'Delivery') {
+                 const splitDir = doc.splitTextToSize(`DIR: ${direccion}`, 70);
+                 doc.text(splitDir, 5, 45);
+            }
+            
+            let y = 60;
+            doc.text("--------------------------------", 40, y, { align: "center" }); y+=5;
+            
+            for (let [id, qty] of Object.entries(carrito)) {
+                const it = menuData[id];
                 doc.text(`${qty} x ${it.nombre.substring(0,18)}`, 5, y);
                 doc.text(`$${(it.precio*qty).toFixed(2)}`, 75, y, {align:"right"});
                 y+=5;
@@ -552,12 +592,30 @@
             doc.setFontSize(11); doc.setFont("courier", "bold");
             doc.text(`TOTAL: $${totals.usd.toFixed(2)}`, 75, y, {align:"right"}); y+=5;
             doc.text(`BS: ${totals.bs.toFixed(2)}`, 75, y, {align:"right"});
-            doc.save(`Pedido_${nombre}.pdf`);
+            
+            doc.save(`Pedido_${orderId}.pdf`);
+
+            // 6. ENVIAR A FIREBASE (CON ID Y MONTOS EXPLICITOS)
             await push(ref(db, 'pedidos'), {
-                cliente: nombre, cedula, telefono: tlf, tipo_entrega: entrega, direccion,
-                items: itemsStr, monto: totals.usd, monto_bs: totals.bs,
-                estado: "recibido", origen: "WEB", timestamp: Date.now()
+                id_pedido: orderId, // EL ID GENERADO
+                cliente: nombre, 
+                cedula, 
+                telefono: tlf, 
+                tipo_entrega: entrega, 
+                direccion,
+                items: itemsStr, 
+                monto: totals.usd,      // MONTO USD
+                monto_bs: totals.bs,    // MONTO BS
+                estado: "recibido", 
+                origen: "WEB", 
+                timestamp: Date.now()
             });
+
+            // 7. UI FINAL
+            document.getElementById('modal-datos').style.display = 'none';
+            document.getElementById('success-overlay').style.display = 'flex';
+            document.getElementById('order-id-display').innerText = `Ticket #${orderId}`;
+            document.getElementById('sidebar').classList.remove('active');
         };
     </script>
 </body>
