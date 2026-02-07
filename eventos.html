@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -35,18 +35,59 @@
 
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
 
-        /* TITULOS */
-        .page-header { text-align: center; margin-bottom: 50px; padding: 20px; border-bottom: 1px solid #222; }
-        .page-title {
-            font-family: 'Orbitron'; font-size: 3rem; color: var(--neon-green);
-            text-shadow: 0 0 20px rgba(57, 255, 20, 0.4); margin-bottom: 15px;
-        }
-        .page-subtitle { 
-            color: #ccc; font-size: 1.2rem; letter-spacing: 1px; max-width: 800px; margin: 0 auto;
-            border-left: 3px solid var(--neon-green); padding-left: 15px;
+        /* --- NUEVO BANNER DE BIENVENIDA (PROMO) --- */
+        .promo-banner {
+            background: linear-gradient(135deg, rgba(20,20,20,0.9) 0%, rgba(10,10,10,0.9) 100%);
+            border: 2px solid var(--neon-magenta); /* Magenta para destacar sobre el verde */
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 60px;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1s ease-out;
         }
 
-        /* TIPOS DE EVENTOS */
+        .promo-banner::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,0,255,0.1) 0%, transparent 60%);
+            animation: rotateBg 20s linear infinite; pointer-events: none;
+        }
+
+        .promo-title {
+            font-family: 'Orbitron'; font-size: 2.8rem; color: #fff;
+            text-shadow: 2px 2px 0px var(--neon-magenta); margin-bottom: 15px;
+            position: relative; z-index: 2;
+        }
+
+        .promo-text {
+            font-size: 1.3rem; color: #ddd; max-width: 800px; margin: 0 auto 30px auto;
+            line-height: 1.6; position: relative; z-index: 2;
+        }
+
+        /* Iconos de características */
+        .features-row {
+            display: flex; justify-content: center; gap: 50px; flex-wrap: wrap;
+            position: relative; z-index: 2; margin-top: 30px;
+        }
+        .feature-item {
+            text-align: center; max-width: 200px;
+        }
+        .feature-icon {
+            font-size: 3rem; color: var(--neon-cyan); margin-bottom: 15px;
+            text-shadow: 0 0 15px var(--neon-cyan);
+            transition: 0.3s;
+        }
+        .feature-item:hover .feature-icon { transform: scale(1.2); color: #fff; }
+        .feature-item h4 { font-family: 'Orbitron'; color: var(--neon-green); margin-bottom: 5px; }
+        .feature-item p { font-size: 0.9rem; color: #aaa; }
+
+        @keyframes rotateBg { 0% {transform: rotate(0deg);} 100% {transform: rotate(360deg);} }
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
+
+
+        /* TIPOS DE EVENTOS (GRID) */
         .events-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px; margin-bottom: 60px;
@@ -68,7 +109,6 @@
             max-width: 600px; margin: 0 auto; padding: 30px;
             box-shadow: 0 0 30px rgba(0,0,0,0.5); position: relative;
         }
-        /* Adorno visual esquinero */
         .corner-decor {
             position: absolute; width: 20px; height: 20px;
             border-top: 3px solid var(--neon-green); border-left: 3px solid var(--neon-green);
@@ -91,9 +131,14 @@
         }
         .btn-reserve:hover { background: #fff; box-shadow: 0 0 15px var(--neon-green); }
 
-        /* WHATSAPP ALTERNATIVO */
         .ws-alt { text-align: center; margin-top: 20px; font-size: 0.9rem; color: #666; }
         .ws-alt a { color: var(--neon-green); text-decoration: none; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .promo-title { font-size: 2rem; }
+            .features-row { gap: 30px; }
+        }
 
     </style>
 </head>
@@ -108,10 +153,29 @@
 
     <div class="container">
         
-        <div class="page-header">
-            <h1 class="page-title">PLANIFICA TU MOMENTO</h1>
-            <div class="page-subtitle">
-                CELEBRA TU CUMPLEAÑOS CON NOSOTROS, REUNIONES, FIESTAS O EVENTOS PERSONALES.
+        <div class="promo-banner">
+            <h1 class="promo-title">¡HAZ DE TU CUMPLEAÑOS UNA PARTIDA ÉPICA!</h1>
+            <p class="promo-text">
+                Olvídate de las fiestas aburridas. En XDR tenemos todo lo necesario para que tu celebración, 
+                reunión o evento especial sea legendario. Nosotros ponemos el lugar, tú pones la diversión.
+            </p>
+            
+            <div class="features-row">
+                <div class="feature-item">
+                    <i class="fas fa-gamepad feature-icon"></i>
+                    <h4>ZONA GAMER</h4>
+                    <p>Consolas y PCs de última generación para torneos.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-utensils feature-icon"></i>
+                    <h4>CAFETERÍA</h4>
+                    <p>Menú completo de snacks, bebidas y comida.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-door-open feature-icon"></i>
+                    <h4>SALÓN DE FIESTAS</h4>
+                    <p>Espacio privado y climatizado para tu grupo.</p>
+                </div>
             </div>
         </div>
 
@@ -137,16 +201,16 @@
 
         <div class="booking-section">
             <div class="corner-decor"></div>
-            <div class="booking-title">SOLICITUD DE RESERVA</div>
+            <div class="booking-title">RESERVAR FECHA</div>
             
-            <input type="text" id="evt_nombre" placeholder="Nombre del Organizador">
+            <input type="text" id="evt_nombre" placeholder="Nombre del Organizador / Cumpleañero">
             <input type="tel" id="evt_whatsapp" placeholder="WhatsApp de Contacto">
             
             <select id="evt_tipo">
                 <option value="CUMPLEAÑOS">Cumpleaños Gamer</option>
                 <option value="TORNEO">Organizar Torneo</option>
-                <option value="PRIVADO">Evento Privado</option>
-                <option value="OTRO">Otro</option>
+                <option value="PRIVADO">Evento Privado (Local Completo)</option>
+                <option value="SALON">Alquiler Solo Salón</option>
             </select>
 
             <div style="display:flex; gap:10px;">
@@ -154,12 +218,12 @@
                 <input type="time" id="evt_hora">
             </div>
 
-            <input type="number" id="evt_personas" placeholder="Cantidad aprox. de personas">
+            <input type="number" id="evt_personas" placeholder="Cantidad aprox. de invitados">
 
             <button class="btn-reserve" id="btn-enviar" onclick="enviarReservaEvento()">ENVIAR SOLICITUD</button>
 
             <div class="ws-alt">
-                ¿Prefieres hablar directo? <a href="https://wa.me/584123914757">Escribe al WhatsApp</a>
+                ¿Dudas sobre los paquetes? <a href="https://wa.me/584123914757" target="_blank">Chatea con nosotros</a>
             </div>
         </div>
 
@@ -198,9 +262,9 @@
             try {
                 btn.innerText = "ENVIANDO..."; btn.disabled = true;
 
-                // Enviamos a 'solicitudes_eventos' para que Python lo detecte
+                // Enviamos a 'solicitudes_eventos'
                 await push(ref(db, 'solicitudes_eventos'), {
-                    nombre_evento: `${tipo} de ${nombre} (${personas} pax)`, // Formato compatible con Python
+                    nombre_evento: `${tipo} de ${nombre} (${personas} pax)`,
                     fecha_deseada: fecha,
                     whatsapp: whatsapp,
                     tipo_evento: tipo,
@@ -210,7 +274,7 @@
                     fecha_solicitud: Date.now()
                 });
 
-                alert("✅ ¡SOLICITUD ENVIADA!\nNos pondremos en contacto contigo para coordinar los detalles.");
+                alert("✅ ¡SOLICITUD ENVIADA!\nNos pondremos en contacto contigo para coordinar los detalles de tu evento.");
                 
                 // Limpiar
                 document.getElementById('evt_nombre').value = "";
