@@ -9,26 +9,16 @@
 
     <style>
         :root {
-            --neon-red: #ff003c;
-            --neon-blue: #00f0ff;
-            --neon-green: #39ff14;
-            --neon-purple: #bc13fe;
-            --bg-dark: #050505;
-            --card-bg: #111;
-            --panel-bg: #0a0a0a;
+            --neon-red: #ff003c; --neon-blue: #00f0ff; --neon-green: #39ff14;
+            --neon-purple: #bc13fe; --bg-dark: #050505; --card-bg: #111; --panel-bg: #0a0a0a;
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: #fff;
-            font-family: 'Rajdhani', sans-serif;
-            margin: 0;
-            padding-bottom: 80px; 
-            overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
+            background-color: var(--bg-dark); color: #fff; font-family: 'Rajdhani', sans-serif;
+            margin: 0; padding-bottom: 80px; overflow-x: hidden; -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- BACKGROUND GLITCH --- */
+        /* --- BACKGROUND --- */
         body::before {
             content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
@@ -37,98 +27,64 @@
         }
         @keyframes scanline { 0% { background-position: 0 0; } 100% { background-position: 0 100%; } }
 
-        /* --- LAYOUT PRINCIPAL --- */
+        /* --- LAYOUT --- */
         .main-layout {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 15px;
-            align-items: flex-start;
+            display: flex; flex-wrap: wrap; gap: 20px; max-width: 1400px;
+            margin: 0 auto; padding: 15px; align-items: flex-start;
         }
+        .menu-section { flex: 1 1 60%; width: 100%; }
 
-        .menu-section {
-            flex: 1 1 60%;
-            width: 100%;
-        }
-
-        /* --- BOTÓN VOLVER --- */
+        /* --- BOTONES NAV --- */
         .nav-header {
-            width: 100%;
-            padding: 10px 0;
-            margin-bottom: 10px;
+            width: 100%; padding: 10px 0; margin-bottom: 10px;
             border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            display: flex; justify-content: space-between; align-items: center;
         }
-
-        .btn-back {
-            background: transparent;
-            border: 1px solid var(--neon-blue);
-            color: var(--neon-blue);
-            padding: 8px 20px;
-            font-family: 'Orbitron';
-            font-size: 0.8rem;
-            cursor: pointer;
-            text-decoration: none;
-            transition: 0.3s;
-            display: inline-block;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .btn-nav {
+            background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue);
+            padding: 8px 15px; font-family: 'Orbitron'; font-size: 0.8rem; cursor: pointer;
+            text-decoration: none; transition: 0.3s; text-transform: uppercase;
         }
-
-        .btn-back:hover {
-            background: var(--neon-blue);
-            color: #000;
-            box-shadow: 0 0 15px var(--neon-blue);
+        .btn-nav:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 15px var(--neon-blue); }
+        
+        /* Botón Reportar Pago Destacado */
+        .btn-reportar {
+            border-color: var(--neon-green); color: var(--neon-green);
         }
+        .btn-reportar:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 15px var(--neon-green); }
 
-        /* --- SIDEBAR (CARRITO) --- */
+        /* --- SIDEBAR --- */
         .order-sidebar {
-            flex: 1 1 30%;
-            min-width: 300px;
-            position: sticky;
-            top: 20px;
-            background: var(--panel-bg);
-            border: 1px solid var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
-            padding: 20px;
-            height: calc(100vh - 40px);
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            backdrop-filter: blur(5px);
-            transition: transform 0.3s ease;
-            z-index: 100;
+            flex: 1 1 30%; min-width: 300px; position: sticky; top: 20px;
+            background: var(--panel-bg); border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1); padding: 20px;
+            height: calc(100vh - 40px); overflow-y: auto; display: flex; flex-direction: column;
+            backdrop-filter: blur(5px); transition: transform 0.3s ease; z-index: 100;
         }
-
         .close-sidebar-btn { display: none; }
 
         @media (max-width: 850px) {
             .main-layout { flex-direction: column; padding: 10px; }
             .order-sidebar {
                 position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                margin: 0; border: none; z-index: 999;
-                background: rgba(5, 5, 5, 0.95);
+                margin: 0; border: none; z-index: 999; background: rgba(5, 5, 5, 0.95);
                 transform: translateY(110%); padding-bottom: 80px;
             }
             .order-sidebar.active { transform: translateY(0); }
             .close-sidebar-btn {
-                display: block; background: none; border: none;
-                color: var(--neon-red); font-family: 'Orbitron'; font-size: 1.2rem;
-                text-align: right; margin-bottom: 10px; cursor: pointer;
+                display: block; background: none; border: none; color: var(--neon-red);
+                font-family: 'Orbitron'; font-size: 1.2rem; text-align: right;
+                margin-bottom: 10px; cursor: pointer;
             }
         }
 
-        /* --- MOBILE BOTTOM BAR --- */
         .mobile-bottom-bar {
             display: none; position: fixed; bottom: 0; left: 0; width: 100%;
-            background: #000; border-top: 2px solid var(--neon-green);
-            padding: 15px; z-index: 500; justify-content: space-between; align-items: center;
+            background: #000; border-top: 2px solid var(--neon-green); padding: 15px;
+            z-index: 500; justify-content: space-between; align-items: center;
             box-shadow: 0 -5px 20px rgba(57, 255, 20, 0.2);
         }
-        @media (max-width: 850px) {
-            .mobile-bottom-bar.visible { display: flex; }
-        }
+        @media (max-width: 850px) { .mobile-bottom-bar.visible { display: flex; } }
 
         /* --- HEADER --- */
         .header-mini {
@@ -139,8 +95,6 @@
             font-family: 'Orbitron', sans-serif; color: #fff; text-transform: uppercase;
             text-shadow: 2px 2px 0px var(--neon-purple); margin: 0; font-size: 1.5rem;
         }
-        @media (max-width: 400px) { h1 { font-size: 1.2rem; } }
-
         .status-badge {
             font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon-green);
             border: 1px solid var(--neon-green); padding: 2px 8px; border-radius: 4px;
@@ -148,13 +102,10 @@
         .status-badge.offline { color: var(--neon-red); border-color: var(--neon-red); }
 
         /* --- MENU GRID --- */
-        .menu-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px;
-        }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
         .card {
-            background: var(--card-bg); border: 1px solid #333;
-            overflow: hidden; position: relative; cursor: pointer; transition: 0.2s;
-            border-radius: 4px;
+            background: var(--card-bg); border: 1px solid #333; overflow: hidden;
+            position: relative; cursor: pointer; transition: 0.2s; border-radius: 4px;
         }
         .card:active { transform: scale(0.96); }
         .card.selected { border-color: var(--neon-purple); box-shadow: 0 0 10px var(--neon-purple); }
@@ -166,84 +117,64 @@
         .card img { width: 100%; height: 100%; object-fit: contain; }
 
         .card-info { padding: 10px; border-top: 1px solid #222; }
-        .card-title { font-family: 'Orbitron'; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; line-height: 1.2; }
+        .card-title { font-family: 'Orbitron'; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; }
         .card-price { color: var(--neon-green); font-size: 1rem; font-weight: bold; }
-
         .badge-qty {
             position: absolute; top: 0; right: 0; background: var(--neon-blue); color: #000;
             font-weight: bold; padding: 2px 8px; font-size: 0.8rem; z-index: 10; display: none;
         }
 
         /* --- SIDEBAR COMPONENTS --- */
-        .sidebar-title {
-            font-family: 'Orbitron'; color: var(--neon-blue); text-align: center;
-            margin-bottom: 15px; font-size: 1.2rem; letter-spacing: 2px;
-        }
-        .cart-items-container {
-            flex-grow: 1; overflow-y: auto; margin-bottom: 15px;
-            padding-right: 5px; min-height: 150px;
-        }
-        .order-row {
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid #222; padding: 12px 0; animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
+        .cart-items-container { flex-grow: 1; overflow-y: auto; margin-bottom: 15px; min-height: 150px; }
+        .order-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding: 12px 0; }
         .item-details { flex-grow: 1; padding-right: 10px; }
-        .item-name { font-size: 0.95rem; color: #ddd; display: block; font-weight: bold; }
-        .item-price { font-size: 0.85rem; color: #888; }
+        .item-name { font-size: 0.95rem; color: #ddd; font-weight: bold; }
+        .btn-qty { background: #222; border: 1px solid #444; color: #fff; width: 30px; height: 30px; cursor: pointer; }
+        .btn-del { color: var(--neon-red); background: none; border: none; cursor: pointer; font-size: 1.5rem; }
 
-        .item-controls { display: flex; align-items: center; gap: 8px; }
-        .btn-qty {
-            background: #222; border: 1px solid #444; color: #fff;
-            width: 30px; height: 30px; cursor: pointer; border-radius: 4px;
-            display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 1.2rem;
-        }
-        .btn-qty:hover { border-color: var(--neon-blue); color: var(--neon-blue); }
-        .qty-val { width: 25px; text-align: center; font-weight: bold; font-size: 1rem; }
-        .btn-del { color: var(--neon-red); background: none; border: none; cursor: pointer; font-size: 1.5rem; margin-left: 5px; padding: 5px;}
-
-        .sidebar-footer { border-top: 1px solid var(--neon-blue); padding-top: 15px; }
         .totals-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5px; }
-        .total-label { color: #888; font-size: 0.9rem; }
         .total-val-usd { color: var(--neon-green); font-family: 'Orbitron'; font-size: 1.4rem; font-weight: bold; }
         .total-val-bs { color: #aaa; font-size: 0.9rem; text-align: right; }
 
         .btn-main {
             width: 100%; background: var(--neon-blue); color: #000; border: none;
-            padding: 15px; font-family: 'Orbitron'; font-weight: 900;
-            font-size: 1.1rem; cursor: pointer; text-transform: uppercase;
+            padding: 15px; font-family: 'Orbitron'; font-weight: 900; font-size: 1.1rem;
+            cursor: pointer; text-transform: uppercase; margin-top: 15px;
             clip-path: polygon(5% 0, 100% 0, 100% 70%, 95% 100%, 0 100%, 0 30%);
-            margin-top: 15px; transition: 0.2s;
         }
-        .btn-main:hover { background: #fff; box-shadow: 0 0 15px var(--neon-blue); }
-        .btn-main:disabled { background: #333; color: #555; cursor: not-allowed; box-shadow: none; }
+        .btn-main:disabled { background: #333; color: #555; }
 
-        /* --- MODAL --- */
+        /* --- MODALES --- */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 2000;
-            justify-content: center; align-items: center; backdrop-filter: blur(8px);
-            padding: 20px; box-sizing: border-box;
+            background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center;
+            backdrop-filter: blur(8px); padding: 20px; box-sizing: border-box;
         }
         .modal-content {
-            background: #050505; border: 1px solid var(--neon-purple);
-            padding: 25px; width: 100%; max-width: 400px;
-            box-shadow: 0 0 30px rgba(188, 19, 254, 0.3);
-            max-height: 90vh; overflow-y: auto;
+            background: #050505; border: 1px solid var(--neon-purple); padding: 25px;
+            width: 100%; max-width: 400px; box-shadow: 0 0 30px rgba(188, 19, 254, 0.3);
+            max-height: 90vh; overflow-y: auto; position: relative;
         }
         .hidden { display: none; }
+        input, textarea, select {
+            width: 100%; padding: 12px; margin-bottom: 10px; background: #1a1a1a;
+            border: 1px solid #333; color: #fff; font-family: 'Rajdhani';
+        }
+        label { color: var(--neon-blue); font-size: 0.8rem; font-family: 'Orbitron'; display: block; margin-bottom: 5px;}
 
         /* --- SPLASH SUCCESS --- */
         #success-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 3000;
-            flex-direction: column; justify-content: center; align-items: center; text-align: center;
-            padding: 20px;
+            background: #000; z-index: 3000; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center; padding: 20px;
         }
         .success-text {
             color: var(--neon-green); font-family: 'Orbitron'; font-size: 2rem;
             margin-bottom: 10px; text-shadow: 0 0 20px var(--neon-green);
+        }
+        .total-display-big {
+            border: 2px solid var(--neon-blue); padding: 20px; margin: 20px 0;
+            border-radius: 10px; background: rgba(0, 240, 255, 0.05);
         }
 
     </style>
@@ -253,16 +184,15 @@
     <div class="main-layout">
         
         <div class="nav-header">
-            <a href="index.html" class="btn-back">◄ VOLVER AL MENÚ PRINCIPAL</a>
+            <a href="index.html" class="btn-nav">◄ VOLVER</a>
+            <button onclick="abrirModalBusqueda()" class="btn-nav btn-reportar">REPORTAR PAGO 💸</button>
         </div>
         
         <div class="menu-section">
             <div class="header-mini">
                 <div>
                     <h1>PEDIDOS ONLINE</h1>
-                    <div style="font-size: 0.8rem; color: #888; margin-top:5px;">
-                        0412-3914757
-                    </div>
+                    <div style="font-size: 0.8rem; color: #888; margin-top:5px;">0412-3914757</div>
                 </div>
                 <div style="text-align:right;">
                     <div id="server-status" class="status-badge">CONECTANDO</div>
@@ -277,27 +207,21 @@
 
         <aside class="order-sidebar" id="sidebar">
             <button class="close-sidebar-btn" onclick="toggleMobileCart()">✕ CERRAR</button>
-            <div class="sidebar-title">TU ORDEN</div>
+            <div style="font-family: 'Orbitron'; color: var(--neon-blue); text-align: center; margin-bottom: 15px;">TU CARRITO</div>
             <div id="cart-items-container" class="cart-items-container">
                 <div style="color:#444; text-align:center; margin-top:20px; font-style:italic;">Tu carrito está vacío</div>
             </div>
 
             <div class="sidebar-footer">
-                <label style="color:var(--neon-blue); font-size:0.8rem; font-family:'Orbitron';">TIPO DE ENTREGA</label>
-                <select id="sidebar_entrega" onchange="toggleDeliveryInputs()">
-                    <option value="Pickup">RETIRO EN TIENDA (Pickup)</option>
-                    <option value="Delivery">DELIVERY</option>
-                </select>
-
                 <div class="totals-row">
-                    <span class="total-label">TOTAL USD</span>
+                    <span style="color:#888;">TOTAL USD</span>
                     <span id="sidebar-total-usd" class="total-val-usd">$0.00</span>
                 </div>
                 <div style="text-align:right; margin-bottom:15px;">
                     <span id="sidebar-total-bs" class="total-val-bs">Bs 0.00</span>
                 </div>
 
-                <button id="btn-procesar" class="btn-main" onclick="abrirModalDatos()" disabled>PROCESAR ORDEN</button>
+                <button id="btn-procesar" class="btn-main" onclick="abrirModalCompra()" disabled>COMPRAR</button>
             </div>
         </aside>
 
@@ -311,180 +235,200 @@
         <button style="background:var(--neon-blue); border:none; padding:8px 15px; font-weight:bold; font-family:'Orbitron'; border-radius:4px;">VER ORDEN ▲</button>
     </div>
 
-    <div id="modal-datos" class="modal">
+    <div id="modal-compra" class="modal">
         <div class="modal-content">
-            <h3 style="color:var(--neon-purple); font-family:'Orbitron'; margin-top:0;">FINALIZAR COMPRA</h3>
-            <p style="color:#888; font-size:0.9rem; margin-bottom:15px;">Por favor ingresa tus datos para procesar el pedido.</p>
-
-            <input type="text" id="cli_nombre" placeholder="NOMBRE COMPLETO">
+            <h3 style="color:var(--neon-purple); font-family:'Orbitron'; margin-top:0;">DATOS DE PEDIDO</h3>
+            
+            <label>NOMBRE COMPLETO</label>
+            <input type="text" id="cli_nombre">
+            
             <div style="display:flex; gap:10px;">
-                <input type="number" id="cli_cedula" placeholder="CÉDULA">
-                <input type="tel" id="cli_telefono" placeholder="TELÉFONO">
+                <div style="flex:1">
+                    <label>CÉDULA</label>
+                    <input type="number" id="cli_cedula" placeholder="Sin puntos">
+                </div>
+                <div style="flex:1">
+                    <label>TELÉFONO</label>
+                    <input type="tel" id="cli_telefono">
+                </div>
             </div>
+
+            <label>MÉTODO DE ENTREGA</label>
+            <select id="cli_entrega" onchange="toggleDeliveryInputs()">
+                <option value="Pickup">RETIRO EN TIENDA (Pickup)</option>
+                <option value="Delivery">DELIVERY</option>
+            </select>
 
             <div id="delivery-fields" class="hidden">
-                <div style="border-top:1px dashed #333; margin:10px 0;"></div>
-                <label style="color:var(--neon-blue); font-size:0.8rem;">DATOS DE ENVÍO</label>
-                <input type="text" id="cli_localidad" placeholder="ZONA / LOCALIDAD" style="margin-top:5px;">
-                <textarea id="cli_direccion" rows="2" placeholder="DIRECCIÓN EXACTA"></textarea>
-                <p style="color:#555; font-size:0.7rem;">* Costo de envío se acuerda vía WhatsApp.</p>
+                <label>DIRECCIÓN EXACTA</label>
+                <textarea id="cli_direccion" rows="2"></textarea>
             </div>
 
-            <button class="btn-main" style="background:var(--neon-green);" onclick="confirmarYEnviar()">ENVIAR PEDIDO</button>
-            <button onclick="cerrarModal()" style="width:100%; background:transparent; border:none; color:#666; margin-top:10px; cursor:pointer; padding:10px;">VOLVER</button>
+            <label style="margin-top:10px;">FORMA DE PAGO</label>
+            <select id="cli_metodo_pago">
+                <option value="Pago Movil">PAGO MÓVIL</option>
+                <option value="Transferencia">TRANSFERENCIA</option>
+                <option value="Punto">PUNTO DE VENTA (En Tienda)</option>
+                <option value="Divisas">DIVISAS (Efectivo)</option>
+            </select>
+
+            <button class="btn-main" style="background:var(--neon-green);" onclick="confirmarYEnviar()">CONFIRMAR PEDIDO</button>
+            <button onclick="cerrarModal('modal-compra')" style="width:100%; background:transparent; border:none; color:#666; margin-top:10px; cursor:pointer; padding:10px;">CANCELAR</button>
+        </div>
+    </div>
+
+    <div id="modal-busqueda" class="modal">
+        <div class="modal-content">
+            <h3 style="color:var(--neon-green); font-family:'Orbitron'; margin-top:0;">REPORTAR PAGO</h3>
+            <p style="color:#aaa; font-size:0.9rem;">Ingresa tu Cédula para buscar pedidos pendientes.</p>
+            
+            <input type="number" id="search_cedula" placeholder="Cédula de Identidad">
+            <button class="btn-main" onclick="buscarPedido()">BUSCAR PEDIDO</button>
+            <button onclick="cerrarModal('modal-busqueda')" style="width:100%; background:transparent; border:none; color:#666; margin-top:10px; cursor:pointer;">CERRAR</button>
+        </div>
+    </div>
+
+    <div id="modal-pago" class="modal">
+        <div class="modal-content">
+            <h3 style="color:var(--neon-green); font-family:'Orbitron'; margin-top:0;">DETALLES DEL PAGO</h3>
+            
+            <div style="background:#111; padding:10px; border:1px solid #333; margin-bottom:15px;">
+                <div style="color:#888; font-size:0.8rem;">TOTAL A PAGAR:</div>
+                <div id="pay_monto_bs" style="color:var(--neon-green); font-size:1.5rem; font-weight:bold;">Bs 0.00</div>
+                <div id="pay_monto_usd" style="color:#666; font-size:0.9rem;">$0.00</div>
+            </div>
+
+            <input type="hidden" id="pay_order_key">
+
+            <label>REFERENCIA (Últimos 6 dígitos)</label>
+            <input type="text" id="pay_referencia">
+
+            <label>MONTO PAGADO (BS)</label>
+            <input type="number" id="pay_monto_input" step="0.01">
+
+            <label>MÉTODO UTILIZADO</label>
+            <select id="pay_metodo">
+                <option value="Pago Movil" selected>PAGO MÓVIL</option>
+                <option value="Transferencia">TRANSFERENCIA</option>
+                <option value="Zelle">ZELLE / BINANCE</option>
+            </select>
+
+            <button class="btn-main" onclick="enviarReportePago()">ENVIAR COMPROBANTE</button>
+            <button onclick="cerrarModal('modal-pago')" style="width:100%; background:transparent; border:none; color:#666; margin-top:10px; cursor:pointer;">VOLVER</button>
         </div>
     </div>
 
     <div id="success-overlay">
-        <div class="success-text">¡PEDIDO ENVIADO!</div>
-        <div id="order-id-display" style="color:var(--neon-blue); font-family:'Orbitron'; font-size:1.5rem; margin-bottom:10px;"></div>
-        <div style="color:#fff; font-family:'Rajdhani'; font-size:1.2rem;">Tu ticket se está descargando.</div>
-        <button onclick="location.reload()" style="margin-top:30px; background:#333; color:#fff; border:1px solid #555; padding:10px 20px; cursor:pointer;">NUEVO PEDIDO</button>
+        <div class="success-text">¡LISTO!</div>
+        <div id="success-message" style="color:#fff; font-family:'Rajdhani'; font-size:1.2rem; margin-bottom:20px;"></div>
+        
+        <div class="total-display-big" id="success-amounts">
+            <div style="color:#888; font-size:0.9rem;">MONTO PENDIENTE</div>
+            <div id="final-amount-bs" style="color:var(--neon-green); font-size:2rem; font-weight:bold; font-family:'Orbitron'">Bs 0.00</div>
+        </div>
+
+        <button onclick="location.reload()" style="margin-top:30px; background:#333; color:#fff; border:1px solid #555; padding:10px 20px; cursor:pointer;">VOLVER AL INICIO</button>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue, push, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, onValue, push, runTransaction, query, orderByChild, equalTo, get, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // FIREBASE CONFIG
         const firebaseConfig = { databaseURL: "https://xdr-zone-server-default-rtdb.firebaseio.com/" };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const { jsPDF } = window.jspdf;
 
-        // ESTADO GLOBAL
         let menuData = {};
         let carrito = {}; 
         let tasaCambio = 0;
         let tiendaAbierta = true;
 
-        // 1. TASA DE CAMBIO
+        // --- LISTENERS ---
         onValue(ref(db, 'config/tasa'), (snap) => {
             tasaCambio = parseFloat(snap.val()) || 0;
             document.getElementById('rate-display').innerText = `TASA: ${tasaCambio.toFixed(2)} BS`;
             actualizarSidebar();
         });
 
-        // 2. ESTADO TIENDA
         onValue(ref(db, 'config/abierto'), (snap) => {
             tiendaAbierta = snap.val();
             const st = document.getElementById('server-status');
             const btn = document.getElementById('btn-procesar');
-            
             if (tiendaAbierta) {
                 st.innerText = "ONLINE"; st.classList.remove('offline');
-                btn.innerText = "PROCESAR ORDEN";
+                btn.innerText = "COMPRAR";
                 if(Object.keys(carrito).length > 0) btn.disabled = false;
             } else {
                 st.innerText = "CERRADO"; st.classList.add('offline');
-                btn.innerText = "TIENDA CERRADA";
-                btn.disabled = true;
+                btn.innerText = "CERRADO"; btn.disabled = true;
             }
         });
 
-        // 3. CARGAR MENÚ
         onValue(ref(db, 'menu'), (snap) => {
             const container = document.getElementById('menu-container');
             container.innerHTML = "";
             menuData = snap.val() || {};
-
             for (let [id, item] of Object.entries(menuData)) {
                 if (item.existencia === false) continue;
-                
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.id = `card-${id}`;
                 card.onclick = () => sumarItem(id);
-                
                 card.innerHTML = `
                     <div class="badge-qty" id="badge-${id}">0</div>
-                    <div class="img-container">
-                        <img src="${item.img || 'https://via.placeholder.com/200?text=NO+IMG'}">
-                    </div>
-                    <div class="card-info">
-                        <div class="card-title">${item.nombre.toUpperCase()}</div>
-                        <div class="card-price">$${item.precio.toFixed(2)}</div>
-                    </div>
-                `;
+                    <div class="img-container"><img src="${item.img || 'https://via.placeholder.com/200'}"></div>
+                    <div class="card-info"><div class="card-title">${item.nombre.toUpperCase()}</div><div class="card-price">$${item.precio.toFixed(2)}</div></div>`;
                 container.appendChild(card);
             }
             for(let id in carrito) updateCardVisuals(id);
         });
 
+        // --- CARRITO LOGIC ---
         window.sumarItem = (id) => {
-            if (!tiendaAbierta) return alert("La tienda está cerrada.");
-            if (!carrito[id]) carrito[id] = 0;
-            carrito[id]++;
-            updateCardVisuals(id);
-            actualizarSidebar();
+            if (!tiendaAbierta) return alert("Cerrado.");
+            if (!carrito[id]) carrito[id] = 0; carrito[id]++;
+            updateCardVisuals(id); actualizarSidebar();
         };
-
         window.restarItem = (id) => {
-            if (carrito[id] > 0) {
-                carrito[id]--;
-                if (carrito[id] === 0) delete carrito[id];
-                updateCardVisuals(id);
-                actualizarSidebar();
-            }
+            if (carrito[id] > 0) { carrito[id]--; if(carrito[id]===0) delete carrito[id]; updateCardVisuals(id); actualizarSidebar(); }
         };
-
-        window.eliminarItem = (id) => {
-            delete carrito[id];
-            updateCardVisuals(id);
-            actualizarSidebar();
-        };
+        window.eliminarItem = (id) => { delete carrito[id]; updateCardVisuals(id); actualizarSidebar(); };
 
         function updateCardVisuals(id) {
             const qty = carrito[id] || 0;
             const badge = document.getElementById(`badge-${id}`);
             const card = document.getElementById(`card-${id}`);
             if (badge && card) {
-                if (qty > 0) {
-                    badge.style.display = 'block';
-                    badge.innerText = qty;
-                    card.classList.add('selected');
-                } else {
-                    badge.style.display = 'none';
-                    card.classList.remove('selected');
-                }
+                badge.style.display = qty > 0 ? 'block' : 'none';
+                badge.innerText = qty;
+                qty > 0 ? card.classList.add('selected') : card.classList.remove('selected');
             }
         }
 
         function actualizarSidebar() {
             const container = document.getElementById('cart-items-container');
             const mobileBar = document.getElementById('mobile-bottom-bar');
-            let totalUSD = 0;
-            let htmlList = "";
+            let totalUSD = 0; let htmlList = "";
             const numItems = Object.keys(carrito).length;
 
             if (numItems === 0) {
-                container.innerHTML = `<div style="color:#444; text-align:center; margin-top:20px; font-style:italic;">Selecciona productos del menú</div>`;
+                container.innerHTML = `<div style="color:#444; text-align:center; margin-top:20px;">Vacío</div>`;
                 document.getElementById('btn-procesar').disabled = true;
                 mobileBar.classList.remove('visible');
             } else {
                 mobileBar.classList.add('visible');
                 for (let [id, qty] of Object.entries(carrito)) {
                     const item = menuData[id];
-                    if (!item) continue;
                     totalUSD += item.precio * qty;
-                    htmlList += `
-                        <div class="order-row">
-                            <div class="item-details">
-                                <span class="item-name">${item.nombre}</span>
-                                <span class="item-price">$${item.precio.toFixed(2)} c/u</span>
-                            </div>
-                            <div class="item-controls">
-                                <button class="btn-qty" onclick="restarItem('${id}')">-</button>
-                                <div class="qty-val">${qty}</div>
-                                <button class="btn-qty" onclick="sumarItem('${id}')">+</button>
-                                <button class="btn-del" onclick="eliminarItem('${id}')">×</button>
-                            </div>
-                        </div>`;
+                    htmlList += `<div class="order-row">
+                        <div class="item-details"><span class="item-name">${item.nombre}</span><span class="item-price">$${item.precio.toFixed(2)}</span></div>
+                        <div class="item-controls"><button class="btn-qty" onclick="restarItem('${id}')">-</button><div class="qty-val">${qty}</div><button class="btn-qty" onclick="sumarItem('${id}')">+</button><button class="btn-del" onclick="eliminarItem('${id}')">×</button></div>
+                    </div>`;
                 }
                 container.innerHTML = htmlList;
                 if(tiendaAbierta) document.getElementById('btn-procesar').disabled = false;
             }
-
             const totalBS = totalUSD * tasaCambio;
             document.getElementById('sidebar-total-usd').innerText = `$${totalUSD.toFixed(2)}`;
             document.getElementById('sidebar-total-bs').innerText = `Bs ${totalBS.toFixed(2)}`;
@@ -492,130 +436,125 @@
             return { usd: totalUSD, bs: totalBS };
         }
 
-        window.toggleMobileCart = () => {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('active');
-        }
-
-        window.toggleDeliveryInputs = () => {};
-
-        window.abrirModalDatos = () => {
-            const entrega = document.getElementById('sidebar_entrega').value;
-            const fields = document.getElementById('delivery-fields');
-            if (entrega === 'Delivery') fields.classList.remove('hidden');
-            else fields.classList.add('hidden');
-            document.getElementById('modal-datos').style.display = 'flex';
+        window.toggleMobileCart = () => document.getElementById('sidebar').classList.toggle('active');
+        window.toggleDeliveryInputs = () => {
+             const entrega = document.getElementById('cli_entrega').value;
+             document.getElementById('delivery-fields').style.display = (entrega === 'Delivery') ? 'block' : 'none';
         };
 
-        window.cerrarModal = () => document.getElementById('modal-datos').style.display = 'none';
+        // --- MODALES GESTION ---
+        window.abrirModalCompra = () => document.getElementById('modal-compra').style.display = 'flex';
+        window.abrirModalBusqueda = () => document.getElementById('modal-busqueda').style.display = 'flex';
+        window.cerrarModal = (id) => document.getElementById(id).style.display = 'none';
 
+        // --- PROCESAR PEDIDO ---
         window.confirmarYEnviar = async () => {
             const nombre = document.getElementById('cli_nombre').value;
             const cedula = document.getElementById('cli_cedula').value;
             const tlf = document.getElementById('cli_telefono').value;
-            const entrega = document.getElementById('sidebar_entrega').value; 
-            
-            if (!nombre || !cedula || !tlf) return alert("Completa tus datos personales.");
-            
+            const entrega = document.getElementById('cli_entrega').value;
+            const metodo = document.getElementById('cli_metodo_pago').value;
             let direccion = "Tienda";
+
+            if (!nombre || !cedula || !tlf) return alert("Completa tus datos.");
             if (entrega === 'Delivery') {
                 direccion = document.getElementById('cli_direccion').value;
-                const zona = document.getElementById('cli_localidad').value;
-                if (!direccion || !zona) return alert("Completa la dirección de envío.");
-                direccion = `${zona} - ${direccion}`;
+                if(!direccion) return alert("Dirección requerida.");
             }
-            
-            const btnSend = document.querySelector("#modal-datos .btn-main");
-            btnSend.disabled = true;
-            btnSend.innerText = "GENERANDO PEDIDO...";
 
-            // 1. GENERAR FECHA Y CONTADOR PARA ID
+            const btn = document.querySelector("#modal-compra .btn-main");
+            btn.disabled = true; btn.innerText = "ENVIANDO...";
+
+            // Generar ID
             const dateObj = new Date();
-            const d = String(dateObj.getDate()).padStart(2, '0');
-            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
-            const y = String(dateObj.getFullYear()).slice(-2);
-            const dateStr = `${d}${m}${y}`; // Ejemplo: 070226
+            const dateStr = `${String(dateObj.getDate()).padStart(2,'0')}${String(dateObj.getMonth()+1).padStart(2,'0')}${String(dateObj.getFullYear()).slice(-2)}`;
+            let orderSequence = Math.floor(Math.random() * 999) + 1; // Simplificado para rapidez, usar transaction idealmente
+            const orderId = `${dateStr}${String(orderSequence).padStart(3,'0')}`;
 
-            // 2. TRANSACCIÓN PARA OBTENER NUMERO DE PEDIDO DIARIO
-            const counterRef = ref(db, `counters/${dateStr}`);
-            let orderSequence = 0;
-            
-            try {
-                const result = await runTransaction(counterRef, (currentValue) => {
-                    return (currentValue || 0) + 1;
-                });
-                orderSequence = result.snapshot.val();
-            } catch (e) {
-                console.error("Error contador", e);
-                orderSequence = Math.floor(Math.random() * 999) + 1; // Fallback
-            }
-
-            const orderId = `${dateStr}${String(orderSequence).padStart(3, '0')}`; // EJ: 070226001
-
-            // 3. CALCULAR TOTALES FINALES
-            const totals = actualizarSidebar(); // Recalcular por seguridad
-            
-            // 4. GENERAR ITEMS PARA BD Y PDF
+            const totals = actualizarSidebar();
             const itemsStr = [];
-            for (let [id, qty] of Object.entries(carrito)) {
-                const it = menuData[id];
-                itemsStr.push(`${qty}x ${it.nombre}`);
-            }
+            for (let [id, qty] of Object.entries(carrito)) itemsStr.push(`${qty}x ${menuData[id].nombre}`);
 
-            // 5. GENERAR PDF
+            // PDF
             const doc = new jsPDF({ orientation: "p", unit: "mm", format: [80, 200] });
             doc.setFont("courier", "bold"); doc.setFontSize(12);
-            doc.text("CAFETERIA XDR", 40, 10, { align: "center" });
-            doc.setFontSize(9); doc.setFont("courier", "normal");
-            doc.text("--------------------------------", 40, 15, { align: "center" });
+            doc.text("XDR CAFETERIA", 40, 10, {align:"center"});
+            doc.setFontSize(9); doc.setFont("courier","normal");
             doc.text(`TICKET: ${orderId}`, 5, 20);
-            doc.text(`FECHA: ${new Date().toLocaleTimeString()}`, 5, 25);
-            doc.text(`CLIENTE: ${nombre}`, 5, 30);
-            doc.text(`CI: ${cedula}`, 5, 35);
-            doc.text(`TIPO: ${entrega.toUpperCase()}`, 5, 40);
-            
-            if(entrega === 'Delivery') {
-                 const splitDir = doc.splitTextToSize(`DIR: ${direccion}`, 70);
-                 doc.text(splitDir, 5, 45);
-            }
-            
-            let y = 60;
-            doc.text("--------------------------------", 40, y, { align: "center" }); y+=5;
-            
-            for (let [id, qty] of Object.entries(carrito)) {
-                const it = menuData[id];
-                doc.text(`${qty} x ${it.nombre.substring(0,18)}`, 5, y);
-                doc.text(`$${(it.precio*qty).toFixed(2)}`, 75, y, {align:"right"});
-                y+=5;
-            }
-            y+=5;
-            doc.setFontSize(11); doc.setFont("courier", "bold");
-            doc.text(`TOTAL: $${totals.usd.toFixed(2)}`, 75, y, {align:"right"}); y+=5;
-            doc.text(`BS: ${totals.bs.toFixed(2)}`, 75, y, {align:"right"});
-            
+            doc.text(`CI: ${cedula}`, 5, 25);
+            doc.text(`TOTAL BS: ${totals.bs.toFixed(2)}`, 5, 30);
             doc.save(`Pedido_${orderId}.pdf`);
 
-            // 6. ENVIAR A FIREBASE (CON ID Y MONTOS EXPLICITOS)
+            // Firebase: Estado PENDIENTE
             await push(ref(db, 'pedidos'), {
-                id_pedido: orderId, // EL ID GENERADO
-                cliente: nombre, 
-                cedula, 
-                telefono: tlf, 
-                tipo_entrega: entrega, 
-                direccion,
-                items: itemsStr, 
-                monto: totals.usd,      // MONTO USD
-                monto_bs: totals.bs,    // MONTO BS
-                estado: "recibido", 
-                origen: "WEB", 
-                timestamp: Date.now()
+                id_pedido: orderId, cliente: nombre, cedula, telefono: tlf,
+                tipo_entrega: entrega, direccion, items: itemsStr,
+                monto: totals.usd, monto_bs: totals.bs,
+                metodo_pago_inicial: metodo,
+                estado: "pendiente", origen: "WEB", timestamp: Date.now()
             });
 
-            // 7. UI FINAL
-            document.getElementById('modal-datos').style.display = 'none';
+            // UI Éxito
+            document.getElementById('modal-compra').style.display = 'none';
             document.getElementById('success-overlay').style.display = 'flex';
-            document.getElementById('order-id-display').innerText = `Ticket #${orderId}`;
-            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('success-message').innerText = "Pedido registrado como PENDIENTE. Por favor reporta tu pago.";
+            document.getElementById('final-amount-bs').innerText = `Bs ${totals.bs.toFixed(2)}`;
+            document.getElementById('success-amounts').style.display = 'block';
+        };
+
+        // --- BUSCAR Y REPORTAR PAGO ---
+        window.buscarPedido = async () => {
+            const ci = document.getElementById('search_cedula').value;
+            if(!ci) return alert("Ingresa la cédula.");
+
+            // Buscar en Firebase
+            const q = query(ref(db, 'pedidos'), orderByChild('cedula'), equalTo(ci));
+            const snapshot = await get(q);
+
+            if (!snapshot.exists()) return alert("No se encontraron pedidos pendientes para esa cédula.");
+
+            let pedidoEncontrado = null;
+            let pedidoKey = null;
+
+            // Buscar el primero que sea "pendiente"
+            snapshot.forEach((childSnapshot) => {
+                const val = childSnapshot.val();
+                if (val.estado === "pendiente") {
+                    pedidoEncontrado = val;
+                    pedidoKey = childSnapshot.key;
+                }
+            });
+
+            if (!pedidoEncontrado) return alert("Tienes pedidos, pero ya no están pendientes de pago.");
+
+            // Mostrar Modal Pago
+            document.getElementById('modal-busqueda').style.display = 'none';
+            document.getElementById('pay_order_key').value = pedidoKey;
+            document.getElementById('pay_monto_bs').innerText = `Bs ${pedidoEncontrado.monto_bs.toFixed(2)}`;
+            document.getElementById('pay_monto_usd').innerText = `$${pedidoEncontrado.monto.toFixed(2)}`;
+            document.getElementById('modal-pago').style.display = 'flex';
+        };
+
+        window.enviarReportePago = async () => {
+            const key = document.getElementById('pay_order_key').value;
+            const refPago = document.getElementById('pay_referencia').value;
+            const montoPago = document.getElementById('pay_monto_input').value;
+            const metodoPago = document.getElementById('pay_metodo').value;
+
+            if(!refPago || !montoPago) return alert("Faltan datos del pago.");
+
+            // Actualizar Firebase
+            await update(ref(db, `pedidos/${key}`), {
+                pago_referencia: refPago,
+                pago_monto_reportado: parseFloat(montoPago),
+                pago_metodo_real: metodoPago,
+                estado: "pagado_esperando_aprobacion" // Estado para el Admin
+            });
+
+            document.getElementById('modal-pago').style.display = 'none';
+            document.getElementById('success-overlay').style.display = 'flex';
+            document.getElementById('success-message').innerText = "Pago reportado. Esperando aprobación del admin.";
+            document.getElementById('success-amounts').style.display = 'none'; // Ocultar montos
         };
     </script>
 </body>
