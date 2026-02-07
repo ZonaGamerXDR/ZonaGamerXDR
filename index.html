@@ -3,581 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XDR | ZONA GAMER & STORE</title>
+    <title>XDR | BIENVENIDO AL NEXO</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
+        /* --- CORE --- */
         :root {
             --neon-cyan: #00f0ff;
             --neon-magenta: #ff00ff;
             --neon-green: #39ff14;
-            --neon-red: #ff003c;
-            --neon-purple: #bc13fe;
-            --neon-white: #e0ffff;
             --bg-black: #050505;
-            --panel-bg: rgba(10, 10, 10, 0.9);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
+        
         body {
             background-color: var(--bg-black);
             color: #fff;
             font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
-            line-height: 1.6;
+            overflow: hidden; /* Sin scroll en el landing */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* --- EFECTOS DE FONDO --- */
-        .scanlines {
+        /* --- LOGO SUPERIOR DERECHA --- */
+        .top-logo {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            width: 120px; /* Ajusta según tu imagen */
+            z-index: 2000;
+            filter: drop-shadow(0 0 10px var(--neon-cyan));
+            animation: floatLogo 4s ease-in-out infinite;
+        }
+        @keyframes floatLogo {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* --- FONDO ANIMADO (MARCAS & JUEGOS) --- */
+        .bg-brands {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            opacity: 0.15; /* Sutil */
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .brand-row {
+            display: flex;
+            width: 200%;
+            padding: 20px 0;
+            animation: slideLeft 20s linear infinite;
+        }
+        .brand-row:nth-child(even) { animation-direction: reverse; animation-duration: 25s; }
+        
+        .brand-icon {
+            font-size: 4rem;
+            margin: 0 50px;
+            color: #333;
+            text-shadow: 0 0 5px rgba(255,255,255,0.1);
+        }
+
+        @keyframes slideLeft { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* --- SCANLINES & VIGNETTE --- */
+        .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
                         linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 1000; background-size: 100% 2px, 3px 100%; pointer-events: none;
-        }
-
-        /* --- NAVEGACIÓN --- */
-        nav {
-            position: fixed; top: 0; width: 100%; z-index: 2000;
-            background: rgba(0,0,0,0.8); border-bottom: 2px solid var(--neon-cyan);
-            padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .logo {
-            font-family: 'Orbitron'; font-weight: 900; font-size: 1.8rem;
-            color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan);
-            cursor: pointer;
-        }
-
-        .nav-links { display: flex; gap: 15px; }
-
-        .glitch-btn {
-            background: none; border: none; color: #fff; font-family: 'Orbitron';
-            font-size: 0.8rem; cursor: pointer; position: relative; padding: 10px;
-            text-transform: uppercase; transition: 0.2s;
-        }
-
-        .glitch-btn:hover {
-            color: var(--neon-magenta);
-            animation: glitch 0.3s infinite;
-            text-shadow: 2px 0 var(--neon-cyan), -2px 0 var(--neon-red);
-        }
-
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-
-        /* --- SECCIONES --- */
-        section {
-            min-height: 100vh; padding: 100px 20px 40px;
-            display: none; flex-direction: column; align-items: center;
-        }
-
-        section.active { display: flex; animation: fadeIn 0.5s ease; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .container { max-width: 1200px; width: 100%; }
-
-        .hero-title {
-            font-family: 'Orbitron'; font-size: 3.5rem; text-align: center;
-            margin-bottom: 20px; color: var(--neon-cyan);
-            text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
-            line-height: 1.2;
-        }
-        
-        .brand-huge {
-            font-family: 'Orbitron'; 
-            font-size: 6rem; 
-            font-weight: 900; 
-            color: var(--neon-magenta); 
-            text-shadow: 0 0 30px var(--neon-magenta), 0 0 60px var(--neon-purple);
-            margin-bottom: 20px;
-            animation: pulse 3s infinite alternate;
-        }
-        
-        @keyframes pulse {
-            from { text-shadow: 0 0 20px var(--neon-magenta); }
-            to { text-shadow: 0 0 40px var(--neon-magenta), 0 0 80px var(--neon-purple); }
-        }
-
-        /* --- HARDWARE GRID --- */
-        .hardware-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px; margin-top: 30px;
-        }
-
-        .card {
-            background: #111; border: 1px solid #333; padding: 20px;
-            position: relative; overflow: hidden; transition: 0.3s;
-            border-bottom: 4px solid var(--neon-cyan);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--neon-magenta);
-            box-shadow: 0 10px 30px rgba(255, 0, 255, 0.2);
-        }
-
-        .card-icon-box {
-            width: 100%;
-            height: 150px;
-            background: rgba(0,0,0,0.4);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            border: 1px dashed rgba(255,255,255,0.1);
-        }
-
-        .card-icon-box img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.5));
-            transition: 0.5s;
-        }
-
-        .card:hover .card-icon-box img {
-            transform: scale(1.15) rotate(2deg);
-        }
-
-        .card h3 { font-family: 'Orbitron'; margin-bottom: 15px; color: #fff; font-size: 1.2rem; }
-        .card ul { list-style: none; color: #aaa; font-size: 0.9rem; }
-        .card ul li { margin-bottom: 8px; border-left: 2px solid var(--neon-magenta); padding-left: 10px; }
-
-        /* --- GALERÍA GRID --- */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .gallery-item {
-            position: relative;
-            height: 250px;
-            overflow: hidden;
-            border: 1px solid var(--neon-cyan);
-            background: #000;
-            border-radius: 4px;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-            opacity: 0.8;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.1);
-            opacity: 1;
-        }
-
-        .gallery-item::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.2);
+            background-size: 100% 3px, 3px 100%;
             pointer-events: none;
+            z-index: 100;
+            box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
         }
 
-        /* --- STATUS BAR --- */
-        .sophia-bar {
-            position: fixed; bottom: 0; width: 100%; padding: 10px 20px;
-            background: #000; border-top: 1px solid var(--neon-green);
-            display: flex; justify-content: space-between; font-size: 0.8rem;
-            color: var(--neon-green); font-family: 'Orbitron'; z-index: 2000;
+        /* --- CONTENIDO CENTRAL --- */
+        .main-container {
+            z-index: 10;
+            text-align: center;
+            position: relative;
+            padding: 20px;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.1);
         }
 
-        /* --- ANIME SHOP --- */
-        .anime-banner {
-            width: 100%; height: 300px; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1578632292335-df3abbb0d586?q=80&w=1200') center/cover;
-            display: flex; align-items: center; justify-content: center;
-            border: 2px solid var(--neon-purple); margin-bottom: 40px;
+        /* EFECTO GLITCH EN TITULO */
+        .glitch-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 6rem;
+            font-weight: 900;
+            position: relative;
+            color: #fff;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .glitch-title::before, .glitch-title::after {
+            content: attr(data-text);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+        
+        .glitch-title::before {
+            left: 2px; text-shadow: -2px 0 var(--neon-magenta);
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+        .glitch-title::after {
+            left: -2px; text-shadow: -2px 0 var(--neon-cyan);
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
         }
 
-        /* --- ESTILOS EXTRA PARA FORMULARIOS --- */
-        input {
-            width: 100%; padding: 12px; margin-bottom: 10px;
-            background: #111; border: 1px solid #333; color: #fff;
-            font-family: 'Rajdhani'; font-size: 1rem;
+        @keyframes glitch-anim {
+            0% { clip: rect(14px, 9999px, 127px, 0); }
+            20% { clip: rect(80px, 9999px, 20px, 0); }
+            40% { clip: rect(30px, 9999px, 80px, 0); }
+            60% { clip: rect(90px, 9999px, 10px, 0); }
+            80% { clip: rect(10px, 9999px, 100px, 0); }
+            100% { clip: rect(65px, 9999px, 40px, 0); }
         }
-        input:focus { outline: none; border-color: var(--neon-green); }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--neon-green);
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        /* --- MENU DE NAVEGACIÓN --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .nav-btn {
+            background: rgba(0,0,0,0.8);
+            border: 1px solid #333;
+            color: #fff;
+            padding: 15px 20px;
+            font-family: 'Orbitron';
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none; /* Esencial para enlaces <a> */
+            display: block;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--neon-cyan);
+            background: rgba(0, 240, 255, 0.1);
+            letter-spacing: 2px;
+            box-shadow: 0 0 15px var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+
+        .nav-btn.special {
+            grid-column: span 2;
+            border-color: var(--neon-magenta);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .nav-btn.special:hover {
+            background: rgba(255, 0, 255, 0.1);
+            border-color: var(--neon-magenta);
+            box-shadow: 0 0 20px var(--neon-magenta);
+            color: var(--neon-magenta);
+        }
+
+        /* --- FOOTER OS --- */
+        .os-bar {
+            position: fixed; bottom: 0; width: 100%;
+            padding: 10px 20px;
+            display: flex; justify-content: space-between;
+            font-size: 0.8rem; color: #555;
+            font-family: 'Orbitron';
+            z-index: 200;
+            border-top: 1px solid #222;
+            background: #000;
+        }
 
         /* --- RESPONSIVE --- */
-        @media (max-width: 850px) {
-            .nav-links { display: none; }
-            .hero-title { font-size: 2rem; }
-            .brand-huge { font-size: 4rem; }
+        @media (max-width: 768px) {
+            .glitch-title { font-size: 3.5rem; }
+            .menu-grid { grid-template-columns: 1fr; }
+            .nav-btn.special { grid-column: span 1; }
+            .top-logo { width: 80px; top: 15px; right: 15px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="scanlines"></div>
+    <div class="overlay"></div>
 
-    <nav>
-        <div class="logo" onclick="showSection('home')">XDR</div>
-        <div class="nav-links">
-            <button class="glitch-btn" onclick="showSection('gamer')">Zona Gamer</button>
-            <button class="glitch-btn" onclick="window.location.href='cafeteria.html'">Cafetería</button>
-            <button class="glitch-btn" onclick="showSection('papeleria')">Papelería</button>
-            <button class="glitch-btn" onclick="showSection('galeria')">Galería</button>
-            <button class="glitch-btn" onclick="showSection('anime')">Anime & Manga</button>
-            <button class="glitch-btn" onclick="showSection('eventos')">Eventos</button>
-            <button class="glitch-btn" onclick="showSection('info')">Ubicación</button>
+    <img src="lib_img/logo.png" alt="XDR Logo" class="top-logo" onerror="this.style.display='none'">
+
+    <div class="bg-brands">
+        <div class="brand-row">
+            <i class="fab fa-playstation brand-icon"></i>
+            <i class="fab fa-xbox brand-icon"></i>
+            <i class="fab fa-steam brand-icon"></i>
+            <i class="fas fa-desktop brand-icon"></i>
+            <i class="fab fa-twitch brand-icon"></i>
+            <i class="fab fa-discord brand-icon"></i>
+            <i class="fab fa-playstation brand-icon"></i>
+            <i class="fab fa-xbox brand-icon"></i>
+            <i class="fab fa-steam brand-icon"></i>
+            <i class="fas fa-desktop brand-icon"></i>
         </div>
-    </nav>
-
-    <section id="home" class="active">
-        <div class="container" style="text-align: center; justify-content: center; display: flex; flex-direction: column; min-height: 80vh;">
-            <h1 class="hero-title">BIENVENIDO A LA ZONA GAMER</h1>
-            <div class="brand-huge">XDR</div>
-            <p style="font-size: 1.5rem; letter-spacing: 3px; color: var(--neon-cyan);">LA EXPERIENCIA GAMING DEFINITIVA</p>
-            <div style="margin-top: 40px;">
-                <button class="glitch-btn" style="font-size: 1.2rem; border: 1px solid var(--neon-cyan); padding: 15px 30px;" onclick="showSection('gamer')">ENTRAR A LA ZONA</button>
-            </div>
+        <div class="brand-row">
+            <i class="fas fa-gamepad brand-icon"></i>
+            <i class="fas fa-headset brand-icon"></i>
+            <i class="fas fa-microchip brand-icon"></i>
+            <i class="fab fa-android brand-icon"></i>
+            <i class="fab fa-apple brand-icon"></i>
+            <i class="fas fa-gamepad brand-icon"></i>
+            <i class="fas fa-headset brand-icon"></i>
+            <i class="fas fa-microchip brand-icon"></i>
         </div>
-    </section>
-
-    <section id="gamer">
-        <div class="container">
-            <h2 class="hero-title">ESTACIONES DISPONIBLES</h2>
-            <div class="hardware-grid">
-                <div class="card">
-                    <div class="card-icon-box">
-                        <img src="lib_img/icon_pc.png" onerror="handleImgError(this, 'PC')">
-                    </div>
-                    <h3>PC GAMER</h3>
-                    <ul>
-                        <li>Monitor MSI Pro 27" Curvo</li>
-                        <li>Procesadores Alta Gama</li>
-                        <li>Teclado y Mouse Mecánico</li>
-                        <li>Sillas Gamer Ergonómicas</li>
-                    </ul>
-                </div>
-
-                <div class="card" style="border-color: #0043ff;">
-                    <div class="card-icon-box">
-                        <img src="lib_img/icon_ps5.png" onerror="handleImgError(this, 'PS5')">
-                    </div>
-                    <h3>PLAYSTATION 5</h3>
-                    <ul>
-                        <li>Gráficos 4K HDR</li>
-                        <li>Controles DualSense</li>
-                        <li>Juegos de Última Generación</li>
-                        <li>Pantallas de Alta Definición</li>
-                    </ul>
-                </div>
-
-                <div class="card" style="border-color: #0030b0;">
-                    <div class="card-icon-box">
-                        <img src="lib_img/icon_ps5.png" onerror="handleImgError(this, 'PS4')">
-                    </div>
-                    <h3>PLAYSTATION 4</h3>
-                    <ul>
-                        <li>Gran Catálogo de Juegos</li>
-                        <li>Controles DualShock 4</li>
-                        <li>FIFA / Call of Duty</li>
-                        <li>Ideal para Partidas Casuales</li>
-                    </ul>
-                </div>
-
-                <div class="card" style="border-color: #107c10;">
-                    <div class="card-icon-box">
-                        <img src="lib_img/icon_xbox.png" onerror="handleImgError(this, 'XBOX')">
-                    </div>
-                    <h3>XBOX</h3>
-                    <ul>
-                        <li>Amplia Variedad de Títulos</li>
-                        <li>Controles Ergonómicos</li>
-                        <li>Multijugador Fluido</li>
-                        <li>Pantallas de Alta Calidad</li>
-                    </ul>
-                </div>
-
-                <div class="card" style="border-color: #e60012;">
-                    <div class="card-icon-box">
-                        <img src="lib_img/icon_nintendo.png" onerror="handleImgError(this, 'SWITCH')">
-                    </div>
-                    <h3>NINTENDO SWITCH</h3>
-                    <ul>
-                        <li>Torneos Smash Bros</li>
-                        <li>Mario Kart 8 Deluxe</li>
-                        <li>Hasta 4 Jugadores</li>
-                        <li>Diversión en Grupo</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="galeria">
-        <div class="container">
-            <h2 class="hero-title">VIDA EN XDR</h2>
-            <p style="text-align: center; color: var(--neon-cyan); letter-spacing: 2px;">EVENTOS, MOMENTOS Y COMUNIDAD</p>
-            <div id="gallery-container" class="gallery-grid">
-                <div class="gallery-item"><img src="https://via.placeholder.com/400x300/111/00f0ff?text=CARGANDO..."></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="papeleria">
-        <div class="container">
-            <h2 class="hero-title" style="color: var(--neon-white);">CENTRO DE PAPELERÍA</h2>
-            <div class="hardware-grid">
-                <div class="card" style="border-color: var(--neon-white);">
-                    <i class="fa-solid fa-print" style="font-size: 2rem; margin-bottom: 10px; color: var(--neon-white);"></i>
-                    <h3>IMPRESIONES & COPIAS</h3>
-                    <ul>
-                        <li>Impresión Láser B/N y Color</li>
-                        <li>Fotocopias de Cédula y Documentos</li>
-                        <li>Fotografías Tipo Carnet</li>
-                        <li>Escaneo Digital a Correo</li>
-                        <li>Plastificación y Laminación</li>
-                        <li>Encuadernación de Tesis</li>
-                    </ul>
-                </div>
-                
-                <div class="card" style="border-color: var(--neon-white);">
-                    <i class="fa-solid fa-pen-ruler" style="font-size: 2rem; margin-bottom: 10px; color: var(--neon-white);"></i>
-                    <h3>ÚTILES & MATERIALES</h3>
-                    <ul>
-                        <li>Cuadernos, Lápices, Bolígrafos</li>
-                        <li>Juegos de Geometría y Compás</li>
-                        <li>Carpetas, Sobres y Archivadores</li>
-                        <li>Láminas de Foami y Cartulina</li>
-                        <li>Marcadores y Resaltadores</li>
-                        <li>Papel Bond y Hojas de Examen</li>
-                    </ul>
-                </div>
-
-                <div class="card" style="border-color: var(--neon-white);">
-                    <i class="fa-solid fa-file-invoice" style="font-size: 2rem; margin-bottom: 10px; color: var(--neon-white);"></i>
-                    <h3>TRÁMITES ONLINE</h3>
-                    <ul>
-                        <li>Gestión de Citas (SAIME, INTT)</li>
-                        <li>Redacción de Documentos Legales</li>
-                        <li>Pago de Servicios e Impuestos</li>
-                        <li>Inscripciones Universitarias</li>
-                        <li>Consulta de Rif y Antecedentes</li>
-                        <li>Investigaciones Escolares</li>
-                    </ul>
-                </div>
-                
-                <div class="card" style="border-color: var(--neon-white);">
-                    <i class="fa-solid fa-graduation-cap" style="font-size: 2rem; margin-bottom: 10px; color: var(--neon-white);"></i>
-                    <h3>TRABAJOS ESCOLARES</h3>
-                    <ul>
-                        <li>Lapbooks Creativos</li>
-                        <li>Combos Cierre de Proyecto</li>
-                        <li>Láminas de Exposición</li>
-                        <li>Mapas Conceptuales y Mentales</li>
-                        <li>Maquetas a Medida</li>
-                        <li>Cuentos e Historias Creativas</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="anime">
-        <div class="container">
-            <div class="anime-banner">
-                <h2 style="font-family:'Orbitron'; font-size: 3rem; text-shadow: 0 0 20px #000;">XDR ANIME STORE</h2>
-            </div>
-            <div class="hardware-grid">
-                <div class="card" style="border-color: var(--neon-purple);">
-                    <i class="fa-solid fa-user-ninja" style="font-size: 2rem; margin-bottom: 10px; color: var(--neon-purple);"></i>
-                    <h3>FIGURAS COLECCIONABLES</h3>
-                    <ul>
-                        <li>Funko Pop (Ediciones Especiales)</li>
-                        <li>Figuras Banpresto Originales</li>
-                        <li>Nendoroid y Figuras Chibi</li>
-                        <li>Estatuas de Resina (Dragon Ball, One Piece)</li>
-                        <li>Figuras de Acción Articuladas</li>
-                    </ul>
-                </div>
-                
-                <div class="card" style="border-color: var(--neon-purple);">
-                    <i class="fa-solid fa-book-open" style="font-size: 2rem; margin-bottom: 10px; color: var(--neon-purple);"></i>
-                    <h3>MANGA & NOVELAS</h3>
-                    <ul>
-                        <li>Shonen (Naruto, Demon Slayer, JJK)</li>
-                        <li>Seinen (Berserk, Vinland Saga)</li>
-                        <li>Shojo y Romance</li>
-                        <li>Comics Marvel y DC</li>
-                        <li>Novelas Ligeras Traducidas</li>
-                    </ul>
-                </div>
-                
-                <div class="card" style="border-color: var(--neon-purple);">
-                    <i class="fa-solid fa-shirt" style="font-size: 2rem; margin-bottom: 10px; color: var(--neon-purple);"></i>
-                    <h3>APPAREL & ACCESORIOS</h3>
-                    <ul>
-                        <li>Franelas y Hoodies con Diseños Exclusivos</li>
-                        <li>Katanas Decorativas (Metal y Madera)</li>
-                        <li>Llaveros, Pines y Chapas</li>
-                        <li>Posters y Cuadros Decorativos</li>
-                        <li>Tazas y Termos Temáticos</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="eventos">
-        <div class="container" style="max-width: 600px;">
-            <h2 class="hero-title">RESERVA TU EVENTO</h2>
-            <div class="card" style="border-color: var(--neon-green);">
-                <input type="text" id="evt_nombre" placeholder="NOMBRE DEL EVENTO">
-                <input type="date" id="evt_fecha">
-                <input type="tel" id="evt_contacto" placeholder="WHATSAPP">
-                <button id="btn-enviar-reserva" onclick="solicitarReserva()" class="glitch-btn" style="width: 100%; background: var(--neon-green); color: #000; font-weight: bold; border:none; padding:15px; margin-top:10px;">ENVIAR SOLICITUD</button>
-            </div>
-        </div>
-    </section>
-
-    <section id="info">
-        <div class="container">
-            <h2 class="hero-title">UBICACIÓN</h2>
-            <div class="hardware-grid">
-                <div class="card">
-                    <h3>CENTRO XDR</h3>
-                    <p>Urb. 10 de Marzo, Calle Sucre.<br>La Guaira, Venezuela.</p>
-                </div>
-                <div class="card">
-                    <h3>REDES SOCIALES</h3>
-                    <div style="display:flex; gap:20px; font-size: 2rem; margin-top: 15px;">
-                        <i class="fa-brands fa-instagram"></i>
-                        <i class="fa-brands fa-tiktok"></i>
-                        <i class="fa-brands fa-facebook"></i>
-                    </div>
-                </div>
-                <div class="card">
-                    <h3>CONTACTO</h3>
-                    <div style="display:flex; align-items:center; gap:15px; margin-top:10px;">
-                        <i class="fa-brands fa-whatsapp" style="font-size: 2rem; color: #25D366;"></i>
-                        <span style="font-size: 1.2rem;">0412-3914757</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="sophia-bar">
-        <div>SOPHIA_OS: <span id="sophia-status">ANALIZANDO...</span></div>
-        <div id="live-time">00:00:00</div>
     </div>
 
-    <script type="module">
-        // USAMOS REALTIME DATABASE (rtdb) NO FIRESTORE
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    <div class="main-container">
+        <h1 class="glitch-title" data-text="XDR">XDR</h1>
+        <div class="subtitle">ZONA GAMER & STORE</div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCtraghFl9rZ0TvtvIZEljto1OYwH5SLo0",
-            authDomain: "xdr-zone-server.firebaseapp.com",
-            databaseURL: "https://xdr-zone-server-default-rtdb.firebaseio.com",
-            projectId: "xdr-zone-server",
-            storageBucket: "xdr-zone-server.firebasestorage.app",
-            messagingSenderId: "267904397463",
-            appId: "1:267904397463:web:93f4bd9c036769777479d2"
-        };
+        <div class="menu-grid">
+            <a href="zona_gamer.html" class="nav-btn">
+                <i class="fas fa-gamepad"></i> ZONA GAMER
+            </a>
+            <a href="cafeteria.html" class="nav-btn">
+                <i class="fas fa-mug-hot"></i> CAFETERÍA
+            </a>
+            <a href="anime.html" class="nav-btn">
+                <i class="fas fa-dragon"></i> ANIME & MANGA
+            </a>
+            <a href="papeleria.html" class="nav-btn">
+                <i class="fas fa-print"></i> PAPELERÍA
+            </a>
+            <a href="eventos.html" class="nav-btn">
+                <i class="fas fa-calendar-alt"></i> EVENTOS
+            </a>
+            <a href="galeria.html" class="nav-btn">
+                <i class="fas fa-images"></i> GALERÍA
+            </a>
+            <a href="ubicacion.html" class="nav-btn special">
+                <i class="fas fa-map-marker-alt"></i> UBICACIÓN
+            </a>
+        </div>
+    </div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+    <div class="os-bar">
+        <div>SOPHIA_OS [V.3.0]</div>
+        <div>STATUS: ONLINE</div>
+    </div>
 
-        // --- MANEJO DE IMÁGENES ---
-        window.handleImgError = (img, label) => {
-            img.src = `https://via.placeholder.com/150/000/00f0ff?text=${label}`;
-        };
-
-        // --- NAVEGACIÓN ---
-        window.showSection = (sectionId) => {
-            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-            const target = document.getElementById(sectionId);
-            if(target) target.classList.add('active');
-            window.scrollTo(0,0);
-            if(sectionId === 'galeria') loadGallery();
-        };
-
-        // --- GALERÍA ---
-        function loadGallery() {
-            const container = document.getElementById('gallery-container');
-            if(!container) return;
-            container.innerHTML = ""; 
-            const fotos = ["arena_bg.png", "logo_splash.png", "logo.png"];
-            fotos.forEach(foto => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-                item.innerHTML = `<img src="lib_img/galeria/${foto}" onerror="handleImgError(this, 'GALERÍA')">`;
-                container.appendChild(item);
-            });
-        }
-
-        // --- FUNCIÓN DE RESERVA (REALTIME DATABASE) ---
-        window.solicitarReserva = async () => {
-            const nombre = document.getElementById('evt_nombre').value;
-            const fecha = document.getElementById('evt_fecha').value;
-            const contacto = document.getElementById('evt_contacto').value;
-            const btn = document.getElementById('btn-enviar-reserva');
-
-            if(!nombre || !fecha || !contacto) return alert("⚠️ Por favor completa los datos.");
-            
-            try {
-                btn.innerHTML = "ENVIANDO... (ESPERE)";
-                btn.disabled = true;
-
-                // Referencia a Realtime Database (solicitudes_eventos)
-                const solicitudesRef = ref(db, 'solicitudes_eventos');
-                
-                await push(solicitudesRef, {
-                    nombre_evento: nombre,
-                    fecha_deseada: fecha,
-                    whatsapp: contacto,
-                    estado: "pendiente",
-                    leido: false,
-                    fecha_solicitud: Date.now() // Usamos Date.now() para RTDB
-                });
-
-                // MENSAJE DE ÉXITO EXACTO
-                alert("✅ Solicitud recibida. Sera contactado dentro de las proximas 2 horas via wasap para coordinar su evento.");
-                
-                // Limpiar formulario
-                document.getElementById('evt_nombre').value = "";
-                document.getElementById('evt_fecha').value = "";
-                document.getElementById('evt_contacto').value = "";
-
-            } catch (e) { 
-                console.error("Error Firebase:", e); 
-                alert("❌ Error: No se pudo enviar. Verifique su conexión."); 
-            } finally {
-                btn.innerHTML = "ENVIAR SOLICITUD";
-                btn.disabled = false;
-            }
-        };
-
-        // --- INICIALIZACIÓN ---
-        window.onload = () => {
-            document.getElementById('sophia-status').innerText = "ONLINE";
-            setInterval(() => { 
-                document.getElementById('live-time').innerText = new Date().toLocaleTimeString(); 
-            }, 1000);
-        };
-    </script>
 </body>
 </html>
