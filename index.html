@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XDR | EVENTOS</title>
+    <title>XDR | BIENVENIDO</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
@@ -14,8 +14,49 @@
             --bg-black: #050505;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg-black); color: #fff; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; padding-bottom: 80px; }
+        
+        body { 
+            background-color: var(--bg-black); color: #fff; 
+            font-family: 'Rajdhani', sans-serif; overflow-x: hidden; 
+        }
 
+        /* --- 1. INTRO SCREEN (Solo primera vez) --- */
+        #intro-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: transform 0.8s ease-in-out;
+        }
+        
+        .glitch-welcome {
+            font-family: 'Orbitron'; font-size: 5rem; font-weight: 900;
+            color: #fff; position: relative;
+            animation: glitch-main 1s infinite alternate;
+        }
+        
+        .loading-bar {
+            width: 300px; height: 4px; background: #333; margin-top: 20px;
+            position: relative; overflow: hidden;
+        }
+        .loading-fill {
+            height: 100%; background: var(--neon-cyan); width: 0%;
+            animation: load 3s ease-in-out forwards;
+            box-shadow: 0 0 15px var(--neon-cyan);
+        }
+
+        @keyframes load { 0% {width: 0%;} 100% {width: 100%;} }
+        @keyframes glitch-main {
+            0% { text-shadow: 2px 0 var(--neon-magenta), -2px 0 var(--neon-cyan); }
+            100% { text-shadow: -2px 0 var(--neon-magenta), 2px 0 var(--neon-cyan); }
+        }
+
+        /* Clase para ocultar la intro hacia arriba */
+        .intro-hidden { transform: translateY(-100%); }
+
+
+        /* --- 2. SITIO WEB (Visible después de la intro) --- */
+        
+        /* FONDO */
         .scanlines {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
@@ -23,271 +64,121 @@
             z-index: -1; pointer-events: none; background-size: 100% 2px, 3px 100%;
         }
 
-        /* NAVEGACIÓN */
+        /* NAVEGACIÓN (Estilo V1 - Idéntico a las otras páginas) */
         nav {
-            background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--neon-green);
-            padding: 15px; display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 100; backdrop-filter: blur(5px);
-        }
-        .logo { font-family: 'Orbitron'; font-weight: 900; color: var(--neon-green); text-decoration: none; font-size: 1.5rem; }
-        .back-btn { color: #fff; text-decoration: none; font-family: 'Orbitron'; font-size: 0.9rem; border: 1px solid #333; padding: 5px 15px; transition: 0.3s; }
-        .back-btn:hover { border-color: var(--neon-green); color: var(--neon-green); }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-
-        /* --- NUEVO BANNER DE BIENVENIDA (PROMO) --- */
-        .promo-banner {
-            background: linear-gradient(135deg, rgba(20,20,20,0.9) 0%, rgba(10,10,10,0.9) 100%);
-            border: 2px solid var(--neon-magenta); /* Magenta para destacar sobre el verde */
-            border-radius: 10px;
-            padding: 40px 20px;
-            text-align: center;
-            margin-bottom: 60px;
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.15);
-            position: relative;
-            overflow: hidden;
-            animation: fadeIn 1s ease-out;
+            position: fixed; top: 0; width: 100%; z-index: 2000;
+            background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--neon-cyan);
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+            backdrop-filter: blur(10px);
         }
 
-        .promo-banner::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,0,255,0.1) 0%, transparent 60%);
-            animation: rotateBg 20s linear infinite; pointer-events: none;
+        .logo {
+            font-family: 'Orbitron'; font-weight: 900; font-size: 1.8rem;
+            color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan);
+            cursor: pointer; text-decoration: none;
         }
 
-        .promo-title {
-            font-family: 'Orbitron'; font-size: 2.8rem; color: #fff;
-            text-shadow: 2px 2px 0px var(--neon-magenta); margin-bottom: 15px;
-            position: relative; z-index: 2;
+        .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .glitch-btn {
+            background: none; border: 1px solid transparent; color: #fff; font-family: 'Orbitron';
+            font-size: 0.8rem; cursor: pointer; padding: 10px;
+            text-transform: uppercase; transition: 0.2s; text-decoration: none;
         }
 
-        .promo-text {
-            font-size: 1.3rem; color: #ddd; max-width: 800px; margin: 0 auto 30px auto;
-            line-height: 1.6; position: relative; z-index: 2;
+        .glitch-btn:hover {
+            color: var(--neon-magenta); text-shadow: 2px 0 var(--neon-cyan);
+            border-color: var(--neon-magenta); background: rgba(255, 0, 255, 0.1);
         }
 
-        /* Iconos de características */
-        .features-row {
-            display: flex; justify-content: center; gap: 50px; flex-wrap: wrap;
-            position: relative; z-index: 2; margin-top: 30px;
-        }
-        .feature-item {
-            text-align: center; max-width: 200px;
-        }
-        .feature-icon {
-            font-size: 3rem; color: var(--neon-cyan); margin-bottom: 15px;
-            text-shadow: 0 0 15px var(--neon-cyan);
-            transition: 0.3s;
-        }
-        .feature-item:hover .feature-icon { transform: scale(1.2); color: #fff; }
-        .feature-item h4 { font-family: 'Orbitron'; color: var(--neon-green); margin-bottom: 5px; }
-        .feature-item p { font-size: 0.9rem; color: #aaa; }
-
-        @keyframes rotateBg { 0% {transform: rotate(0deg);} 100% {transform: rotate(360deg);} }
-        @keyframes fadeIn { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
-
-
-        /* TIPOS DE EVENTOS (GRID) */
-        .events-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px; margin-bottom: 60px;
+        /* CONTENIDO HOME */
+        .hero-container {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            padding: 20px;
         }
 
-        .event-card {
-            background: #111; border: 1px solid #333; position: relative; overflow: hidden;
-            transition: 0.3s; padding: 30px 20px; text-align: center;
+        .hero-title {
+            font-family: 'Orbitron'; font-size: 4rem; color: #fff;
+            text-shadow: 0 0 30px var(--neon-cyan); margin-bottom: 10px;
+            animation: fadeIn 1.5s ease;
         }
-        .event-card:hover { transform: translateY(-5px); border-color: var(--neon-green); box-shadow: 0 0 20px rgba(57, 255, 20, 0.1); }
-
-        .card-icon { font-size: 3rem; color: var(--neon-green); margin-bottom: 20px; }
-        .event-card h3 { font-family: 'Orbitron'; font-size: 1.5rem; margin-bottom: 10px; }
-        .event-card p { color: #888; font-size: 0.95rem; }
-
-        /* FORMULARIO DE RESERVA */
-        .booking-section {
-            background: rgba(20, 20, 20, 0.8); border: 1px solid var(--neon-green);
-            max-width: 600px; margin: 0 auto; padding: 30px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5); position: relative;
-        }
-        .corner-decor {
-            position: absolute; width: 20px; height: 20px;
-            border-top: 3px solid var(--neon-green); border-left: 3px solid var(--neon-green);
-            top: -1px; left: -1px;
-        }
-
-        .booking-title { font-family: 'Orbitron'; text-align: center; color: #fff; margin-bottom: 20px; font-size: 1.5rem; }
-
-        input, select, textarea {
-            width: 100%; padding: 15px; margin-bottom: 15px;
-            background: #0a0a0a; border: 1px solid #333; color: #fff;
-            font-family: 'Rajdhani'; font-size: 1rem;
-        }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--neon-green); }
         
-        .btn-reserve {
-            width: 100%; background: var(--neon-green); color: #000; border: none;
-            padding: 15px; font-family: 'Orbitron'; font-weight: bold; font-size: 1.1rem;
-            cursor: pointer; text-transform: uppercase; transition: 0.2s;
+        .hero-sub {
+            color: var(--neon-green); font-size: 1.5rem; letter-spacing: 5px;
+            margin-bottom: 40px; animation: fadeIn 2s ease;
         }
-        .btn-reserve:hover { background: #fff; box-shadow: 0 0 15px var(--neon-green); }
 
-        .ws-alt { text-align: center; margin-top: 20px; font-size: 0.9rem; color: #666; }
-        .ws-alt a { color: var(--neon-green); text-decoration: none; }
+        .cta-btn {
+            padding: 15px 40px; font-size: 1.2rem; background: transparent;
+            border: 2px solid var(--neon-cyan); color: var(--neon-cyan);
+            font-family: 'Orbitron'; text-decoration: none; font-weight: bold;
+            transition: 0.3s;
+            animation: pulse 2s infinite;
+        }
+        .cta-btn:hover {
+            background: var(--neon-cyan); color: #000; box-shadow: 0 0 40px var(--neon-cyan);
+        }
+
+        @keyframes pulse { 0% {box-shadow: 0 0 10px var(--neon-cyan);} 50% {box-shadow: 0 0 25px var(--neon-cyan);} 100% {box-shadow: 0 0 10px var(--neon-cyan);} }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .promo-title { font-size: 2rem; }
-            .features-row { gap: 30px; }
+        @media (max-width: 850px) {
+            nav { flex-direction: column; gap: 10px; position: relative; } /* Nav relativo en móvil */
+            .nav-links { justify-content: center; }
+            .hero-title { font-size: 2.5rem; }
         }
-
     </style>
 </head>
 <body>
 
-    <div class="scanlines"></div>
-
-    <nav>
-        <a href="index.html" class="logo">XDR EVENTOS</a>
-        <a href="index.html" class="back-btn">VOLVER AL MENU</a>
-    </nav>
-
-    <div class="container">
-        
-        <div class="promo-banner">
-            <h1 class="promo-title">¡HAZ DE TU CUMPLEAÑOS UNA PARTIDA ÉPICA!</h1>
-            <p class="promo-text">
-                Olvídate de las fiestas aburridas. En XDR tenemos todo lo necesario para que tu celebración, 
-                reunión o evento especial sea legendario. Nosotros ponemos el lugar, tú pones la diversión.
-            </p>
-            
-            <div class="features-row">
-                <div class="feature-item">
-                    <i class="fas fa-gamepad feature-icon"></i>
-                    <h4>ZONA GAMER</h4>
-                    <p>Consolas y PCs de última generación para torneos.</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-utensils feature-icon"></i>
-                    <h4>CAFETERÍA</h4>
-                    <p>Menú completo de snacks, bebidas y comida.</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-door-open feature-icon"></i>
-                    <h4>SALÓN DE FIESTAS</h4>
-                    <p>Espacio privado y climatizado para tu grupo.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="events-grid">
-            <div class="event-card">
-                <i class="fas fa-birthday-cake card-icon"></i>
-                <h3>CUMPLEAÑOS GAMER</h3>
-                <p>Reserva toda una fila de PCs o Consolas para ti y tus amigos. Incluye gestión de torneos internos y espacio para picar.</p>
-            </div>
-            
-            <div class="event-card">
-                <i class="fas fa-trophy card-icon"></i>
-                <h3>TORNEOS</h3>
-                <p>Organiza tu propio torneo de FIFA, Call of Duty o Fighting Games. Nosotros ponemos la infraestructura y las pantallas grandes.</p>
-            </div>
-            
-            <div class="event-card">
-                <i class="fas fa-lock card-icon"></i>
-                <h3>EVENTOS PRIVADOS</h3>
-                <p>Alquiler del local por horas para reuniones privadas, lanzamientos o fiestas exclusivas a puerta cerrada.</p>
-            </div>
-        </div>
-
-        <div class="booking-section">
-            <div class="corner-decor"></div>
-            <div class="booking-title">RESERVAR FECHA</div>
-            
-            <input type="text" id="evt_nombre" placeholder="Nombre del Organizador / Cumpleañero">
-            <input type="tel" id="evt_whatsapp" placeholder="WhatsApp de Contacto">
-            
-            <select id="evt_tipo">
-                <option value="CUMPLEAÑOS">Cumpleaños Gamer</option>
-                <option value="TORNEO">Organizar Torneo</option>
-                <option value="PRIVADO">Evento Privado (Local Completo)</option>
-                <option value="SALON">Alquiler Solo Salón</option>
-            </select>
-
-            <div style="display:flex; gap:10px;">
-                <input type="date" id="evt_fecha">
-                <input type="time" id="evt_hora">
-            </div>
-
-            <input type="number" id="evt_personas" placeholder="Cantidad aprox. de invitados">
-
-            <button class="btn-reserve" id="btn-enviar" onclick="enviarReservaEvento()">ENVIAR SOLICITUD</button>
-
-            <div class="ws-alt">
-                ¿Dudas sobre los paquetes? <a href="https://wa.me/584123914757" target="_blank">Chatea con nosotros</a>
-            </div>
-        </div>
-
+    <div id="intro-screen">
+        <h1 class="glitch-welcome">XDR SYSTEM</h1>
+        <div style="font-family:'Orbitron'; color:var(--neon-green); margin-top:10px; letter-spacing:2px;">CARGANDO RECURSOS...</div>
+        <div class="loading-bar"><div class="loading-fill"></div></div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    <nav>
+        <a href="index.html" class="logo">XDR</a>
+        <div class="nav-links">
+            <a href="zona_gamer.html" class="glitch-btn">ZONA GAMER</a>
+            <a href="cafeteria.html" class="glitch-btn">CAFETERÍA</a>
+            <a href="anime.html" class="glitch-btn">ANIME</a>
+            <a href="papeleria.html" class="glitch-btn">PAPELERÍA</a>
+            <a href="eventos.html" class="glitch-btn">EVENTOS</a>
+            <a href="galeria.html" class="glitch-btn">GALERÍA</a>
+            <a href="ubicacion.html" class="glitch-btn">UBICACIÓN</a>
+        </div>
+    </nav>
 
-        // TUS CREDENCIALES
-        const firebaseConfig = {
-            apiKey: "AIzaSyCtraghFl9rZ0TvtvIZEljto1OYwH5SLo0",
-            authDomain: "xdr-zone-server.firebaseapp.com",
-            databaseURL: "https://xdr-zone-server-default-rtdb.firebaseio.com",
-            projectId: "xdr-zone-server",
-            storageBucket: "xdr-zone-server.firebasestorage.app",
-            messagingSenderId: "267904397463",
-            appId: "1:267904397463:web:93f4bd9c036769777479d2"
-        };
+    <div class="scanlines"></div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+    <div class="hero-container">
+        <h1 class="hero-title">BIENVENIDO AL NEXO</h1>
+        <p class="hero-sub">LA EXPERIENCIA GAMER DEFINITIVA</p>
+        
+        <a href="zona_gamer.html" class="cta-btn">ENTRAR AL SISTEMA</a>
+    </div>
 
-        window.enviarReservaEvento = async () => {
-            const nombre = document.getElementById('evt_nombre').value;
-            const whatsapp = document.getElementById('evt_whatsapp').value;
-            const tipo = document.getElementById('evt_tipo').value;
-            const fecha = document.getElementById('evt_fecha').value;
-            const personas = document.getElementById('evt_personas').value;
-            const btn = document.getElementById('btn-enviar');
-
-            if(!nombre || !whatsapp || !fecha) {
-                return alert("⚠️ Faltan datos obligatorios.");
+    <script>
+        // LÓGICA DE BIENVENIDA (Solo una vez por sesión)
+        window.addEventListener('load', () => {
+            const intro = document.getElementById('intro-screen');
+            
+            // Verificamos si ya vio la intro en esta sesión
+            if (sessionStorage.getItem('xdr_intro_visto')) {
+                // Si ya la vio, ocultar INMEDIATAMENTE (sin animación)
+                intro.style.display = 'none';
+            } else {
+                // Si es la primera vez, esperar 3 segundos y ocultar con animación
+                setTimeout(() => {
+                    intro.classList.add('intro-hidden');
+                    // Guardar que ya la vio
+                    sessionStorage.setItem('xdr_intro_visto', 'true');
+                }, 3000);
             }
-
-            try {
-                btn.innerText = "ENVIANDO..."; btn.disabled = true;
-
-                // Enviamos a 'solicitudes_eventos'
-                await push(ref(db, 'solicitudes_eventos'), {
-                    nombre_evento: `${tipo} de ${nombre} (${personas} pax)`,
-                    fecha_deseada: fecha,
-                    whatsapp: whatsapp,
-                    tipo_evento: tipo,
-                    cantidad_personas: personas,
-                    estado: "pendiente",
-                    leido: false,
-                    fecha_solicitud: Date.now()
-                });
-
-                alert("✅ ¡SOLICITUD ENVIADA!\nNos pondremos en contacto contigo para coordinar los detalles de tu evento.");
-                
-                // Limpiar
-                document.getElementById('evt_nombre').value = "";
-                document.getElementById('evt_whatsapp').value = "";
-                document.getElementById('evt_personas').value = "";
-
-            } catch (e) {
-                console.error(e);
-                alert("❌ Error de conexión.");
-            } finally {
-                btn.innerText = "ENVIAR SOLICITUD"; btn.disabled = false;
-            }
-        };
+        });
     </script>
 
 </body>
