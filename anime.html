@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XDR | ANIME STORE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* --- ESTILOS BASE --- */
+        :root {
+            --neon-cyan: #00f0ff; --neon-magenta: #ff00ff; --neon-green: #39ff14;
+            --neon-red: #ff003c; --neon-purple: #bc13fe; --bg-black: #050505;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-black); color: #fff; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; padding-bottom: 80px; }
+
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: -1; background-size: 100% 2px, 3px 100%; pointer-events: none;
+        }
+
+        /* NAVEGACIÓN */
+        nav {
+            background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--neon-purple);
+            padding: 15px; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100; backdrop-filter: blur(5px);
+        }
+        .logo { font-family: 'Orbitron'; font-weight: 900; color: var(--neon-purple); text-decoration: none; font-size: 1.5rem; text-shadow: 0 0 10px var(--neon-purple); }
+        .back-btn { color: #fff; text-decoration: none; font-family: 'Orbitron'; font-size: 0.9rem; border: 1px solid #333; padding: 5px 15px; transition: 0.3s; }
+        .back-btn:hover { border-color: var(--neon-purple); color: var(--neon-purple); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* BANNER */
+        .anime-banner {
+            width: 100%; height: 250px;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1578632292335-df3abbb0d586?q=80&w=1200') center/cover;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+            border: 2px solid var(--neon-purple); margin-bottom: 40px; text-align: center;
+        }
+        .banner-title { font-family: 'Orbitron'; font-size: 3rem; color: #fff; text-shadow: 0 0 20px var(--neon-purple); }
+        .banner-sub { color: var(--neon-cyan); letter-spacing: 3px; font-size: 1.2rem; }
+
+        /* CATEGORÍAS */
+        .hardware-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px; margin-bottom: 50px;
+        }
+
+        .card {
+            background: #111; border: 1px solid #333; padding: 20px;
+            position: relative; overflow: hidden; transition: 0.3s;
+            border-bottom: 4px solid var(--neon-purple); display: flex; flex-direction: column;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(188, 19, 254, 0.3); }
+        
+        .icon-box {
+            width: 100%; height: 100px; background: rgba(188, 19, 254, 0.1); margin-bottom: 15px;
+            display: flex; align-items: center; justify-content: center; border: 1px dashed #555;
+            font-size: 3rem; color: var(--neon-purple);
+        }
+        
+        .card h3 { font-family: 'Orbitron'; margin-bottom: 10px; color: #fff; font-size: 1.3rem; }
+        .card ul { list-style: none; color: #aaa; padding-left: 5px; }
+        .card ul li { margin-bottom: 8px; border-left: 3px solid var(--neon-purple); padding-left: 10px; font-size: 0.95rem; }
+
+        /* GALERÍA DE NOVEDADES (AL FINAL) */
+        .gallery-section {
+            margin-top: 50px;
+            border-top: 1px solid #333;
+            padding-top: 30px;
+        }
+        .gallery-title { font-family: 'Orbitron'; text-align: center; color: var(--neon-purple); margin-bottom: 20px; font-size: 1.8rem; }
+        
+        .anime-gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px;
+        }
+
+        .anime-item {
+            height: 220px; background: #080808; border: 1px solid #333;
+            overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center;
+        }
+        .anime-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
+        .anime-item:hover img { transform: scale(1.1); }
+
+        /* ESTILO GLITCH PARA ICONOS DE ERROR */
+        .glitch-fallback {
+            font-size: 4rem; color: #333;
+            text-shadow: 2px 0 var(--neon-red), -2px 0 var(--neon-cyan);
+            animation: glitch-anim 0.3s infinite;
+        }
+        @keyframes glitch-anim {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        /* WHATSAPP BUTTON */
+        .btn-whatsapp {
+            display: block; width: 100%; max-width: 400px; margin: 40px auto;
+            text-align: center; padding: 15px;
+            background: transparent; border: 2px solid #25D366; color: #25D366;
+            font-family: 'Orbitron'; font-size: 1.2rem; text-decoration: none;
+            font-weight: bold; transition: 0.3s;
+        }
+        .btn-whatsapp:hover { background: #25D366; color: #000; box-shadow: 0 0 20px #25D366; }
+
+    </style>
+</head>
+<body>
+
+    <div class="scanlines"></div>
+
+    <nav>
+        <a href="index.html" class="logo">XDR ANIME</a>
+        <a href="index.html" class="back-btn">VOLVER AL MENU</a>
+    </nav>
+
+    <div class="container">
+        <div class="anime-banner">
+            <div class="banner-title">OTAKU ZONE</div>
+            <div class="banner-sub">FIGURAS • MANGA • APPAREL</div>
+        </div>
+
+        <div class="hardware-grid">
+            
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-user-ninja"></i></div>
+                <h3>FIGURAS</h3>
+                <ul>
+                    <li>Funko Pop (Ediciones Especiales)</li>
+                    <li>Figuras Banpresto Originales</li>
+                    <li>Nendoroid & Chibi</li>
+                    <li>Estatuas de Resina</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-book-open"></i></div>
+                <h3>MANGA & CÓMICS</h3>
+                <ul>
+                    <li>Shonen (Naruto, Demon Slayer)</li>
+                    <li>Seinen (Berserk, Vinland Saga)</li>
+                    <li>Cómics Marvel & DC</li>
+                    <li>Novelas Ligeras</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-tshirt"></i></div>
+                <h3>ROPA & ACCESORIOS</h3>
+                <ul>
+                    <li>Franelas y Hoodies Estampados</li>
+                    <li>Katanas Decorativas</li>
+                    <li>Llaveros y Pines</li>
+                    <li>Tazas Térmicas</li>
+                </ul>
+            </div>
+        </div>
+
+        <a href="https://wa.me/584123914757?text=Hola%20XDR,%20quiero%20saber%20precio%20y%20disponibilidad%20de%20productos%20Anime." target="_blank" class="btn-whatsapp">
+            <i class="fab fa-whatsapp"></i> CONSULTAR DISPONIBILIDAD
+        </a>
+
+        <div class="gallery-section">
+            <div class="gallery-title">NOVEDADES EN TIENDA</div>
+            <div id="anime-gallery" class="anime-gallery-grid">
+                <div style="color:#666; text-align:center; width:100%;">Cargando...</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // CONFIGURACIÓN DE FOTOS
+        // Debes subir las fotos a la carpeta: lib_img/anime/
+        const fotosAnime = [
+            "figura_naruto.jpg",
+            "manga_berserk.jpg",
+            "katana_zoro.jpg",
+            "stand_funkos.jpg",
+            "camisa_akatsuki.jpg"
+        ];
+
+        // RENDERIZADO
+        const container = document.getElementById('anime-gallery');
+        container.innerHTML = "";
+
+        // Iconos para el efecto glitch (fallback)
+        const fallbackIcons = ["fa-ghost", "fa-robot", "fa-dragon", "fa-book-skull", "fa-eye"];
+
+        if(fotosAnime.length === 0) {
+            container.innerHTML = "<p style='text-align:center; color:#555;'>No hay fotos nuevas hoy.</p>";
+        } else {
+            fotosAnime.forEach((foto, i) => {
+                const item = document.createElement('div');
+                item.className = 'anime-item';
+                
+                // Imagen con manejador de error incorporado
+                const img = document.createElement('img');
+                img.src = `lib_img/anime/${foto}`;
+                img.alt = "Anime Item";
+                
+                // SI LA IMAGEN FALLA (NO EXISTE):
+                img.onerror = function() {
+                    this.style.display = 'none'; // Ocultar imagen rota
+                    
+                    // Elegir un icono al azar para el glitch
+                    const randomIcon = fallbackIcons[Math.floor(Math.random() * fallbackIcons.length)];
+                    
+                    // Insertar icono glitch
+                    item.innerHTML = `<i class="fas ${randomIcon} glitch-fallback"></i>`;
+                };
+
+                item.appendChild(img);
+                container.appendChild(item);
+            });
+        }
+    </script>
+
+</body>
+</html>

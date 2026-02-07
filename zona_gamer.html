@@ -1,0 +1,309 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XDR | ZONA GAMER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* --- ESTILOS BASE (Mismos del Landing) --- */
+        :root {
+            --neon-cyan: #00f0ff; --neon-magenta: #ff00ff; --neon-green: #39ff14;
+            --neon-red: #ff003c; --neon-purple: #bc13fe; --bg-black: #050505;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-black); color: #fff; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; padding-bottom: 80px; }
+
+        /* FONDOS */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: -1; background-size: 100% 2px, 3px 100%; pointer-events: none;
+        }
+
+        /* NAVEGACIÓN COMPACTA */
+        nav {
+            background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--neon-cyan);
+            padding: 15px; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100; backdrop-filter: blur(5px);
+        }
+        .logo { font-family: 'Orbitron'; font-weight: 900; color: var(--neon-cyan); text-decoration: none; font-size: 1.5rem; }
+        .back-btn { color: #fff; text-decoration: none; font-family: 'Orbitron'; font-size: 0.9rem; border: 1px solid #333; padding: 5px 15px; transition: 0.3s; }
+        .back-btn:hover { border-color: var(--neon-cyan); color: var(--neon-cyan); }
+
+        /* CONTENEDOR */
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
+        .page-title {
+            font-family: 'Orbitron'; font-size: 2.5rem; text-align: center; color: var(--neon-cyan);
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.4); margin-bottom: 10px;
+        }
+        .page-subtitle { text-align: center; color: #888; margin-bottom: 40px; letter-spacing: 2px; }
+
+        /* GRID DE EQUIPOS */
+        .hardware-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px; margin-bottom: 50px;
+        }
+
+        .card {
+            background: #111; border: 1px solid #333; padding: 20px;
+            position: relative; overflow: hidden; transition: 0.3s;
+            border-bottom: 4px solid var(--neon-cyan); display: flex; flex-direction: column;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 0 20px rgba(0, 240, 255, 0.1); }
+        
+        .icon-box {
+            width: 100%; height: 150px; background: rgba(0,0,0,0.3); margin-bottom: 15px;
+            display: flex; align-items: center; justify-content: center; border: 1px dashed #333;
+        }
+        .icon-box img { max-width: 80%; max-height: 80%; object-fit: contain; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+
+        .card h3 { font-family: 'Orbitron'; margin-bottom: 10px; color: #fff; font-size: 1.4rem; }
+        .card ul { list-style: none; color: #aaa; padding-left: 5px; }
+        .card ul li { margin-bottom: 8px; border-left: 3px solid var(--neon-cyan); padding-left: 10px; font-size: 0.95rem; }
+
+        /* SECCIÓN DE RESERVA (AL FINAL) */
+        .reserve-section {
+            margin-top: 50px; padding: 30px;
+            border-top: 1px solid #333;
+            text-align: center;
+        }
+
+        .btn-toggle-reserve {
+            background: transparent; border: 2px solid var(--neon-green); color: var(--neon-green);
+            font-family: 'Orbitron'; font-size: 1.5rem; padding: 15px 40px; cursor: pointer;
+            transition: 0.3s; text-transform: uppercase; font-weight: bold;
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
+        }
+        .btn-toggle-reserve:hover {
+            background: var(--neon-green); color: #000;
+            box-shadow: 0 0 30px var(--neon-green);
+        }
+
+        /* FORMULARIO OCULTO */
+        #form-reserva {
+            display: none; /* Oculto por defecto */
+            max-width: 500px; margin: 30px auto;
+            background: #0a0a0a; border: 1px solid var(--neon-green);
+            padding: 30px; box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            animation: slideDown 0.4s ease;
+        }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        input, select {
+            width: 100%; padding: 15px; margin-bottom: 15px;
+            background: #151515; border: 1px solid #333; color: #fff;
+            font-family: 'Rajdhani'; font-size: 1.1rem;
+        }
+        input:focus, select:focus { outline: none; border-color: var(--neon-green); }
+        label { display: block; text-align: left; color: var(--neon-green); margin-bottom: 5px; font-family: 'Orbitron'; font-size: 0.9rem; }
+
+        .btn-send {
+            width: 100%; background: var(--neon-green); color: #000; border: none;
+            padding: 15px; font-family: 'Orbitron'; font-weight: bold; font-size: 1.1rem;
+            cursor: pointer; margin-top: 10px;
+        }
+        .btn-send:hover { background: #fff; }
+
+    </style>
+</head>
+<body>
+
+    <div class="scanlines"></div>
+
+    <nav>
+        <a href="index.html" class="logo">XDR</a>
+        <a href="index.html" class="back-btn">VOLVER AL MENU</a>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">ARSENAL DISPONIBLE</h1>
+        <p class="page-subtitle">ELIGE TU ARMA Y DOMINA EL JUEGO</p>
+
+        <div class="hardware-grid">
+            
+            <div class="card" style="border-color: var(--neon-cyan);">
+                <div class="icon-box"><img src="lib_img/icon_pc.png" onerror="this.src='https://via.placeholder.com/150/000/0ff?text=PC'"></div>
+                <h3>PC MASTER RACE</h3>
+                <ul>
+                    <li style="border-color: var(--neon-cyan);">Gráficas RX 580 / RTX 3060</li>
+                    <li style="border-color: var(--neon-cyan);">Monitores 27" Curvos 144hz</li>
+                    <li style="border-color: var(--neon-cyan);">Periféricos Mecánicos RGB</li>
+                    <li style="border-color: var(--neon-cyan);">Sillas Gamer Profesionales</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-color: #0043ff;">
+                <div class="icon-box"><img src="lib_img/icon_ps5.png" onerror="this.src='https://via.placeholder.com/150/000/00f?text=PS5'"></div>
+                <h3 style="color: #0043ff;">PLAYSTATION 5</h3>
+                <ul>
+                    <li style="border-color: #0043ff;">Resolución 4K HDR Nativo</li>
+                    <li style="border-color: #0043ff;">Controles DualSense Hápticos</li>
+                    <li style="border-color: #0043ff;">FIFA 24 / COD / Mortal Kombat 1</li>
+                    <li style="border-color: #0043ff;">Pantallas 50" UHD</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-color: #0030b0;">
+                <div class="icon-box"><img src="lib_img/icon_ps5.png" onerror="this.src='https://via.placeholder.com/150/000/00f?text=PS4'"></div>
+                <h3 style="color: #0030b0;">PLAYSTATION 4</h3>
+                <ul>
+                    <li style="border-color: #0030b0;">La experiencia clásica</li>
+                    <li style="border-color: #0030b0;">Catálogo inmenso de juegos</li>
+                    <li style="border-color: #0030b0;">Multijugador Local</li>
+                    <li style="border-color: #0030b0;">Ideal para partidas rápidas</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-color: #107c10;">
+                <div class="icon-box"><img src="lib_img/icon_xbox.png" onerror="this.src='https://via.placeholder.com/150/000/0f0?text=XBOX'"></div>
+                <h3 style="color: #107c10;">XBOX SERIES</h3>
+                <ul>
+                    <li style="border-color: #107c10;">GamePass Ultimate</li>
+                    <li style="border-color: #107c10;">Halo / Forza Horizon 5</li>
+                    <li style="border-color: #107c10;">Rendimiento Next-Gen</li>
+                    <li style="border-color: #107c10;">Controles Ergonómicos</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-color: #e60012;">
+                <div class="icon-box"><img src="lib_img/icon_nintendo.png" onerror="this.src='https://via.placeholder.com/150/000/f00?text=SWITCH'"></div>
+                <h3 style="color: #e60012;">NINTENDO SWITCH</h3>
+                <ul>
+                    <li style="border-color: #e60012;">Mario Kart 8 Deluxe (4 Jugadores)</li>
+                    <li style="border-color: #e60012;">Super Smash Bros Ultimate</li>
+                    <li style="border-color: #e60012;">Diversión Grupal</li>
+                    <li style="border-color: #e60012;">Modo Dock en TV Grande</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="reserve-section">
+            <button class="btn-toggle-reserve" onclick="toggleForm()">¿DESEA RESERVAR?</button>
+            
+            <div id="form-reserva">
+                <h3 style="font-family:'Orbitron'; color:var(--neon-green); margin-bottom:20px; text-align:center;">SOLICITUD DE TURNO</h3>
+                
+                <label>TU NOMBRE</label>
+                <input type="text" id="res_nombre" placeholder="Nombre Completo">
+                
+                <label>WHATSAPP DE CONTACTO</label>
+                <input type="tel" id="res_whatsapp" placeholder="Ej: 0412...">
+                
+                <label>PLATAFORMA / CONSOLA</label>
+                <select id="res_equipo">
+                    <option value="PC GAMER">PC GAMER</option>
+                    <option value="PS5">PLAYSTATION 5</option>
+                    <option value="PS4">PLAYSTATION 4</option>
+                    <option value="XBOX">XBOX SERIES</option>
+                    <option value="NINTENDO">NINTENDO SWITCH</option>
+                </select>
+
+                <div style="display:flex; gap:10px;">
+                    <div style="flex:1;">
+                        <label>FECHA</label>
+                        <input type="date" id="res_fecha">
+                    </div>
+                    <div style="flex:1;">
+                        <label>HORA</label>
+                        <input type="time" id="res_hora">
+                    </div>
+                </div>
+
+                <label>TIEMPO DE JUEGO</label>
+                <select id="res_tiempo">
+                    <option value="1 Hora">1 Hora</option>
+                    <option value="2 Horas">2 Horas</option>
+                    <option value="3 Horas">3 Horas</option>
+                    <option value="Libre (5+ Horas)">Libre (5+ Horas)</option>
+                </select>
+
+                <button class="btn-send" id="btn-enviar" onclick="enviarReserva()">CONFIRMAR RESERVA</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // TUS CREDENCIALES
+        const firebaseConfig = {
+            apiKey: "AIzaSyCtraghFl9rZ0TvtvIZEljto1OYwH5SLo0",
+            authDomain: "xdr-zone-server.firebaseapp.com",
+            databaseURL: "https://xdr-zone-server-default-rtdb.firebaseio.com",
+            projectId: "xdr-zone-server",
+            storageBucket: "xdr-zone-server.firebasestorage.app",
+            messagingSenderId: "267904397463",
+            appId: "1:267904397463:web:93f4bd9c036769777479d2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // ABRIR/CERRAR FORMULARIO
+        window.toggleForm = () => {
+            const form = document.getElementById('form-reserva');
+            if (form.style.display === 'block') {
+                form.style.display = 'none';
+            } else {
+                form.style.display = 'block';
+                // Scroll suave hacia el formulario
+                form.scrollIntoView({ behavior: 'smooth' });
+            }
+        };
+
+        // ENVIAR A FIREBASE
+        window.enviarReserva = async () => {
+            const nombre = document.getElementById('res_nombre').value;
+            const whatsapp = document.getElementById('res_whatsapp').value;
+            const equipo = document.getElementById('res_equipo').value;
+            const fecha = document.getElementById('res_fecha').value;
+            const hora = document.getElementById('res_hora').value;
+            const tiempo = document.getElementById('res_tiempo').value;
+            const btn = document.getElementById('btn-enviar');
+
+            if(!nombre || !whatsapp || !fecha || !hora) {
+                return alert("⚠️ Por favor completa todos los campos para agendar.");
+            }
+
+            try {
+                btn.innerText = "ENVIANDO...";
+                btn.disabled = true;
+
+                await push(ref(db, 'reservas_estaciones'), {
+                    cliente: nombre,
+                    whatsapp: whatsapp,
+                    equipo: equipo,
+                    fecha_reserva: `${fecha} a las ${hora}`,
+                    duracion: tiempo,
+                    estado: "pendiente",
+                    leido: false,
+                    timestamp: Date.now()
+                });
+
+                alert(`✅ ¡LISTO!\nReserva solicitada para ${equipo}.\nTe confirmaremos disponibilidad al WhatsApp en breve.`);
+                
+                // Ocultar y limpiar
+                document.getElementById('form-reserva').style.display = 'none';
+                document.getElementById('res_nombre').value = "";
+                document.getElementById('res_whatsapp').value = "";
+
+            } catch (e) {
+                console.error(e);
+                alert("❌ Error de conexión. Intenta de nuevo.");
+            } finally {
+                btn.innerText = "CONFIRMAR RESERVA";
+                btn.disabled = false;
+            }
+        };
+    </script>
+
+</body>
+</html>
