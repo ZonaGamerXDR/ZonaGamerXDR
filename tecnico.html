@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XDR | TÉCNICO GEEK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* --- ESTILOS BASE --- */
+        :root {
+            --neon-cyan: #00f0ff; 
+            --neon-magenta: #ff00ff; 
+            --neon-green: #39ff14;
+            --neon-yellow: #f3f315;
+            --bg-black: #050505;
+            --card-bg: rgba(20, 20, 20, 0.85);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background-color: var(--bg-black); color: #fff; 
+            font-family: 'Rajdhani', sans-serif; overflow-x: hidden; 
+        }
+
+        /* FONDO SCANLINES */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: -1; pointer-events: none; background-size: 100% 2px, 3px 100%;
+        }
+
+        /* NAVEGACIÓN */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 2000;
+            background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--neon-cyan);
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-family: 'Orbitron'; font-weight: 900; font-size: 1.8rem;
+            color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan);
+            text-decoration: none;
+        }
+
+        .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .glitch-btn {
+            background: none; border: 1px solid transparent; color: #fff; font-family: 'Orbitron';
+            font-size: 0.8rem; cursor: pointer; padding: 8px 12px;
+            text-transform: uppercase; transition: 0.2s; text-decoration: none;
+        }
+
+        .glitch-btn:hover, .glitch-btn.active {
+            color: var(--neon-green); text-shadow: 2px 0 var(--neon-green);
+            border-color: var(--neon-green); background: rgba(57, 255, 20, 0.1);
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        .main-container {
+            padding: 120px 20px 50px 20px;
+            max-width: 1200px; margin: 0 auto;
+        }
+
+        .section-header { text-align: center; margin-bottom: 50px; animation: fadeIn 1s ease; }
+
+        .page-title {
+            font-family: 'Orbitron'; font-size: 3.5rem; color: #fff;
+            text-shadow: 0 0 15px var(--neon-magenta); text-transform: uppercase;
+        }
+
+        .page-subtitle {
+            color: var(--neon-cyan); font-size: 1.2rem; letter-spacing: 4px; margin-top: 10px;
+        }
+
+        /* GRID DE SERVICIOS */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        /* TARJETAS DE SERVICIO */
+        .service-card {
+            background: var(--card-bg); border: 1px solid #333; padding: 30px;
+            position: relative; overflow: hidden; transition: 0.3s ease;
+        }
+
+        .service-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background: var(--neon-cyan); transform: scaleX(0); transform-origin: left; transition: 0.4s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.15);
+            border-color: var(--neon-cyan);
+        }
+        .service-card:hover::before { transform: scaleX(1); }
+
+        .card-icon { font-size: 3rem; color: var(--neon-magenta); margin-bottom: 20px; }
+        
+        .card-title {
+            font-family: 'Orbitron'; font-size: 1.6rem; margin-bottom: 15px;
+            color: var(--neon-green); border-bottom: 1px solid #333; padding-bottom: 10px;
+        }
+
+        .service-list { list-style: none; }
+        
+        .service-list li {
+            padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 1.1rem; display: flex; align-items: center;
+        }
+
+        .service-list li i {
+            margin-right: 12px; color: var(--neon-cyan); font-size: 1rem; width: 20px; text-align: center;
+        }
+
+        /* SECCIÓN EXTRA INFERIOR */
+        .info-box {
+            margin-top: 50px; background: rgba(0,0,0,0.6); border: 1px solid var(--neon-magenta);
+            padding: 30px; text-align: center;
+        }
+
+        .cta-btn {
+            display: inline-block; padding: 15px 50px; margin-top: 20px;
+            background: transparent; border: 2px solid var(--neon-green); color: var(--neon-green);
+            font-family: 'Orbitron'; font-weight: bold; text-decoration: none;
+            text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        }
+        .cta-btn:hover {
+            background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* RESPONSIVE */
+        @media (max-width: 850px) {
+            nav { flex-direction: column; gap: 10px; }
+            .page-title { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">XDR</a>
+        <div class="nav-links">
+            <a href="index.html" class="glitch-btn">INICIO</a>
+            <a href="zona_gamer.html" class="glitch-btn">ZONA GAMER</a>
+            <a href="tecnico.html" class="glitch-btn active">TÉCNICO GEEK</a>
+            <a href="cafeteria.html" class="glitch-btn">CAFETERÍA</a>
+            <a href="ubicacion.html" class="glitch-btn">UBICACIÓN</a>
+        </div>
+    </nav>
+
+    <div class="scanlines"></div>
+
+    <div class="main-container">
+        <div class="section-header">
+            <h1 class="page-title">SERVICIOS TÉCNICOS</h1>
+            <div class="page-subtitle">PROGRAMACIÓN & SOPORTE GAMER</div>
+        </div>
+
+        <div class="services-grid">
+            
+            <div class="service-card">
+                <i class="fa-solid fa-code card-icon"></i>
+                <h3 class="card-title">PROGRAMACIÓN Y SISTEMAS</h3>
+                <ul class="service-list">
+                    <li><i class="fa-solid fa-desktop"></i> Programación de PC / Windows</li>
+                    <li><i class="fa-brands fa-playstation"></i> Programación de PlayStation</li>
+                    <li><i class="fa-brands fa-xbox"></i> Programación de Xbox</li>
+                    <li><i class="fa-solid fa-gamepad"></i> Programación de Nintendo</li>
+                    <li><i class="fa-solid fa-microchip"></i> Actualización de BIOS/Firmware</li>
+                </ul>
+            </div>
+
+            <div class="service-card" style="border-color: var(--neon-magenta);">
+                <i class="fa-solid fa-compact-disc card-icon" style="color: var(--neon-cyan);"></i>
+                <h3 class="card-title" style="color: var(--neon-magenta);">INSTALACIÓN DE JUEGOS</h3>
+                <ul class="service-list">
+                    <li><i class="fa-solid fa-download"></i> Juegos para PC (Steam/Epic/Jack)</li>
+                    <li><i class="fa-solid fa-gamepad"></i> Catálogo Completo PlayStation</li>
+                    <li><i class="fa-solid fa-gamepad"></i> Catálogo Completo Xbox</li>
+                    <li><i class="fa-solid fa-gamepad"></i> Catálogo Nintendo Switch</li>
+                    <li><i class="fa-solid fa-ghost"></i> Instalación de Emuladores Retro</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <i class="fa-solid fa-screwdriver-wrench card-icon" style="color: var(--neon-green);"></i>
+                <h3 class="card-title" style="color: var(--neon-cyan);">SOPORTE DE HARDWARE</h3>
+                <ul class="service-list">
+                    <li><i class="fa-solid fa-broom"></i> Mantenimiento Preventivo (Limpieza)</li>
+                    <li><i class="fa-solid fa-thermometer-half"></i> Cambio de Pasta Térmica</li>
+                    <li><i class="fa-solid fa-memory"></i> Instalación de SSD y RAM</li>
+                    <li><i class="fa-solid fa-plug"></i> Reparación de Puertos de Carga/HDMI</li>
+                    <li><i class="fa-solid fa-wrench"></i> Reparación de Mandos (Drift/Botones)</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="info-box">
+            <h2 style="font-family: 'Orbitron'; color: #fff; margin-bottom: 10px;">¿LISTO PARA OPTIMIZAR TU EQUIPO?</h2>
+            <p style="color: #ccc; margin-bottom: 20px;">Trae tu consola o PC y la dejamos lista para la batalla.</p>
+            
+            <a href="https://wa.me/TU_NUMERO" class="cta-btn">
+                <i class="fa-brands fa-whatsapp"></i> COTIZAR AHORA
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>
