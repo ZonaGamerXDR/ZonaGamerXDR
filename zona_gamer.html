@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -8,15 +8,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        /* --- ESTILOS BASE (Mismos del Landing) --- */
         :root {
-            --neon-cyan: #00f0ff; --neon-magenta: #ff00ff; --neon-green: #39ff14;
-            --neon-red: #ff003c; --neon-purple: #bc13fe; --bg-black: #050505;
+            --neon-cyan: #00f0ff; 
+            --neon-magenta: #ff00ff; 
+            --neon-green: #39ff14;
+            --neon-red: #ff003c; 
+            --neon-blue: #0043ff;
+            --bg-black: #050505;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg-black); color: #fff; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; padding-bottom: 80px; }
 
-        /* FONDOS */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background-color: var(--bg-black); 
+            color: #fff; 
+            font-family: 'Rajdhani', sans-serif; 
+            overflow-x: hidden; 
+            padding-bottom: 80px; 
+        }
+
+        /* EFECTO SCANLINES */
         .scanlines {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
@@ -24,7 +35,7 @@
             z-index: -1; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
-        /* NAVEGACIÓN COMPACTA */
+        /* NAVEGACIÓN */
         nav {
             background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--neon-cyan);
             padding: 15px; display: flex; justify-content: space-between; align-items: center;
@@ -34,39 +45,133 @@
         .back-btn { color: #fff; text-decoration: none; font-family: 'Orbitron'; font-size: 0.9rem; border: 1px solid #333; padding: 5px 15px; transition: 0.3s; }
         .back-btn:hover { border-color: var(--neon-cyan); color: var(--neon-cyan); }
 
-        /* CONTENEDOR */
+        /* CONTENEDOR PRINCIPAL */
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         
+        .page-header { text-align: center; margin-bottom: 50px; }
         .page-title {
-            font-family: 'Orbitron'; font-size: 2.5rem; text-align: center; color: var(--neon-cyan);
+            font-family: 'Orbitron'; font-size: 2.8rem; color: var(--neon-cyan);
             text-shadow: 0 0 15px rgba(0, 240, 255, 0.4); margin-bottom: 10px;
         }
-        .page-subtitle { text-align: center; color: #888; margin-bottom: 40px; letter-spacing: 2px; }
+        .page-subtitle { color: #888; font-size: 1.1rem; letter-spacing: 3px; text-transform: uppercase; }
 
-        /* GRID DE EQUIPOS */
+        /* GRID DE HARDWARE */
         .hardware-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px; margin-bottom: 50px;
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px; 
+            margin-bottom: 60px;
         }
 
         .card {
-            background: #111; border: 1px solid #333; padding: 20px;
-            position: relative; overflow: hidden; transition: 0.3s;
-            border-bottom: 4px solid var(--neon-cyan); display: flex; flex-direction: column;
+            background: #111; border: 1px solid #222; padding: 25px;
+            position: relative; overflow: hidden; transition: 0.4s;
+            display: flex; flex-direction: column;
+            border-bottom: 4px solid var(--neon-cyan);
         }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 0 20px rgba(0, 240, 255, 0.1); }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-color: #444; }
         
         .icon-box {
-            width: 100%; height: 150px; background: rgba(0,0,0,0.3); margin-bottom: 15px;
+            width: 100%; height: 160px; background: rgba(0,0,0,0.4); margin-bottom: 20px;
             display: flex; align-items: center; justify-content: center; border: 1px dashed #333;
         }
-        .icon-box img { max-width: 80%; max-height: 80%; object-fit: contain; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+        .icon-box img { max-width: 70%; max-height: 70%; object-fit: contain; }
 
-        .card h3 { font-family: 'Orbitron'; margin-bottom: 10px; color: #fff; font-size: 1.4rem; }
-        .card ul { list-style: none; color: #aaa; padding-left: 5px; }
-        .card ul li { margin-bottom: 8px; border-left: 3px solid var(--neon-cyan); padding-left: 10px; font-size: 0.95rem; }
+        .card h3 { font-family: 'Orbitron'; margin-bottom: 15px; font-size: 1.5rem; letter-spacing: 1px; }
+        
+        .card ul { list-style: none; }
+        .card ul li { 
+            margin-bottom: 10px; padding-left: 15px; font-size: 1rem; color: #ccc;
+            border-left: 3px solid var(--neon-cyan); 
+        }
 
-           </div>
-        <div class="reserve-section">            <a href="eventos.html" class="btn-redirect-reserve">                ¿DESEA RESERVAR?            </a>            <p class="reserve-hint">RESERVA TU ESTACIÓN O EVENTO EN NUESTRO NUEVO SISTEMA</p>        </div>
-    </div></body></html>
+        /* SECCIÓN INFERIOR / CTA */
+        .reserve-section {
+            padding: 60px 20px; border-top: 1px solid #222; text-align: center;
+            background: linear-gradient(to top, rgba(0,240,255,0.03), transparent);
+        }
 
+        .btn-redirect-reserve {
+            display: inline-block; text-decoration: none;
+            background: transparent; border: 2px solid var(--neon-green); color: var(--neon-green);
+            font-family: 'Orbitron'; font-size: 1.6rem; padding: 20px 60px; 
+            cursor: pointer; transition: 0.3s; font-weight: bold;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.1);
+        }
+        .btn-redirect-reserve:hover {
+            background: var(--neon-green); color: #000;
+            box-shadow: 0 0 40px var(--neon-green); transform: scale(1.05);
+        }
+        .reserve-hint { margin-top: 20px; color: #555; font-size: 0.9rem; letter-spacing: 2px; }
+
+    </style>
+</head>
+<body>
+    <div class="scanlines"></div>
+
+    <nav>
+        <a href="index.html" class="logo">XDR</a>
+        <a href="index.html" class="back-btn">VOLVER AL MENU</a>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1 class="page-title">ARSENAL DISPONIBLE</h1>
+            <p class="page-subtitle">Hardware de Élite para Jugadores Reales</p>
+        </header>
+
+        <div class="hardware-grid">
+            <div class="card" style="border-bottom-color: var(--neon-cyan);">
+                <div class="icon-box"><img src="lib_img/icon_pc.png" onerror="this.src='https://via.placeholder.com/150/000/0ff?text=PC+GAMER'"></div>
+                <h3>PC GAMER</h3>
+                <ul>
+                    <li>Gráficas de alto rendimiento</li>
+                    <li>Monitores 27" Curvos 144hz</li>
+                    <li>Periféricos Mecánicos RGB</li>
+                    <li>Sillas Gamer Profesionales</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-bottom-color: var(--neon-blue);">
+                <div class="icon-box"><img src="lib_img/icon_ps5.png" onerror="this.src='https://via.placeholder.com/150/000/00f?text=PS5'"></div>
+                <h3 style="color: var(--neon-blue);">PLAYSTATION 5</h3>
+                <ul style="border-left-color: var(--neon-blue);">
+                    <li style="border-left-color: var(--neon-blue);">Resolución 4K HDR Nativo</li>
+                    <li style="border-left-color: var(--neon-blue);">Controles DualSense Hápticos</li>
+                    <li style="border-left-color: var(--neon-blue);">FIFA / COD / Mortal Kombat</li>
+                    <li style="border-left-color: var(--neon-blue);">Pantallas 50" UHD</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-bottom-color: var(--neon-green);">
+                <div class="icon-box"><img src="lib_img/icon_xbox.png" onerror="this.src='https://via.placeholder.com/150/000/0f0?text=XBOX'"></div>
+                <h3 style="color: var(--neon-green);">XBOX SERIES</h3>
+                <ul style="border-left-color: var(--neon-green);">
+                    <li style="border-left-color: var(--neon-green);">Game Pass Ultimate</li>
+                    <li style="border-left-color: var(--neon-green);">Rendimiento Next-Gen</li>
+                    <li style="border-left-color: var(--neon-green);">Halo / Forza Horizon</li>
+                    <li style="border-left-color: var(--neon-green);">Controles Ergonómicos</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-bottom-color: var(--neon-red);">
+                <div class="icon-box"><img src="lib_img/icon_nintendo.png" onerror="this.src='https://via.placeholder.com/150/000/f00?text=SWITCH'"></div>
+                <h3 style="color: var(--neon-red);">NINTENDO SWITCH</h3>
+                <ul style="border-left-color: var(--neon-red);">
+                    <li style="border-left-color: var(--neon-red);">Mario Kart 8 Deluxe</li>
+                    <li style="border-left-color: var(--neon-red);">Super Smash Bros Ultimate</li>
+                    <li style="border-left-color: var(--neon-red);">Multijugador 4 Personas</li>
+                    <li style="border-left-color: var(--neon-red);">Diversión Grupal</li>
+                </ul>
+            </div>
+        </div>
+
+        <section class="reserve-section">
+            <a href="eventos.html" class="btn-redirect-reserve">
+                ¿DESEA RESERVAR?
+            </a>
+            <p class="reserve-hint">ACCEDE A NUESTRO SISTEMA DE TURNOS Y EVENTOS</p>
+        </section>
+    </div>
+</body>
+</html>
