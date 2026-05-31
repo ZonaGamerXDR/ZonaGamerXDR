@@ -23,78 +23,98 @@
             font-family: 'Rajdhani', sans-serif; overflow-x: hidden; 
         }
 
-        /* --- 1. INTRO SCREEN --- */
+        /* --- 1. INTRO SCREEN (SPLASH SCREEN) --- */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; /* Distribuye espacio verticalmente */
+            display: flex; flex-direction: column; align-items: center; justify-content: space-evenly;
             transition: transform 0.8s ease-in-out;
             padding: 20px;
+            overflow: hidden;
         }
 
-        /* CONTENEDORES DE ICONOS (Arriba y Abajo) */
+        /* CAPA DE FONDO COMPLETO (Imagen bienvenida.jpg) */
+        #intro-bg-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; background: #000;
+        }
+        #intro-bg-image {
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: 0.35; /* Suave para dar profundidad y que resalten las letras */
+        }
+
+        /* CUADRO DE VIDEO CENTRAL (Ocupa el 30% de la pantalla) */
+        .video-teaser-box {
+            position: relative; z-index: 2;
+            width: 30vw; height: 30vw; /* Cuadrado responsivo basado en el ancho de pantalla */
+            max-width: 400px; max-height: 400px; /* Límites para pantallas muy grandes */
+            min-width: 250px; min-height: 250px; /* Límites para teléfonos móviles */
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 25px var(--neon-cyan);
+            background: #000; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            animation: pulse-border 4s infinite alternate;
+        }
+        #intro-video {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        /* TEXTO Y LOGO CENTRAL */
+        .intro-center {
+            position: relative; z-index: 2; text-align: center;
+        }
+        .glitch-welcome {
+            font-family: 'Orbitron'; font-size: 4.5rem; font-weight: 900;
+            color: #fff; position: relative;
+            animation: glitch-main 1s infinite alternate; margin-bottom: 10px;
+        }
+        .loading-bar {
+            width: 300px; height: 4px; background: #222; margin: 20px auto 0 auto;
+            position: relative; overflow: hidden; border-radius: 2px;
+        }
+        .loading-fill {
+            height: 100%; background: var(--neon-cyan); width: 0%;
+            animation: load 3.5s ease-in-out forwards;
+            box-shadow: 0 0 15px var(--neon-cyan);
+        }
+
+        /* ICONOS DE LA INTRO */
         .intro-icons-row {
-            display: flex; gap: 40px; 
-            perspective: 1000px;
+            position: relative; z-index: 2; display: flex; gap: 40px; perspective: 1000px;
         }
-
         .intro-icons-row i {
-            font-size: 3rem; /* Tamaño grande para la intro */
-            animation: rotateIcon 4s infinite linear;
+            font-size: 2.5rem; animation: rotateIcon 4s infinite linear;
         }
 
-        /* --- COLORES ESPECÍFICOS --- */
-        
-        /* Fila Superior (Consolas) */
+        /* COLORES E ICONOS PERSONALIZADOS MUNDIAL/GAMER */
         .fa-desktop { color: var(--neon-cyan); text-shadow: 0 0 20px var(--neon-cyan); }
         .fa-playstation { color: #00419c; text-shadow: 0 0 20px #00419c; animation-delay: 0.1s; }
         .fa-xbox { color: #107c10; text-shadow: 0 0 20px #107c10; animation-delay: 0.2s; }
         .fa-nintendo-switch { color: #e60012; text-shadow: 0 0 20px #e60012; animation-delay: 0.3s; }
+        .fa-futbol { color: var(--neon-yellow); text-shadow: 0 0 20px var(--neon-yellow); animation-delay: 0.4s; }
+        .fa-trophy { color: #ffd700; text-shadow: 0 0 25px #ffd700; animation-delay: 0.5s; }
+        .fa-print { color: var(--neon-cyan); text-shadow: 0 0 15px var(--neon-cyan); animation-delay: 0.6s; }
+        .fa-masks-theater { color: var(--neon-magenta); text-shadow: 0 0 15px var(--neon-magenta); animation-delay: 0.7s; }
 
-        /* Fila Inferior (Servicios) */
-        .fa-print { color: var(--neon-cyan); text-shadow: 0 0 15px var(--neon-cyan); animation-delay: 0.4s; }
-        .fa-copy { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green); animation-delay: 0.5s; }
-        .fa-pen-ruler { color: var(--neon-yellow); text-shadow: 0 0 15px var(--neon-yellow); animation-delay: 0.6s; } /* Papelería */
-        .fa-masks-theater { color: var(--neon-magenta); text-shadow: 0 0 15px var(--neon-magenta); animation-delay: 0.7s; } /* Eventos */
-
-        /* ANIMACIÓN DE ROTACIÓN */
+        /* ANIMACIONES */
         @keyframes rotateIcon {
             0% { transform: rotateY(0deg); opacity: 0.8; }
             50% { opacity: 1; transform: scale(1.1) rotateY(180deg); }
             100% { transform: rotateY(360deg); opacity: 0.8; }
         }
-        
-        /* TEXTO CENTRAL */
-        .intro-center {
-            text-align: center;
-        }
-
-        .glitch-welcome {
-            font-family: 'Orbitron'; font-size: 5rem; font-weight: 900;
-            color: #fff; position: relative;
-            animation: glitch-main 1s infinite alternate; margin-bottom: 20px;
-        }
-        
-        .loading-bar {
-            width: 300px; height: 4px; background: #333; margin: 20px auto 0 auto;
-            position: relative; overflow: hidden;
-        }
-        .loading-fill {
-            height: 100%; background: var(--neon-cyan); width: 0%;
-            animation: load 3s ease-in-out forwards;
-            box-shadow: 0 0 15px var(--neon-cyan);
-        }
-
         @keyframes load { 0% {width: 0%;} 100% {width: 100%;} }
         @keyframes glitch-main {
             0% { text-shadow: 2px 0 var(--neon-magenta), -2px 0 var(--neon-cyan); }
             100% { text-shadow: -2px 0 var(--neon-magenta), 2px 0 var(--neon-cyan); }
         }
-
+        @keyframes pulse-border {
+            0% { border-color: var(--neon-cyan); box-shadow: 0 0 20px var(--neon-cyan); }
+            50% { border-color: var(--neon-yellow); box-shadow: 0 0 30px var(--neon-yellow); }
+            100% { border-color: var(--neon-magenta); box-shadow: 0 0 20px var(--neon-magenta); }
+        }
         .intro-hidden { transform: translateY(-100%); }
 
-
-        /* --- 2. SITIO WEB --- */
+        /* --- 2. SITIO WEB PRINCIPAL --- */
         .scanlines {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
@@ -102,57 +122,48 @@
             z-index: -1; pointer-events: none; background-size: 100% 2px, 3px 100%;
         }
 
-        /* NAVEGACIÓN */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 2000;
             background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--neon-cyan);
             padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
             backdrop-filter: blur(10px);
         }
-
         .logo {
             font-family: 'Orbitron'; font-weight: 900; font-size: 1.8rem;
             color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan);
             cursor: pointer; text-decoration: none;
         }
-
         .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
-
         .glitch-btn {
             background: none; border: 1px solid transparent; color: #fff; font-family: 'Orbitron';
             font-size: 0.8rem; cursor: pointer; padding: 10px;
             text-transform: uppercase; transition: 0.2s; text-decoration: none;
         }
-
         .glitch-btn:hover {
             color: var(--neon-magenta); text-shadow: 2px 0 var(--neon-cyan);
             border-color: var(--neon-magenta); background: rgba(255, 0, 255, 0.1);
         }
 
-        /* HERO SECTION */
+        /* HERO CONTAINER */
         .hero-container {
             height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
             padding: 20px;
         }
-
         .hero-title {
             font-family: 'Orbitron'; font-size: 4rem; color: #fff;
             text-shadow: 0 0 30px var(--neon-cyan); margin-bottom: 10px;
             animation: fadeIn 1.5s ease;
         }
-        
         .hero-sub {
             color: var(--neon-green); font-size: 1.5rem; letter-spacing: 5px;
             margin-bottom: 40px; animation: fadeIn 2s ease;
         }
-
         .cta-btn {
             padding: 15px 40px; font-size: 1.2rem; background: transparent;
             border: 2px solid var(--neon-cyan); color: var(--neon-cyan);
             font-family: 'Orbitron'; text-decoration: none; font-weight: bold;
-            transition: 0.3s;
-            animation: pulse 2s infinite;
+            transition: 0.3s; animation: pulse 2s infinite;
         }
         .cta-btn:hover {
             background: var(--neon-cyan); color: #000; box-shadow: 0 0 40px var(--neon-cyan);
@@ -166,9 +177,10 @@
             nav { flex-direction: column; gap: 10px; position: relative; }
             .nav-links { justify-content: center; }
             .hero-title { font-size: 2.5rem; }
-            .glitch-welcome { font-size: 3rem; }
+            .glitch-welcome { font-size: 2.5rem; }
+            .video-teaser-box { width: 45vw; height: 45vw; }
             .intro-icons-row { gap: 15px; flex-wrap: wrap; justify-content: center; }
-            .intro-icons-row i { font-size: 2rem; }
+            .intro-icons-row i { font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -176,6 +188,10 @@
 
     <div id="intro-screen">
         
+        <div id="intro-bg-container">
+            <img id="intro-bg-image" src="lib_img/bienvenida.jpg" alt="">
+        </div>
+
         <div class="intro-icons-row top-icons">
             <i class="fa-solid fa-desktop"></i>
             <i class="fa-brands fa-playstation"></i>
@@ -183,15 +199,24 @@
             <i class="fa-brands fa-nintendo-switch"></i>
         </div>
 
+        <div class="video-teaser-box" id="teaser-box">
+            <video id="intro-video" autoplay muted loop playsinline>
+                <source src="lib_img/bienvenida.mp4" type="video/mp4">
+            </video>
+        </div>
+
         <div class="intro-center">
-            <h1 class="glitch-welcome">ZONA GAMER & CYBER CAFE XDR</h1>
-            <div style="font-family:'Orbitron'; color:var(--neon-green); margin-top:10px; letter-spacing:2px;">CARGANDO RECURSOS...</div>
+            <h1 class="glitch-welcome">XDR CYBER ARENA</h1>
+            <div style="font-family:'Orbitron'; color:var(--neon-green); margin-top:10px; letter-spacing:2px; font-weight: bold;">MODO MUNDIAL ACTIVO</div>
             <div class="loading-bar"><div class="loading-fill"></div></div>
         </div>
 
         <div class="intro-icons-row bottom-icons">
-            <i class="fa-solid fa-print"></i>         <i class="fa-solid fa-copy"></i>          <i class="fa-solid fa-pen-ruler"></i>     <i class="fa-solid fa-masks-theater"></i> </div>
-
+            <i class="fa-solid fa-futbol"></i>
+            <i class="fa-solid fa-trophy"></i>
+            <i class="fa-solid fa-print"></i>
+            <i class="fa-solid fa-masks-theater"></i>
+        </div>
     </div>
 
     <nav>
@@ -213,25 +238,38 @@
     <div class="hero-container">
         <h1 class="hero-title">BIENVENIDO A LA ZONA</h1>
         <p class="hero-sub">LA EXPERIENCIA GAMER DEFINITIVA</p>
-        
         <a href="zona_gamer.html" class="cta-btn">ENTRAR</a>
     </div>
 
     <script>
-        // Lógica de carga
         window.addEventListener('load', () => {
             const intro = document.getElementById('intro-screen');
+            const video = document.getElementById('intro-video');
+            const teaserBox = document.getElementById('teaser-box');
+            const bgImage = document.getElementById('intro-bg-image');
+
+            // Control de Fallbacks si los archivos en lib_img no existen:
+            // Si el video falla o no está, se esconde el cuadro del 30% limpiamente
+            video.onerror = () => {
+                teaserBox.style.display = 'none';
+            };
+
+            // Si la imagen de fondo falla o no está, se oculta dejando el fondo negro por defecto
+            bgImage.onerror = () => {
+                bgImage.style.display = 'none';
+            };
+
+            // Control de Sesión para no aburrir al usuario cada vez que regresa al index
             if (sessionStorage.getItem('xdr_intro_visto')) {
                 intro.style.display = 'none';
             } else {
                 setTimeout(() => {
                     intro.classList.add('intro-hidden');
                     sessionStorage.setItem('xdr_intro_visto', 'true');
-                }, 3000);
+                }, 3500); // Duración sincronizada con la barra de carga
             }
         });
     </script>
 
 </body>
 </html>
-
