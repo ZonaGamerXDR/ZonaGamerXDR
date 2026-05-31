@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CAFETERÍA | XDR PEDIDOS</title>
+    <title>CAFETERÃA | XDR PEDIDOS</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -16,6 +16,56 @@
             --bg-dark: #050505; 
             --card-bg: #111; 
             --panel-bg: #0a0a0a;
+#splash-screen-xdr {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: #030205; /* Fondo ultra oscuro con toque morado */
+    z-index: 9999;
+    display: flex; justify-content: center; align-items: center;
+    overflow: hidden;
+    transition: opacity 0.5s ease;
+}
+
+/* Siluetas de fondo usando caracteres SVG/Unicode limpios de comida rápida en neón naranja */
+.fast-food-silhouettes-orange {
+    position: absolute;
+    width: 100%; height: 100%;
+    opacity: 0.15;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 60 60'%3E%3Cpath d='M10 20h10v5H10zm25 5h10v3H35zm-20 15h8v2h-8z' stroke='%23ff6a00' stroke-width='0.5' fill='none'/%3E%3Ccircle cx='15' cy='45' r='3' stroke='%23ff3c00' stroke-width='0.5' fill='none'/%3E%3C/svg%3E");
+    animation: pulseGlow 4s infinite alternate;
+}
+
+.logo-container-splash {
+    position: relative;
+    text-align: center;
+    z-index: 2;
+}
+
+.logo-neon-glow {
+    max-width: 280px;
+    filter: drop-shadow(0 0 20px #bc13fe) drop-shadow(0 0 40px #ff003c);
+    animation: floatLogo 3s ease-in-out infinite;
+}
+
+.loading-bar-neon {
+    width: 180px; height: 4px;
+    background: #ff3c00;
+    margin: 25px auto 0;
+    box-shadow: 0 0 10px #ff003c, 0 0 20px #bc13fe;
+    position: relative; overflow: hidden;
+}
+.loading-bar-neon::after {
+    content: ''; position: absolute; left: -50%; width: 50%; height: 100%;
+    background: #bc13fe; animation: loadingShift 1.5s infinite linear;
+}
+
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+@keyframes loadingShift {
+    0% { left: -50%; } 100% { left: 100%; }
+}
         }
 
         body {
@@ -26,6 +76,13 @@
             padding-bottom: 80px; 
             overflow-x: hidden; 
             -webkit-tap-highlight-color: transparent;
+<div id="splash-screen-xdr">
+    <div class="fast-food-silhouettes-orange"></div>
+    <div class="logo-container-splash">
+        <img src="logo.png" alt="XDR CG LOGO" class="logo-neon-glow">
+        <div class="loading-bar-neon"></div>
+    </div>
+</div>
         }
 
         /* --- BACKGROUND --- */
@@ -88,7 +145,7 @@
             box-shadow: 0 0 15px var(--neon-blue); 
         }
         
-        /* Botón Reportar Pago Destacado */
+        /* BotÃ³n Reportar Pago Destacado */
         .btn-reportar {
             border-color: var(--neon-green);
             color: var(--neon-green);
@@ -317,8 +374,8 @@
     <div class="main-layout">
         
         <div class="nav-header">
-            <a href="index.html" class="btn-nav">⬅ VOLVER</a>
-            <button onclick="abrirModalBusqueda()" class="btn-nav btn-reportar">REPORTAR PAGO 💳</button>
+            <a href="index.html" class="btn-nav">â¬… VOLVER</a>
+            <button onclick="abrirModalBusqueda()" class="btn-nav btn-reportar">REPORTAR PAGO ðŸ’³</button>
         </div>
         
         <div class="menu-section">
@@ -334,15 +391,15 @@
             </div>
 
             <div id="menu-container" class="menu-grid">
-                <div style="text-align:center; width:100%; padding:20px;">CARGANDO MENÚ...</div>
+                <div style="text-align:center; width:100%; padding:20px;">CARGANDO MENÃš...</div>
             </div>
         </div>
 
         <aside class="order-sidebar" id="sidebar">
-            <button class="close-sidebar-btn" onclick="toggleMobileCart()">✖ CERRAR</button>
+            <button class="close-sidebar-btn" onclick="toggleMobileCart()">âœ– CERRAR</button>
             <div style="font-family: 'Orbitron'; color: var(--neon-blue); text-align: center; margin-bottom: 15px;">TU CARRITO</div>
             <div id="cart-items-container" class="cart-items-container">
-                <div style="color:#444; text-align:center; margin-top:20px; font-style:italic;">Tu carrito está vacío</div>
+                <div style="color:#444; text-align:center; margin-top:20px; font-style:italic;">Tu carrito estÃ¡ vacÃ­o</div>
             </div>
 
             <div class="sidebar-footer">
@@ -365,7 +422,7 @@
             <div style="font-size:0.8rem; color:#888;">TOTAL A PAGAR</div>
             <div id="mobile-total-usd" style="color:var(--neon-green); font-family:'Orbitron'; font-weight:bold; font-size:1.2rem;">$0.00</div>
         </div>
-        <button style="background:var(--neon-blue); border:none; padding:8px 15px; font-weight:bold; font-family:'Orbitron'; border-radius:4px;">VER ORDEN 🛒</button>
+        <button style="background:var(--neon-blue); border:none; padding:8px 15px; font-weight:bold; font-family:'Orbitron'; border-radius:4px;">VER ORDEN ðŸ›’</button>
     </div>
 
     <div id="modal-compra" class="modal">
@@ -377,29 +434,29 @@
             
             <div style="display:flex; gap:10px;">
                 <div style="flex:1">
-                    <label>CÉDULA</label>
+                    <label>CÃ‰DULA</label>
                     <input type="number" id="cli_cedula" placeholder="Sin puntos">
                 </div>
                 <div style="flex:1">
-                    <label>TELÉFONO</label>
+                    <label>TELÃ‰FONO</label>
                     <input type="tel" id="cli_telefono">
                 </div>
             </div>
 
-            <label>MÉTODO DE ENTREGA</label>
+            <label>MÃ‰TODO DE ENTREGA</label>
             <select id="cli_entrega" onchange="toggleDeliveryInputs()">
                 <option value="Pickup">RETIRO EN TIENDA (Pickup)</option>
                 <option value="Delivery">DELIVERY</option>
             </select>
 
             <div id="delivery-fields" class="hidden">
-                <label>DIRECCIÓN EXACTA</label>
+                <label>DIRECCIÃ“N EXACTA</label>
                 <textarea id="cli_direccion" rows="2"></textarea>
             </div>
 
             <label style="margin-top:10px;">FORMA DE PAGO</label>
             <select id="cli_metodo_pago">
-                <option value="Pago Movil">PAGO MÓVIL</option>
+                <option value="Pago Movil">PAGO MÃ“VIL</option>
                 <option value="Transferencia">TRANSFERENCIA</option>
                 <option value="Punto">PUNTO DE VENTA (En Tienda)</option>
                 <option value="Divisas">DIVISAS (Efectivo)</option>
@@ -413,9 +470,9 @@
     <div id="modal-busqueda" class="modal">
         <div class="modal-content">
             <h3 style="color:var(--neon-green); font-family:'Orbitron'; margin-top:0;">REPORTAR PAGO</h3>
-            <p style="color:#aaa; font-size:0.9rem;">Ingresa tu Cédula para buscar pedidos aprobados (En Cocina).</p>
+            <p style="color:#aaa; font-size:0.9rem;">Ingresa tu CÃ©dula para buscar pedidos aprobados (En Cocina).</p>
             
-            <input type="number" id="search_cedula" placeholder="Cédula de Identidad">
+            <input type="number" id="search_cedula" placeholder="CÃ©dula de Identidad">
             <button class="btn-main" onclick="buscarPedido()">BUSCAR PEDIDO</button>
             <button onclick="cerrarModal('modal-busqueda')" style="width:100%; background:transparent; border:none; color:#666; margin-top:10px; cursor:pointer;">CERRAR</button>
         </div>
@@ -433,15 +490,15 @@
 
             <input type="hidden" id="pay_order_key">
 
-            <label>REFERENCIA (Últimos 6 dígitos)</label>
+            <label>REFERENCIA (Ãšltimos 6 dÃ­gitos)</label>
             <input type="text" id="pay_referencia">
 
             <label>MONTO PAGADO (BS)</label>
             <input type="number" id="pay_monto_input" step="0.01">
 
-            <label>MÉTODO UTILIZADO</label>
+            <label>MÃ‰TODO UTILIZADO</label>
             <select id="pay_metodo">
-                <option value="Pago Movil" selected>PAGO MÓVIL</option>
+                <option value="Pago Movil" selected>PAGO MÃ“VIL</option>
                 <option value="Transferencia">TRANSFERENCIA</option>
                 <option value="Zelle">ZELLE / BINANCE</option>
             </select>
@@ -452,7 +509,7 @@
     </div>
 
     <div id="success-overlay">
-        <div class="success-text">¡LISTO!</div>
+        <div class="success-text">Â¡LISTO!</div>
         <div id="success-message" style="color:#fff; font-family:'Rajdhani'; font-size:1.2rem; margin-bottom:20px;"></div>
         
         <div class="total-display-big" id="success-amounts">
@@ -552,7 +609,7 @@
             const numItems = Object.keys(carrito).length;
 
             if (numItems === 0) {
-                container.innerHTML = `<div style="color:#444; text-align:center; margin-top:20px;">Vacío</div>`;
+                container.innerHTML = `<div style="color:#444; text-align:center; margin-top:20px;">VacÃ­o</div>`;
                 document.getElementById('btn-procesar').disabled = true;
                 mobileBar.classList.remove('visible');
             } else {
@@ -562,7 +619,7 @@
                     totalUSD += item.precio * qty;
                     htmlList += `<div class="order-row">
                         <div class="item-details"><span class="item-name">${item.nombre}</span><span class="item-price">$${item.precio.toFixed(2)}</span></div>
-                        <div class="item-controls"><button class="btn-qty" onclick="restarItem('${id}')">-</button><div class="qty-val">${qty}</div><button class="btn-qty" onclick="sumarItem('${id}')">+</button><button class="btn-del" onclick="eliminarItem('${id}')">×</button></div>
+                        <div class="item-controls"><button class="btn-qty" onclick="restarItem('${id}')">-</button><div class="qty-val">${qty}</div><button class="btn-qty" onclick="sumarItem('${id}')">+</button><button class="btn-del" onclick="eliminarItem('${id}')">Ã—</button></div>
                     </div>`;
                 }
                 container.innerHTML = htmlList;
@@ -600,7 +657,7 @@
             
             if (entrega === 'Delivery') {
                 direccion = document.getElementById('cli_direccion').value;
-                if(!direccion) return alert("Dirección requerida.");
+                if(!direccion) return alert("DirecciÃ³n requerida.");
             }
 
             const btn = document.querySelector("#modal-compra .btn-main");
@@ -635,7 +692,7 @@
                 estado: "pendiente", origen: "WEB", timestamp: Date.now()
             });
             
-            // UI Éxito
+            // UI Ã‰xito
             document.getElementById('modal-compra').style.display = 'none';
             document.getElementById('success-overlay').style.display = 'flex';
             document.getElementById('success-message').innerText = "Pedido registrado. El administrador debe aprobarlo en Cocina antes de que puedas reportar tu pago.";
@@ -646,18 +703,18 @@
         // --- BUSCAR Y REPORTAR PAGO ---
         window.buscarPedido = async () => {
             const ci = document.getElementById('search_cedula').value;
-            if(!ci) return alert("Ingresa la cédula.");
+            if(!ci) return alert("Ingresa la cÃ©dula.");
 
             // Buscar en Firebase
             const q = query(ref(db, 'pedidos'), orderByChild('cedula'), equalTo(ci));
             const snapshot = await get(q);
 
-            if (!snapshot.exists()) return alert("No se encontraron pedidos para esa cédula.");
+            if (!snapshot.exists()) return alert("No se encontraron pedidos para esa cÃ©dula.");
 
             let pedidoEncontrado = null;
             let pedidoKey = null;
 
-            // El pago solo se reporta cuando el admin ya aprobó el pedido y está "en_proceso" (En Cocina)
+            // El pago solo se reporta cuando el admin ya aprobÃ³ el pedido y estÃ¡ "en_proceso" (En Cocina)
             snapshot.forEach((childSnapshot) => {
                 const val = childSnapshot.val();
                 if (val.estado === "en_proceso") {
@@ -666,7 +723,7 @@
                 }
             });
 
-            if (!pedidoEncontrado) return alert("No tienes pedidos aprobados pendientes de pago. Espera confirmación del local (debe pasar a En Cocina) o verifica si ya reportaste el pago.");
+            if (!pedidoEncontrado) return alert("No tienes pedidos aprobados pendientes de pago. Espera confirmaciÃ³n del local (debe pasar a En Cocina) o verifica si ya reportaste el pago.");
 
             // Mostrar Modal Pago
             document.getElementById('modal-busqueda').style.display = 'none';
@@ -689,12 +746,12 @@
                 pago_referencia: refPago,
                 pago_monto_reportado: parseFloat(montoPago),
                 pago_metodo_real: metodoPago,
-                estado: "pagado_esperando_aprobacion" // Estado clave que dispara el botón verde en Kivy
+                estado: "pagado_esperando_aprobacion" // Estado clave que dispara el botÃ³n verde en Kivy
             });
 
             document.getElementById('modal-pago').style.display = 'none';
             document.getElementById('success-overlay').style.display = 'flex';
-            document.getElementById('success-message').innerText = "Pago reportado. Esperando verificación final del administrador.";
+            document.getElementById('success-message').innerText = "Pago reportado. Esperando verificaciÃ³n final del administrador.";
             document.getElementById('success-amounts').style.display = 'none'; // Ocultar montos
         };
     </script>
