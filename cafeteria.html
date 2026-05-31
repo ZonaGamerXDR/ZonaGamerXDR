@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CAFETERÍA | XDR PEDIDOS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Orbitron:wght@700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
@@ -29,28 +29,27 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- EFECTO MONITOR VIEJO / SCANLINES --- */
+        /* --- EFECTO SCANLINES EN FONDO ABSOLUTO (YA NO PISA LAS IMÁGENES) --- */
         body::before {
             content: " ";
             display: block; 
             position: fixed; 
             top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%), 
-                        linear-gradient(90deg, rgba(0, 240, 255, 0.03), rgba(57, 255, 20, 0.02));
-            z-index: 5; 
-            background-size: 100% 4px, 6px 100%; 
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            z-index: -3; /* Se envía al fondo del todo */
+            background-size: 100% 3px; 
             pointer-events: none;
+            opacity: 0.6;
         }
 
-        /* --- FONDO DEL MENÚ (SILUETAS VECTORIALES EN VERDE Y AZUL) --- */
+        /* --- FONDO DEL MENÚ (SILUETAS EN VERDE Y AZUL COMPATIBLES) --- */
         .menu-background-silhouettes {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -2;
             opacity: 0.35; 
             pointer-events: none;
-            /* Patrón repetitivo de Hamburguesas, Papas y Refrescos dibujados directamente en código */
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3C!-- Hamburguesa Azul --%3E%3Cpath d='M10 25c0-4 3-7 7-7h16c4 0 7 3 7 7v2H10v-2zM8 31h34v2H8zm2 6h30c0 3-2 6-6 6H16c-4 0-6-3-6-6z' stroke='%2300f0ff' stroke-width='0.8'/%3E%3C!-- Refresco Verde --%3E%3Cpath d='M55 20l2 4h12l2-4M59 24l3 30h6l3-30M61 14l2 6h4l2-6' stroke='%2339ff14' stroke-width='0.8'/%3E%3Cpath d='M65 14v-4h-3' stroke='%2339ff14' stroke-width='0.8'/%3E%3C!-- Papas Fritas --%3E%3Cpath d='M20 60h15l3 15H17l3-15zM22 60l-1-8M26 60V50M30 60V52M33 60l1-7' stroke='%2300f0ff' stroke-width='0.8'/%3E%3C/g%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 80 80'><g fill='none' stroke-linecap='round' stroke-linejoin='round'><path d='M10 25c0-4 3-7 7-7h16c4 0 7 3 7 7v2H10v-2zM8 31h34v2H8zm2 6h30c0 3-2 6-6 6H16c-4 0-6-3-6-6z' stroke='%2300f0ff' stroke-width='0.8'/><path d='M55 20l2 4h12l2-4M59 24l3 30h6l3-30M61 14l2 6h4l2-6' stroke='%2339ff14' stroke-width='0.8'/><path d='M65 14v-4h-3' stroke='%2339ff14' stroke-width='0.8'/><path d='M20 60h15l3 15H17l3-15zM22 60l-1-8M26 60V50M30 60V52M33 60l1-7' stroke='%2300f0ff' stroke-width='0.8'/></g></svg>");
         }
 
         /* --- SPLASH SCREEN CONTAINER (NARANJA, MORADO, ROJO) --- */
@@ -64,13 +63,12 @@
             transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Fondo del Splash con siluetas en Neón Naranja y Rojo */
         .fast-food-silhouettes-orange {
             position: absolute;
             width: 100%; height: 100%;
             opacity: 0.4;
             pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 25c0-4 3-7 7-7h16c4 0 7 3 7 7v2H10v-2zM8 31h34v2H8zm2 6h30c0 3-2 6-6 6H16c-4 0-6-3-6-6z' stroke='%23ff6a00' stroke-width='0.8'/%3E%3Cpath d='M55 20l2 4h12l2-4M59 24l3 30h6l3-30M61 14l2 6h4l2-6' stroke='%23ff003c' stroke-width='0.8'/%3E%3Cpath d='M20 60h15l3 15H17l3-15zM22 60l-1-8M26 60V50M30 60V52M33 60l1-7' stroke='%23ff6a00' stroke-width='0.8'/%3E%3C/g%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 80 80'><g fill='none' stroke-linecap='round' stroke-linejoin='round'><path d='M10 25c0-4 3-7 7-7h16c4 0 7 3 7 7v2H10v-2zM8 31h34v2H8zm2 6h30c0 3-2 6-6 6H16c-4 0-6-3-6-6z' stroke='%23ff6a00' stroke-width='0.8'/><path d='M55 20l2 4h12l2-4M59 24l3 30h6l3-30M61 14l2 6h4l2-6' stroke='%23ff003c' stroke-width='0.8'/><path d='M20 60h15l3 15H17l3-15zM22 60l-1-8M26 60V50M30 60V52M33 60l1-7' stroke='%23ff6a00' stroke-width='0.8'/></g></svg>");
         }
 
         .logo-container-splash {
@@ -100,18 +98,18 @@
             background: var(--neon-orange); animation: loadingShift 1.5s infinite linear;
         }
 
-        /* --- MARCA DE AGUA DEL LOGO EN EL FONDO DEL MENÚ --- */
+        /* --- MARCA DE AGUA DEL LOGO EN EL FONDO --- */
         .marca-agua-fusion {
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             z-index: -1;
             pointer-events: none;
-            opacity: 0.12;
+            opacity: 0.15;
             filter: drop-shadow(0 0 25px var(--neon-blue)) drop-shadow(0 0 50px var(--neon-green));
         }
         .logo-fusion {
-            width: 480px; max-width: 85vw;
+            width: 440px; max-width: 80vw;
         }
 
         @keyframes floatLogo {
@@ -122,26 +120,48 @@
             0% { left: -50%; } 100% { left: 100%; }
         }
 
-        /* --- LAYOUT Y COMPONENTES --- */
-        .main-layout {
-            display: flex; flex-wrap: wrap; gap: 20px; max-width: 1400px;
-            margin: 0 auto; padding: 15px; align-items: flex-start;
-        }
-        .menu-section { flex: 1 1 60%; width: 100%; }
-
+        /* --- BOTONES DE NAVEGACIÓN LEGIBLES Y LIMPIOS --- */
         .nav-header {
-            width: 100%; padding: 10px 0; margin-bottom: 10px;
+            width: 100%; padding: 12px 0; margin-bottom: 15px;
             border-bottom: 1px solid rgba(0, 240, 255, 0.2);
             display: flex; justify-content: space-between; align-items: center;
         }
         .btn-nav {
-            background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue);
-            padding: 8px 15px; font-family: 'Orbitron'; font-size: 0.8rem; cursor: pointer;
-            text-decoration: none; transition: 0.3s; text-transform: uppercase;
+            background: rgba(0, 240, 255, 0.03); 
+            border: 1.5px solid var(--neon-blue); 
+            color: #ffffff;
+            padding: 10px 20px; 
+            font-family: 'Montserrat', sans-serif; 
+            font-weight: 600;
+            font-size: 0.85rem; 
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            text-decoration: none; 
+            transition: all 0.25s ease;
+            text-transform: uppercase;
+            border-radius: 4px;
         }
-        .btn-nav:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 15px var(--neon-blue); }
-        .btn-reportar { border-color: var(--neon-green); color: var(--neon-green); }
-        .btn-reportar:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 15px var(--neon-green); }
+        .btn-nav:hover { 
+            background: var(--neon-blue); 
+            color: #000000;
+            font-weight: 800;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.6); 
+        }
+        .btn-reportar { 
+            border-color: var(--neon-green); 
+            background: rgba(57, 255, 20, 0.03);
+            color: #ffffff;
+        }
+        .btn-reportar:hover { 
+            background: var(--neon-green); 
+            color: #000000;
+            font-weight: 800;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.6); 
+        }
+
+        /* --- INTERFAZ DE PRODUCTOS Y SIDEBAR --- */
+        .main-layout { display: flex; flex-wrap: wrap; gap: 20px; max-width: 1400px; margin: 0 auto; padding: 15px; align-items: flex-start; }
+        .menu-section { flex: 1 1 60%; width: 100%; }
 
         .order-sidebar {
             flex: 1 1 30%; min-width: 300px; position: sticky; top: 20px;
@@ -233,29 +253,24 @@
 </head>
 <body>
 
-    <!-- 1. SPLASH SCREEN (NARANJA, MORADO, ROJO) -->
     <div id="splash-screen-xdr">
         <div class="fast-food-silhouettes-orange"></div>
         <div class="logo-container-splash">
-            <!-- Apunta exactamente a tu carpeta local en GitHub -->
-            <img src="lib_img/logo.png" alt="XDR CG LOGO" class="logo-neon-glow" onerror="console.log('Esperando carga local del logo...')">
+            <img src="lib_img/logo.png" alt="XDR CG LOGO" class="logo-neon-glow">
             <h2 style="font-family:'Orbitron'; color:#fff; font-size:1.2rem; letter-spacing:2px; margin-top:15px; text-shadow: 0 0 10px var(--neon-purple)">XDR CAFETERÍA</h2>
             <div class="loading-bar-neon"></div>
         </div>
     </div>
 
-    <!-- Capas estructurales nativas -->
     <div class="menu-background-silhouettes"></div>
     <div class="marca-agua-fusion">
-        <!-- Logo de fondo en el menú -->
         <img src="lib_img/logo.png" class="logo-fusion" onerror="this.style.opacity='0'">
     </div>
 
-    <!-- Layout principal -->
     <div class="main-layout">
         <div class="nav-header">
-            <a href="index.html" class="btn-nav">⬅ VOLVER</a>
-            <button onclick="abrirModalBusqueda()" class="btn-nav btn-reportar">REPORTAR PAGO 💳</button>
+            <a href="index.html" class="btn-nav">⬅ Volver</a>
+            <button onclick="abrirModalBusqueda()" class="btn-nav btn-reportar">Reportar Pago 💳</button>
         </div>
         
         <div class="menu-section">
@@ -303,7 +318,6 @@
         <button style="background:var(--neon-blue); border:none; padding:8px 15px; font-weight:bold; font-family:'Orbitron'; border-radius:4px;">VER ORDEN 🛒</button>
     </div>
 
-    <!-- Modales de interacción -->
     <div id="modal-compra" class="modal">
         <div class="modal-content">
             <h3 style="color:var(--neon-purple); font-family:'Orbitron'; margin-top:0;">DATOS DE PEDIDO</h3>
@@ -370,7 +384,6 @@
         <button onclick="location.reload()" style="margin-top:30px; background:#333; color:#fff; border:1px solid #555; padding:10px 20px; cursor:pointer;">VOLVER AL INICIO</button>
     </div>
 
-    <!-- LOGIC SYSTEM & FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, onValue, push, query, orderByChild, equalTo, get, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -381,13 +394,12 @@
 
         let menuData = {}; let carrito = {}; let tasaCambio = 0; let tiendaAbierta = true;
 
-        // Quitar Splash al cargar datos reales
         function removerSplash() {
             const splash = document.getElementById('splash-screen-xdr');
             if(splash) { splash.style.opacity = '0'; setTimeout(() => splash.remove(), 600); }
         }
 
-        // Respaldo de seguridad para quitar el splash si Firebase tarda en responder
+        // Cierre preventivo del splash si la red Firebase está muy lenta
         setTimeout(removerSplash, 3500);
 
         onValue(ref(db, 'config/tasa'), (snap) => {
